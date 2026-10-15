@@ -2,6 +2,11 @@
 
 All notable changes to this plugin are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.3.0] — 2026-10-15
+
+### Added
+- Every idea carries three plain-language explanations: **how it works**, **the need gap**, and **how it makes money**. They appear in `03-ideas.md` and as cards shown to the user at generation and in the final run summary. Forge writes fuller versions, the blueprint explains the winning idea the same way, and the nothing-passed report explains every idea before saying why it died.
+
 ## [0.2.0] — 2026-10-15
 
 ### Added

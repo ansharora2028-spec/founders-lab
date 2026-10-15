@@ -17,6 +17,9 @@ created: <ISO 8601 UTC>
 - customer:
 - problem:
 - revenue model:
+- how it works:
+- need gap:
+- how it makes money:
 - lens: <unbundle | transplant | boring-b2b | unfair-advantage | contrarian | cheap-now | user-original | user-variant>
 - signal ids:
 - material change vs ledger:

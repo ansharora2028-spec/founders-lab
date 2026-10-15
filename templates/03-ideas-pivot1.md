@@ -15,6 +15,9 @@ created: <ISO 8601 UTC>
 - customer:
 - problem:
 - revenue model:
+- how it works:
+- need gap:
+- how it makes money:
 - lens:
 - signal ids:
 - pivoted from: <old-id>

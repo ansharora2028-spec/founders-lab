@@ -4,6 +4,14 @@
 
 `venture` scouts your market, generates ideas, and then tries hard to kill them. Ideas must survive blind prosecution against kill criteria locked *before* anyone polishes them, an evidence audit that strikes every unsourced or misquoted claim, and a judge who follows a fixed rule. It's modeled on Every's Compound Engineering plugin: specialist agents, files as the interface, and a ledger that makes every run smarter than the last.
 
+Every idea it suggests comes explained in plain language:
+
+- **How it works:** what the customer does, what they get, and what you'd do each week to deliver it.
+- **The need gap:** what people use today, where that falls short, and why the gap is open now, with the signals behind it.
+- **How it makes money:** who pays, how much, how often, what a sale costs to deliver, and roughly how many customers cover your costs.
+
+You see these cards when ideas are generated, again in the final summary, and in the blueprint or nothing-passed report.
+
 A run ends one of two ways, and both are wins:
 
 1. **PASS** — an idea with evidence that it can make money *for you*, under *your* constraints, in *your* market, plus a blueprint for testing it cheaply this week.
@@ -156,7 +164,7 @@ ventures/
     ├── 00-contract.md              # constraint contract + location profile
     ├── 01-local-market.md          # local scout, with a 0–10 coverage score
     ├── 02-signals.md               # dated, sourced signals
-    ├── 03-ideas.md                 # ideas, each citing signal ids
+    ├── 03-ideas.md                 # ideas: how each works, the need gap, how it makes money
     ├── 04-screen.md                # hard-constraint check, competitors, ranking
     ├── ideas/<idea-id>/
     │   ├── criteria-market.md      # prosecutor drafts (pre-forge)

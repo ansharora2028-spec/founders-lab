@@ -96,7 +96,7 @@ Run revision rounds for several ideas in parallel where possible (same step, one
    - Then forge round 1 and economics round 1 for the new idea (as in `${CLAUDE_PLUGIN_ROOT}/commands/forge.md`), then §A1 round 1. The new idea gets its own single revision round.
 
 ### A3. Report
-Add a Stages row `kill — done`. Show a table: idea, final verdict, round, confidence, top decisive reason. Next step: `/venture:blueprint` (writes the blueprint or the nothing-passed report).
+Add a Stages row `kill — done`. Show a table: idea, pitch, final verdict, round, confidence, top decisive reason. Under it, one line per idea on how it was meant to make money (from `03-ideas.md`), so the verdict reads in context. Next step: `/venture:blueprint` (writes the blueprint or the nothing-passed report).
 
 ---
 

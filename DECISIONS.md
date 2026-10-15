@@ -73,6 +73,10 @@ Docs checked on 2026-10-15 (Claude Code 2.1.300): [plugin manifest reference](ht
 
 **D29. Author and owner** are set to the repository owner (`ansharora2028-spec`) in both manifests and the LICENSE. The version is bumped to 0.2.0, because a set `version` pins installed users until it changes.
 
+## v0.3 changes
+
+**D30. Every idea is explained in plain language: how it works, the need gap, how it makes money.** A one-line pitch plus customer/problem/revenue fields wasn't enough for a user to understand what was being suggested. The generator now writes three explanation lines per idea. Forge writes fuller `How it works`, `Need gap` and `How it makes money` sections. The user sees them as cards at generation, in the final run summary, and in `90-blueprint.md` / `91-nothing-passed.md` (`The ideas, explained`). They explain the idea without selling it: numbers are sourced or marked `ASSUMPTION`, and the real model stays with the economics modeler. Because the cards are part of the idea block, they are also copied into the locked kill criteria's raw idea, so the prosecutors judge the same idea the user read.
+
 ## Test results (spec §12)
 
 All tests ran on 2026-10-15 with Claude Code 2.1.300, headless (`claude -p`), in a cloud container whose network policy blocked WebFetch to most hosts (see D20). Every intake was given in the arguments (D14). Costs are the `total_cost_usd` the CLI reported for each session.

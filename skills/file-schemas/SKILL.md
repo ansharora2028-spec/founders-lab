@@ -216,6 +216,9 @@ created: <iso>
 - customer: <who pays>
 - problem: <the pain>
 - revenue model: <how money comes in>
+- how it works: <2–4 plain sentences: what the customer does, what they get, and what the founder does to deliver it, on which channels or tools>
+- need gap: <what this customer does today (named alternatives and what they cost), where that falls short for them, and why the gap is open now — with signal ids or claim refs>
+- how it makes money: <who pays, how much and how often; what one sale costs to deliver; roughly how many paying customers a month cover the founder's costs — each number sourced or marked ASSUMPTION>
 - lens: unbundle | transplant | boring-b2b | unfair-advantage | contrarian | cheap-now | user-original | user-variant
 - signal ids: L02, S05
 - material change vs ledger (only if it resembles a dead ledger idea): <...>
@@ -223,6 +226,8 @@ created: <iso>
 ### I02
 ...
 ```
+
+The three explanation lines (how it works, need gap, how it makes money) are what the user reads to understand an idea. Write them in plain language for someone with no business background: no jargon, amounts in the contract's currency, no hype. They describe the idea; they are not evidence that it works.
 
 `03-ideas-pivot<k>.md` holds exactly one idea in the same shape, with id `<old-id>-P<k>`, plus `- pivoted from: <old-id>` and `- pivot reason: <field changed and why>`.
 
@@ -329,6 +334,20 @@ After writing: `chmod 444`, compute SHA-256, record in `run-log.md` § Locks.
 - problem: <exact pain>
 - revenue model: <exact model>
 - pivot declared: no | YES — <field(s) changed>
+
+## How it works
+(step by step: how a customer finds it, what they do, what they receive, and what the founder does each week to deliver it, with the tools used)
+
+## Need gap
+- [Cnn] <what the customer uses or does today, and what it costs them> [source: ...]
+- [Cnn] <where that falls short for this customer> [source: ...]
+- [Cnn] <why the gap is open now: what changed, or why incumbents don't serve it> [source: ... | ASSUMPTION: ...]
+
+## How it makes money
+- who pays, for what, how much, how often: ...
+- other revenue (if any): ...
+- what one sale costs to deliver, and what drives the margin: ...
+- (the numbers are modelled in economics-v<n>.md; do not repeat them here as facts)
 
 ## Persona
 - [C01] <who, where they are, what they spend money on today> [source: ...]
@@ -551,6 +570,11 @@ No encouragement. No softening.
 - verdict file: ideas/<id>/verdict-v<n>.md
 - why it beat the others: <reasons with refs>
 
+## How it works
+## The need gap
+## How it makes money
+(each in plain language, from forge-v<n>.md and the conservative column of economics-v<n>.md, with refs)
+
 ## This week's 3 cheapest experiments
 | # | experiment | cost | time | success threshold | kill threshold |
 |---|---|---|---|---|---|
@@ -581,6 +605,13 @@ No encouragement. No softening.
 
 ## Summary
 - ideas generated: n, screened out: n, not carried: n, killed: n, pivoted: n   (count each idea once, by its final status)
+
+## The ideas, explained
+### <idea id> — <pitch>
+- how it works: ...
+- need gap: ...
+- how it makes money: ...
+- what happened: <final status and the one decisive reason, with the verdict or screen file>
 
 ## Deaths
 | idea | pitch | verdict file | decisive evidence |

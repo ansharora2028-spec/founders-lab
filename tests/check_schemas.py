@@ -80,8 +80,9 @@ for p in glob.glob("examples/**/*.md", recursive=True):
         errors.append(f"{p}: no front matter")
     missing = [s for s in schema[k] if s not in h2(p)]
     # The examples are real v0.1 test output, kept unedited. Two sections were added to the
-    # schemas after those runs (DECISIONS.md D24 and D25), so they are allowed to be absent there.
-    added_later = {"Pivot candidate (KILL only)", "Fixes (round 2 only)"}
+    # schemas after those runs (DECISIONS.md D24, D25 and D30), so they are allowed to be absent there.
+    added_later = {"Pivot candidate (KILL only)", "Fixes (round 2 only)",
+                   "How it works", "Need gap", "How it makes money", "The need gap", "The ideas, explained"}
     missing = [s for s in missing if s not in added_later]
     if missing:
         errors.append(f"{p}: missing sections {missing}")

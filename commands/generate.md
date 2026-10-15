@@ -43,7 +43,16 @@ From `04-screen.md` § Ranking, take the top N non-rejected ideas. If fewer than
 
 Path (a): the user's original idea always goes through Screen. It is carried forward only if it ranks in the top N, like any other idea; if it is not carried, tell the user its rank and score.
 
-Show the user the ranking and which ideas are carried forward.
+Show the user every idea, in rank order, explained in plain language, using only what `03-ideas.md` and `04-screen.md` say (add no new claims):
+
+```
+I03 — <pitch>  (screen 16/25, carried forward | not carried | rejected: <reason>)
+  How it works:      <from the idea's "how it works">
+  The need gap:      <from "need gap">
+  How it makes money: <from "how it makes money">
+```
+
+Then one line saying which ideas are carried forward and why (rank).
 
 ## 4. Write kill criteria from the raw ideas — before any forge
 Progress note: `Locking kill criteria for <N> ideas — 2 prosecutors per idea in parallel (paid stage).`

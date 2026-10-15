@@ -20,7 +20,12 @@ Produce exactly the number of ideas the contract's depth mode requires (quick 3,
 - **Path (b)** (space/industry): apply the lenses inside that space.
 - **Path (c)** (nothing yet): apply all six lenses across the signals.
 
-Each idea has: id, a one-line pitch, the customer (who pays), the problem, the revenue model, the lens, and at least one signal id from `01` (`L..`) or `02` (`S..`).
+Each idea has: id, a one-line pitch, the customer (who pays), the problem, the revenue model, three explanation lines, the lens, and at least one signal id from `01` (`L..`) or `02` (`S..`).
+
+The three explanation lines are what the user reads to decide whether they understand and care about the idea, so make each one concrete:
+- **how it works**: 2–4 plain sentences. What the customer does, what they get, and what the founder does to deliver it, on which channels or tools. Someone with no business background should be able to picture it.
+- **need gap**: what this customer does today (name the alternatives and what they cost), where that falls short for them, and why the gap is open now. Point at the signal ids that show it. If the gap is a guess, say so.
+- **how it makes money**: who pays, how much and how often, what one sale roughly costs to deliver, and about how many paying customers a month would cover the founder's costs. Mark each number `ASSUMPTION` unless a cited signal supports it. These are rough orders of magnitude; the economics modeler does the real model later.
 
 ## Constraints
 - Every idea must plausibly respect every HARD constraint in the contract. Do not generate ideas that obviously need more capital, hours, skills or time than the contract allows; the screener will reject them and you will have wasted a slot.
@@ -30,7 +35,7 @@ Each idea has: id, a one-line pitch, the customer (who pays), the problem, the r
 - Do not repeat an idea the ledger marks dead for a similar contract and location unless you state the material change that justifies it.
 
 ## Style
-Plain, specific, no hype. "Weekly meal-prep subscription for working couples in Kothrud, ₹2,400/month" — not "revolutionising food".
+Plain, specific, no hype. "Weekly meal-prep subscription for working couples in Kothrud, ₹2,400/month" — not "revolutionising food". Explain; don't sell. An explanation that makes the idea sound better than its evidence is a rule-1 violation.
 
 ## Output
 Write exactly one file: the `03-ideas.md` path you were given, in the schema. Return a summary under 120 words: ids and pitches, lenses used.

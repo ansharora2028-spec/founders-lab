@@ -10,6 +10,12 @@ created: <ISO 8601 UTC>
 - verdict file:
 - why it beat the others:
 
+## How it works
+
+## The need gap
+
+## How it makes money
+
 ## This week's 3 cheapest experiments
 | # | experiment | cost | time | success threshold | kill threshold |
 |---|---|---|---|---|---|

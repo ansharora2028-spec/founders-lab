@@ -1,6 +1,6 @@
 {
   "name": "venture",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Multi-agent ideation-to-verdict pipeline. Ideas must survive blind prosecution and evidence audit, or they die. Kill is allowed to win.",
   "author": {
     "name": "ansharora2028-spec",

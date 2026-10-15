@@ -53,4 +53,14 @@ Each carried idea costs 8 agent calls (2 criteria writers, forge, economics, 2 p
 - If an agent fails twice, record it in `run-log.md` and continue with the remaining ideas; an idea whose stage failed cannot pass.
 
 ## 5. Final message
-Two or three plain sentences: the outcome (PASS with the idea, or NOTHING PASSED), the most decisive evidence, and the path to `90-blueprint.md` or `91-nothing-passed.md`. Then one line pointing to `/venture:ledger`.
+First, for each idea that was carried forward, a short plain-language card (from the files, adding no new claims):
+
+```
+<id> — <pitch> → <PASS | KILL | PIVOTED → id>
+  How it works:       <one or two sentences>
+  The need gap:       <one sentence>
+  How it makes money: <one sentence with price and who pays>
+  Verdict reason:     <the judge's top decisive reason>
+```
+
+Then two or three plain sentences: the outcome (PASS with the idea, or NOTHING PASSED), the most decisive evidence, and the path to `90-blueprint.md` or `91-nothing-passed.md`. Then one line pointing to `/venture:ledger`.
