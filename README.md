@@ -198,6 +198,17 @@ Each run makes the next one cheaper and sharper. That's the compounding.
 - **Research assistance, not financial advice.** Nothing here is a recommendation to invest money. Talk to people who know your market before you spend real money.
 - **Interactive intake works best.** In non-interactive sessions (`claude -p`), give every intake answer in the arguments; the plugin won't invent a constraint.
 
+## Checking blindness yourself
+
+Every agent call is logged with its exact input paths in `run-log.md`. To check against the real transcript instead of the log:
+
+```bash
+claude -p '/venture:run <your intake answers>' --output-format stream-json --verbose > run.log
+python3 tests/check_blindness.py run.log
+```
+
+It fails if a prosecutor was passed or opened `forge-v2.md` or the other prosecutor's file, if forge or the economics modeler touched the kill criteria, or if any other agent broke the visibility matrix.
+
 ## Roadmap (out of scope for v0.1)
 
 - A Claude.ai app version
@@ -213,7 +224,8 @@ agents/        10 specialist subagents
 commands/      8 /venture:* commands (the orchestrator)
 skills/        venture-rules, scoring-rubric, idea-lenses, file-schemas
 templates/     empty copies of every run file
-examples/      one complete fictional run
+examples/      a complete fictional run, plus revision-round and pivot examples
+tests/         check_blindness.py — audits a run transcript against the visibility matrix
 DECISIONS.md   design choices where the spec was silent, and test results
 ```
 
