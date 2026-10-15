@@ -134,6 +134,11 @@ A full `/venture:run` with the v0.2 plugin, in the same restricted-network conta
 - **Blindness:** `tests/check_blindness.py` found 20 agent calls and 143 subagent file accesses, 0 violations.
 - **Network:** a fresh cloud session on the same environment was also refused by the proxy (Wikipedia, Reddit, TechCrunch, inc42 all 403), so the environment's network policy is still restricted. The open-network run is still to do: `sh tests/e2e.sh standard` once access is widened.
 
+### v0.3 runs: idea explanations and `/venture:check`
+- **Quick run** ($7.24): every idea in `03-ideas.md` carried the three explanation lines. Forge wrote the new How it works / Need gap / How it makes money sections. Need gaps were honest: one named a funded competitor at the same price (SpeakX, ₹299) and called the gap narrow. The final message showed one plain-language card per carried idea, and `91-nothing-passed.md` had "The ideas, explained".
+- **`/venture:check`** ($4.04, 12 agent calls, 0 blindness violations; saved as `examples/check-run/`). Intake recorded the charging question, and the depth mode was `check`. The generator wrote up only I01, faithfully, marking every unstated detail as an ASSUMPTION. Verdict: DON'T DO IT (KILL, confidence 6). The decisive reason was verified arithmetic, independent of the blocked network: break-even needs two groups and 12 h/week against HARD K2 = 10 h. The final message led with the verdict, then how it works, the need gap, the money math, quoted reasons, savings, and what would have to be true.
+- **Bug found:** `tests/e2e.sh` printed `000000` for blocked hosts, and the first fix aborted under `set -e`. Both are fixed.
+
 ### Observations from testing
 - **Kill won every time**, which is consistent with principle 1. It's also partly an artifact of the blocked network: when the auditor can't verify demand evidence, a PASS is impossible. A PASS path was not observed in testing. Running in an environment with open web access is the next thing to check.
 - In tests 6 and 7 the orchestrator noticed the fixture's inconsistency (verdict-v1 says REVISE; the ledger and nothing-passed report say KILL) and reported it rather than hiding it. It also declined to edit agent files or the append-only ledger.
