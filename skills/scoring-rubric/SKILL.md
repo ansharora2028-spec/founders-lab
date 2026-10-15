@@ -58,7 +58,7 @@ Relative to the contract's time-to-first-revenue constraint.
 
 ### Use
 - The screener ranks by total score. Ties are broken by signal strength, then by constraint fit.
-- The main session carries the top N forward (quick 2, standard 3, deep 5).
+- The main session carries the top N forward (quick 2, standard 3, deep 5; `check` carries the user's idea, and `check+variants` the user's idea plus the best variant, unless rejected on a HARD constraint).
 - **The screen score is used only for ranking. It never decides a PASS.**
 
 ## Part 2 — The Judge's decision rule. Overrides every score.

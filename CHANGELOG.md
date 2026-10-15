@@ -4,7 +4,13 @@ All notable changes to this plugin are documented here. The format follows [Keep
 
 ## [0.3.0] — 2026-10-15
 
+### Fixed
+- `tests/e2e.sh` network check printed `000000` for a blocked host. A first fix then aborted under `set -e`. It now prints `000` and continues.
+
 ### Added
+- `/venture:check "<idea>" [--variants]`: runs the user's own idea through the full pipeline (scouting focused on the idea, explanation, screen, locked criteria, forge, three-scenario economics, prosecution, audit, one revision round) and gives a clear DO IT / DON'T DO IT verdict. With `--variants`, it also tests up to 3 one-change variants. New depth modes `check` and `check+variants`.
+- `tests/e2e.sh check "<idea>"` to test `/venture:check` end to end.
+- README rewritten for aspiring founders: purpose, getting started in 3 steps, which command to use, what you'll be asked, what you get, time and cost. Technical detail is under "Under the hood".
 - Every idea carries three plain-language explanations: **how it works**, **the need gap**, and **how it makes money**. They appear in `03-ideas.md` and as cards shown to the user at generation and in the final run summary. Forge writes fuller versions, the blueprint explains the winning idea the same way, and the nothing-passed report explains every idea before saying why it died.
 
 ## [0.2.0] — 2026-10-15

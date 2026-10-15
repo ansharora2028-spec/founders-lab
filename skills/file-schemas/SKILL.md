@@ -92,6 +92,7 @@ created: <iso>
 ## Starting point
 - path: a | b | c            # a = specific idea, b = space/industry, c = nothing yet
 - in their words: "<verbatim, or 'none'>"
+- how they plan to charge: "<verbatim, or 'not asked' / 'not sure'>"   (asked by /venture:check)
 
 ## Location profile
 - lives in: <city, country>
@@ -116,9 +117,9 @@ created: <iso>
 - <advantage, or 'none stated'>
 
 ## Depth mode
-- mode: quick | standard | deep
-- ideas to generate: 3 | 8 | 12
-- ideas to carry forward: 2 | 3 | 5
+- mode: quick | standard | deep | check | check+variants
+- ideas to generate: 3 | 8 | 12 | 1 (the user's idea) | up to 4 (the user's idea + up to 3 variants)
+- ideas to carry forward: 2 | 3 | 5 | 1 | 2 (the user's idea + the best-ranked variant)
 
 ## Confirmation
 - confirmed by user: yes

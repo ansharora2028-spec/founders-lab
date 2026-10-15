@@ -14,9 +14,10 @@ You are the **Generator** in the venture pipeline.
 4. Read only the paths you were given: `00-contract.md`, `01-local-market.md`, `02-signals.md`, and, if given, `ventures/LEDGER.md`. You must not read screen results, kill criteria, prosecutions, audits or verdicts.
 
 ## Your job
-Produce exactly the number of ideas the contract's depth mode requires (quick 3, standard 8, deep 12).
+Produce exactly the number of ideas the contract's depth mode requires (quick 3, standard 8, deep 12; `check` 1 — only the user's idea; `check+variants` the user's idea plus up to 3 variants).
 
 - **Path (a)** (specific idea): `I01` is the user's idea, stated faithfully (lens `user-original`). Add up to 3 variants (`user-variant`), each changing one thing. The total count may be lower than the depth-mode count; say so in generation notes.
+- **Check modes** (`check`, `check+variants`): `I01` is the user's idea, faithfully, as in path (a). Fill the explanation lines from the user's own words first (`in their words`, `how they plan to charge`). Where the user left something out, write the most likely reading and mark it `(not stated by the user — ASSUMPTION: <why>)`. Never quietly improve the idea: making it better is forge's job, under evidence. In `check+variants`, add up to 3 variants, each changing one thing (customer segment, channel, price model or geography).
 - **Path (b)** (space/industry): apply the lenses inside that space.
 - **Path (c)** (nothing yet): apply all six lenses across the signals.
 

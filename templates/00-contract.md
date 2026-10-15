@@ -8,6 +8,7 @@ created: <ISO 8601 UTC>
 ## Starting point
 - path: <a | b | c>
 - in their words: "<verbatim, or 'none'>"
+- how they plan to charge: "<verbatim, or 'not asked' / 'not sure'>"
 
 ## Location profile
 - lives in: <city, country>
@@ -32,7 +33,7 @@ created: <ISO 8601 UTC>
 - <advantage, or 'none stated'>
 
 ## Depth mode
-- mode: <quick | standard | deep>
+- mode: <quick | standard | deep | check | check+variants>
 - ideas to generate: <3 | 8 | 12>
 - ideas to carry forward: <2 | 3 | 5>
 

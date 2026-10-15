@@ -77,6 +77,14 @@ Docs checked on 2026-10-15 (Claude Code 2.1.300): [plugin manifest reference](ht
 
 **D30. Every idea is explained in plain language: how it works, the need gap, how it makes money.** A one-line pitch plus customer/problem/revenue fields wasn't enough for a user to understand what was being suggested. The generator now writes three explanation lines per idea. Forge writes fuller `How it works`, `Need gap` and `How it makes money` sections. The user sees them as cards at generation, in the final run summary, and in `90-blueprint.md` / `91-nothing-passed.md` (`The ideas, explained`). They explain the idea without selling it: numbers are sourced or marked `ASSUMPTION`, and the real model stays with the economics modeler. Because the cards are part of the idea block, they are also copied into the locked kill criteria's raw idea, so the prosecutors judge the same idea the user read.
 
+**D31. `/venture:check "<idea>"` gives a founder's own idea the full pipeline.** Before this, a user's own idea either got the fast direct verdict (`/venture:kill "<idea>"`: judged as written, with no scouting, forge or revision) or had to compete with generated ideas in `/venture:run` path (a). Neither matched what founders asked for: "check my idea the way you check the others, run the economics, then tell me whether to do it." `/venture:check` reuses every stage through two new depth modes:
+- `check`: only the user's idea, which is always carried forward unless Screen rejects it on a HARD constraint;
+- `check+variants` (`--variants`): the user's idea plus up to 3 one-change variants, with the best variant also carried.
+
+Intake asks one extra question: "who would pay for this, and how would you charge?" The generator writes the idea up faithfully. Anything the user did not state is marked `not stated by the user — ASSUMPTION`, and improving the idea is left to forge, under evidence. The final message leads with **DO IT / DON'T DO IT** and the plain-language explanation. The judge applies the same rule as for any idea.
+
+**D32. The README is written for aspiring founders first.** The top half covers what the tool is for (test an idea on paper before spending savings on it), who it's for, a real idea card, three steps to get started, a "where are you?" table of commands, the intake questions, a plain-language walk through the pipeline, time and cost, and honest limits. Technical detail (rules, all commands, depth modes, pipeline diagram, run folder, ledger, testing) moved under "Under the hood".
+
 ## Test results (spec §12)
 
 All tests ran on 2026-10-15 with Claude Code 2.1.300, headless (`claude -p`), in a cloud container whose network policy blocked WebFetch to most hosts (see D20). Every intake was given in the arguments (D14). Costs are the `total_cost_usd` the CLI reported for each session.
