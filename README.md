@@ -37,10 +37,12 @@ I01 — WhatsApp voice-note spoken-English practice for Pune working adults, ₹
   How it makes money: ₹299 per 30-day pack. Delivery costs roughly ₹20–40 per customer per month,
                       so about 15 paying customers a month cover the running costs (an estimate).
 
-  Verdict:            <PASS or KILL, with the judge's top reason and the files behind it>
+  Verdict:            KILL (confidence 4/10). In the cautious case each customer costs about
+                      ₹1,631 to win against ₹299 paid, and the proof that people pay could
+                      not be verified.
 ```
 
-That's a real idea card from a test run, lightly trimmed. The verdict line shows where the judge's ruling appears. Every number is either linked to a source or marked as an estimate.
+That's a real idea card from a test run, lightly trimmed. Every number is either linked to a source or marked as an estimate, and the verdict comes with the judge's reasons and the files behind them. (This test ran on a network that blocked source checking, which is why the proof that people pay couldn't be verified.)
 
 ---
 
