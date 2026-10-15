@@ -223,9 +223,9 @@ created: <iso>
 - lessons applied: <from ledger generation lessons or a previous 91 report, or 'none'>
 
 ## Longlist and pass pre-check
-| # | candidate (one line) | demand anchor | gap | cautious money math | most likely killer | keep / drop |
-|---|---|---|---|---|---|---|
-| 1 | ... | D03 | ... | ₹499 × 40 = ₹19,960/mo vs ₹... | free WhatsApp groups | keep → I01 |
+| # | candidate (one line) | demand anchor | gap | cautious money math | ceiling at hours limit | most likely killer | keep / drop |
+|---|---|---|---|---|---|---|---|
+| 1 | ... | D03 | ... | ₹499 × 40 = ₹19,960/mo vs ₹... | 60 members at 10 h/week ≈ ₹13,000/mo | free WhatsApp groups | keep → I01 |
 
 ## Ideas
 

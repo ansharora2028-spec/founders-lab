@@ -105,12 +105,12 @@ Everything is saved in a `ventures/` folder in your project. A running log of ev
 | What you run | Typical time | Typical AI usage cost* |
 |---|---|---|
 | `/venture:kill "idea"` | a few minutes | about $2–3 |
-| `/venture:check "idea"` | 10–20 minutes | about $3–5 |
+| `/venture:check "idea"` | 10–20 minutes | about $4–6 |
 | `/venture:check "idea" --variants` | 15–30 minutes | about $7–10 |
-| `/venture:run` in `quick` mode (2 ideas tested) | about 15 minutes | about $7 |
+| `/venture:run` in `quick` mode (2 ideas tested) | 15–30 minutes | about $7–12 (more if an idea earns a revision round) |
 | `/venture:run` in `standard` mode (3 ideas tested) | 20–40 minutes | about $10–12 |
 
-\*On the default models. The `/venture:kill` and `quick` figures were measured in testing. The others are estimates, based on each fully tested idea costing roughly $3–4. A revision round or a pivot adds more.
+\*On the default models. The `/venture:kill`, `/venture:check` and `quick` figures were measured in testing. The others are estimates, based on each fully tested idea costing roughly $3–4. A revision round or a pivot adds more.
 
 ## Good to know
 

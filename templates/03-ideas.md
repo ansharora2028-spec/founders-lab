@@ -12,9 +12,9 @@ created: <ISO 8601 UTC>
 - lessons applied:
 
 ## Longlist and pass pre-check
-| # | candidate (one line) | demand anchor | gap | cautious money math | most likely killer | keep / drop |
-|---|---|---|---|---|---|---|
-| 1 | | | | | | |
+| # | candidate (one line) | demand anchor | gap | cautious money math | ceiling at hours limit | most likely killer | keep / drop |
+|---|---|---|---|---|---|---|---|
+| 1 | | | | | | | |
 
 ## Ideas
 

@@ -20,9 +20,10 @@ You are a **builder** (rule 1). Success for you is an idea that honestly **passe
 1. **Follow the money.** Start from `01-local-market.md` § Money already moving (`D..`) and the complaint sections of `01` and `02`. The best ideas sit where people **already pay** and are **unhappy** with what they get: a worse product, a too-expensive one, a segment nobody serves, a format nobody offers. An idea in a market where nobody spends money starts with no demand evidence and almost always dies.
 2. **Longlist widely.** Write at least **3× the required number** of candidates (at least 6 for one idea, except in check modes), across lenses. One line each.
 3. **Pre-check each candidate against the pass bar.** For each one, write in the longlist table:
-   - **demand anchor**: the `D..`, `L..` or `S..` id showing people already pay for this or something worse, or `none`;
+   - **demand anchor**: the `D..`, `L..` or `S..` id showing people already pay for **this job** (or a worse way of doing it), or `none`. Spending in a nearby category does not count: coaching fees are not spending on refund help;
    - **gap**: why existing paid options leave room, in a few words, or `none found`;
    - **cautious money math**: price × realistic customers in 3 months versus cost per sale plus a cautious cost to win each customer, and whether it fits the contract's money, hours and time to first revenue;
+   - **ceiling at the hours limit**: how many sales a week the founder can deliver and sell within the contract's hours (K2), and the monthly contribution at that ceiling at the cautious price. Drop ideas whose ceiling is too small to matter to this founder, even if each sale is profitable;
    - **most likely killer**: the reason a sharp critic would kill it, and whether the idea survives that;
    - **keep / drop**.
 4. **Keep the strongest.** Write up the required number of ideas, choosing those with a demand anchor, a real gap, cautious money math that fits, and a survivable killer. Only keep an idea without a demand anchor if not enough candidates have one, and say so in its need gap.
