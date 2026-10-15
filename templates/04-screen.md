@@ -15,7 +15,7 @@ created: <ISO 8601 UTC>
 - novelty: <crowded | contested | open>
 
 ## Scores
-| idea | signal | constraint fit | novelty | unfair advantage | speed to revenue | total /25 |
+| idea | signal | constraint fit | market proof | unfair advantage | speed to revenue | total /25 |
 |---|---|---|---|---|---|---|
 
 ## Ranking

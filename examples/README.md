@@ -28,6 +28,14 @@ The same run, continued after the round-1 verdict was changed to REVISE by the t
 
 The same fictional user on v0.2.0: quick mode now carries two ideas (I01 and I03, both KILLED). Every verdict has a **Pivot candidate** section, and both are `none` with the reason. Timestamps are real (`date -u`).
 
+## quick-run-v0.4/: the "builders aim to pass" version (v0.4)
+
+The same fictional user on v0.4. The money map in `01-local-market.md` lists 13 places where people in Pune already pay, plus complaints about paid options. In `03-ideas.md` the generator longlisted 9 candidates and dropped 6 with reasons. The screen scores market proof. I01 (a ₹799 refund-claim file for coaching students) earned the first **REVISE** in any test run (positive cautious economics, no surviving fatal flaw), went through a full revision round (`diff-v2.md` has 11 rows), and was KILLED in round 2. I03 (a guaranteed deep-clean) was KILLED on negative cautious economics. `91-nothing-passed.md` has the new **Why the search missed** section with generation lessons.
+
+## check-run/: `/venture:check` on a founder's own idea (v0.3)
+
+`/venture:check "Weekend spoken-English conversation clubs for Pune college students, held in cafés, ₹499 per month"`. Only the user's idea is written up (I01). Every detail the user didn't give is marked `not stated by the user, ASSUMPTION`. Verdict: **DON'T DO IT** (KILL, confidence 6): break-even needs two groups and 12 h/week against a HARD 10 h limit, and one group loses money. Read `91-nothing-passed.md` for the plain-language explanation.
+
 ## pivot/ — a pivot caught and re-screened
 
 The same REVISE fixture, plus an injected `ideas/I03/forge-v2.md` (marked `TEST FIXTURE`) that changes the revenue model to a commission while claiming `pivot declared: no`. The main session detected it, marked I03 `PIVOTED → I03-P1` (`run-log.md` § Pivots), and wrote `03-ideas-pivot1.md` and `04-screen-pivot1.md`. It then ran I03-P1 from zero: new locked criteria, forge, economics, prosecution, audit, and `verdict-v1.md` (**KILL**).

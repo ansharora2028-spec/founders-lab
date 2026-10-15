@@ -12,6 +12,18 @@ created: <ISO 8601 UTC>
 - revenue model:
 - pivot declared: <no | YES — field(s)>
 
+## How it works
+
+## Need gap
+- [C01] <what the customer uses today, and what it costs> [source: <url> | ASSUMPTION: <why>]
+- [C02] <where that falls short> [source: <url> | ASSUMPTION: <why>]
+- [C03] <why the gap is open now> [source: <url> | ASSUMPTION: <why>]
+
+## How it makes money
+- who pays, for what, how much, how often:
+- other revenue:
+- cost to deliver one sale, and what drives the margin:
+
 ## Persona
 - [C01] <claim> [source: <url> | ASSUMPTION: <why>]
 

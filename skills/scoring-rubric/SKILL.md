@@ -8,7 +8,7 @@ user-invocable: false
 
 ## Part 1 — Screen score (0–25). Ranking only.
 
-Five dimensions, each 0–5. Score each one with a one-line justification that cites claim ids or signal ids.
+Five dimensions, each 0–5: signal strength, constraint fit, market proof, fit with unfair advantages, speed to first revenue. Score each one with a one-line justification that cites claim ids or signal ids.
 
 ### Signal strength (0–5)
 | score | meaning |
@@ -30,14 +30,18 @@ Any HARD-constraint violation means the idea is **REJECTED**, not scored.
 | 4 | fits with some slack |
 | 5 | fits comfortably on every constraint |
 
-### Novelty
-| state | score |
+### Market proof (0–5)
+A PASS needs proof that people already pay (rule 3), so an "open" market with no sign of spending is a warning, not a strength. Score what the screen can see:
+| score | meaning |
 |---|---|
-| open (no direct competitor found in the target market) | 5 |
-| contested (1–4 direct competitors, none dominant) | 3 |
-| crowded (5+ direct competitors, or one dominant incumbent) | 1 |
+| 5 | people demonstrably pay for this, or for a worse version of it, **in the target market** (named paid competitors, price lists, review volume), **and** there is a specific, evidenced gap: a complaint pattern, an unserved segment, a price or format nobody offers |
+| 4 | paying demand evidenced in the target market and a plausible gap, but the gap is not evidenced yet |
+| 3 | paying demand evidenced only nationally or in a comparable city, with a plausible local gap; or contested (1–4 paid competitors, none dominant) with no clear gap |
+| 2 | no evidence anyone pays in the target market, but strong evidence of the pain |
+| 1 | crowded with a dominant incumbent and no visible gap, or "open" with no sign that anyone spends money on this |
+| 0 | evidence that people won't pay (free substitutes are good enough, failed predecessors with that cause) |
 
-"Open" is not automatically good: an open market with no demand evidence will still die at Kill.
+Also record **novelty** (crowded / contested / open) for information, but it does not score on its own.
 
 ### Fit with unfair advantages (0–5)
 | score | meaning |
@@ -57,8 +61,8 @@ Relative to the contract's time-to-first-revenue constraint.
 | 5 | first paid transaction plausible within 2–4 weeks |
 
 ### Use
-- The screener ranks by total score. Ties are broken by signal strength, then by constraint fit.
-- The main session carries the top N forward (quick 2, standard 3, deep 5).
+- The screener ranks by total score. Ties are broken by market proof, then by constraint fit.
+- The main session carries the top N forward (quick 2, standard 3, deep 5; `check` carries the user's idea, and `check+variants` the user's idea plus the best variant, unless rejected on a HARD constraint).
 - **The screen score is used only for ranking. It never decides a PASS.**
 
 ## Part 2 — The Judge's decision rule. Overrides every score.

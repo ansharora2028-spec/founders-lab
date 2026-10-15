@@ -6,6 +6,8 @@ user-invocable: false
 
 # venture idea lenses
 
+**Follow the money first.** A lens is a way of looking, but the material is spending. Start from where people in the target market already pay (`D..` anchors in `01-local-market.md`) and what paying customers complain about. Then use a lens to find the angle: unbundle the expensive thing, transplant the proven model, serve the ignored segment, use the newly cheap tool. An idea with no demand anchor is a guess, and guesses almost always die at Kill.
+
 Every idea comes from one lens applied to at least one cited signal (`L<nn>` from `01-local-market.md` or `S<nn>` from `02-signals.md`). An idea with no signal is not an idea; it is a guess. Spread ideas across lenses: in standard and deep modes, no lens may produce more than a third of the ideas.
 
 For each lens: the question to ask, what a good output looks like, and the trap to avoid.

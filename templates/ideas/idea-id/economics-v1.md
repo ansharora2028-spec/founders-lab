@@ -32,3 +32,4 @@ created: <ISO 8601 UTC>
 - conservative unit economics positive: <yes | no>
 - HARD constraints broken in conservative case:
 - FLEXIBLE stretches required:
+- what would have to change for the conservative case to work:

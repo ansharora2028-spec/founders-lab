@@ -33,6 +33,14 @@ created: <ISO 8601 UTC>
 | channel | strength (weak/medium/strong) | evidence |
 |---|---|---|
 
+## Money already moving
+| id | who pays | for what | roughly how much | paid to (named sellers) | evidence (claim refs) | strength |
+|---|---|---|---|---|---|---|
+| D01 | | | | | | |
+
+## Complaints about paid options
+- [C01] <claim> [source: <url> | ASSUMPTION: <why>]
+
 ## Signals
 | id | signal | claim refs | strength | relevance to contract |
 |---|---|---|---|---|

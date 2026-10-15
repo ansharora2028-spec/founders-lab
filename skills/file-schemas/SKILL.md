@@ -43,6 +43,7 @@ Every factual claim is one bullet:
 |---|---|---|
 | Run | `<YYYY-MM-DD>-<slug>` | `2026-01-31-pune-b2c` |
 | Local-market signal | `L<nn>` | `L04` |
+| Demand anchor (money already moving) | `D<nn>` | `D03` |
 | Global/national signal | `S<nn>` | `S11` |
 | Idea | `I<nn>` | `I03` |
 | Pivoted idea | `<old-id>-P<k>` | `I03-P1` |
@@ -59,7 +60,7 @@ Paths are relative to `ventures/runs/<run_id>/`. `LEDGER` is `ventures/LEDGER.md
 |---|---|---|---|
 | local-market-scout | — | 00, LEDGER | everything else |
 | signal-scout | — | 00, LEDGER | everything else |
-| generator | — | 00, 01, 02, LEDGER | 04, any kill-criteria, prosecutions, audits, verdicts of this run |
+| generator | — | 00, 01, 02, LEDGER (+ the previous run's 91-nothing-passed in a second wave) | 04, any kill-criteria, prosecutions, audits, verdicts of this run |
 | screener | — | 00, 03 (or 03-ideas-pivot<k>), LEDGER | 01, 02 |
 | prosecutor-market / -execution | criteria | 00, 01, 02, raw idea file + idea id | forge, economics, the other prosecutor's draft |
 | forge | round 1 | 00, 01, 02, 03 (+ idea id) | kill-criteria, criteria drafts, prosecutions, audits, verdicts |
@@ -92,6 +93,7 @@ created: <iso>
 ## Starting point
 - path: a | b | c            # a = specific idea, b = space/industry, c = nothing yet
 - in their words: "<verbatim, or 'none'>"
+- how they plan to charge: "<verbatim, or 'not asked' / 'not sure'>"   (asked by /venture:check)
 
 ## Location profile
 - lives in: <city, country>
@@ -116,9 +118,9 @@ created: <iso>
 - <advantage, or 'none stated'>
 
 ## Depth mode
-- mode: quick | standard | deep
-- ideas to generate: 3 | 8 | 12
-- ideas to carry forward: 2 | 3 | 5
+- mode: quick | standard | deep | check | check+variants
+- ideas to generate: 3 | 8 | 12 | 1 (the user's idea) | up to 4 (the user's idea + up to 3 variants)
+- ideas to carry forward: 2 | 3 | 5 | 1 | 2 (the user's idea + the best-ranked variant)
 
 ## Confirmation
 - confirmed by user: yes
@@ -155,6 +157,14 @@ created: <iso>
 | channel | strength (weak/medium/strong) | evidence |
 |---|---|---|
 
+## Money already moving
+| id | who pays | for what | roughly how much | paid to (named sellers) | evidence (claim refs) | strength |
+|---|---|---|---|---|---|---|
+| D01 | ... | ... | ₹.../month | ... | C04, C11 | medium |
+
+## Complaints about paid options
+- [Cnn] <paying customers of <seller> complain that ...> [source: ...]
+
 ## Signals
 | id | signal | claim refs | strength | relevance to contract |
 |---|---|---|---|---|
@@ -188,6 +198,8 @@ created: <iso>
 
 ## Recurring complaints
 - [C01] ... [source: ...]
+## Paid products people complain about
+- [Cnn] <product/service>, <what people pay>, <the recurring complaint>, <what they wish existed> [source: ...]
 ## Search and social momentum
 ## Newly cheap or possible technology
 ## Regulatory shifts
@@ -208,6 +220,12 @@ created: <iso>
 - depth mode: <mode>, ideas generated: <n>
 - starting path: a | b | c
 - ledger ideas avoided: <ids/pitches, or 'none'>
+- lessons applied: <from ledger generation lessons or a previous 91 report, or 'none'>
+
+## Longlist and pass pre-check
+| # | candidate (one line) | demand anchor | gap | cautious money math | ceiling at hours limit | most likely killer | keep / drop |
+|---|---|---|---|---|---|---|---|
+| 1 | ... | D03 | ... | ₹499 × 40 = ₹19,960/mo vs ₹... | 60 members at 10 h/week ≈ ₹13,000/mo | free WhatsApp groups | keep → I01 |
 
 ## Ideas
 
@@ -216,15 +234,20 @@ created: <iso>
 - customer: <who pays>
 - problem: <the pain>
 - revenue model: <how money comes in>
+- how it works: <2–4 plain sentences: what the customer does, what they get, and what the founder does to deliver it, on which channels or tools>
+- need gap: <what this customer does today (named alternatives and what they cost), where that falls short for them, and why the gap is open now — with signal ids or claim refs>
+- how it makes money: <who pays, how much and how often; what one sale costs to deliver; roughly how many paying customers a month cover the founder's costs — each number sourced or marked ASSUMPTION>
 - lens: unbundle | transplant | boring-b2b | unfair-advantage | contrarian | cheap-now | user-original | user-variant
-- signal ids: L02, S05
+- signal ids: L02, S05, D03
 - material change vs ledger (only if it resembles a dead ledger idea): <...>
 
 ### I02
 ...
 ```
 
-`03-ideas-pivot<k>.md` holds exactly one idea in the same shape, with id `<old-id>-P<k>`, plus `- pivoted from: <old-id>` and `- pivot reason: <field changed and why>`.
+The three explanation lines (how it works, need gap, how it makes money) are what the user reads to understand an idea. Write them in plain language for someone with no business background: no jargon, amounts in the contract's currency, no hype. They describe the idea; they are not evidence that it works.
+
+`03-ideas-pivot<k>.md` holds exactly one idea in the same shape (no longlist section), with id `<old-id>-P<k>`, plus `- pivoted from: <old-id>` and `- pivot reason: <field changed and why>`.
 
 ## 04-screen.md — writer: screener (also 04-screen-pivot<k>.md)
 
@@ -244,7 +267,7 @@ created: <iso>
 - novelty: crowded | contested | open
 
 ## Scores
-| idea | signal | constraint fit | novelty | unfair advantage | speed to revenue | total /25 |
+| idea | signal | constraint fit | market proof | unfair advantage | speed to revenue | total /25 |
 |---|---|---|---|---|---|---|
 
 ## Ranking
@@ -330,6 +353,20 @@ After writing: `chmod 444`, compute SHA-256, record in `run-log.md` § Locks.
 - revenue model: <exact model>
 - pivot declared: no | YES — <field(s) changed>
 
+## How it works
+(step by step: how a customer finds it, what they do, what they receive, and what the founder does each week to deliver it, with the tools used)
+
+## Need gap
+- [Cnn] <what the customer uses or does today, and what it costs them> [source: ...]
+- [Cnn] <where that falls short for this customer> [source: ...]
+- [Cnn] <why the gap is open now: what changed, or why incumbents don't serve it> [source: ... | ASSUMPTION: ...]
+
+## How it makes money
+- who pays, for what, how much, how often: ...
+- other revenue (if any): ...
+- what one sale costs to deliver, and what drives the margin: ...
+- (the numbers are modelled in economics-v<n>.md; do not repeat them here as facts)
+
 ## Persona
 - [C01] <who, where they are, what they spend money on today> [source: ...]
 
@@ -390,6 +427,7 @@ After writing: `chmod 444`, compute SHA-256, record in `run-log.md` § Locks.
 - conservative unit economics positive: yes | no
 - HARD constraints broken in conservative case: <list or 'none'>
 - FLEXIBLE stretches required: <list with unlock condition status, or 'none'>
+- what would have to change for the conservative case to work: <the one or two numbers, with by how much, or 'nothing — it works'>
 ```
 
 ## ideas/<id>/fixable-flaws-v1.md — writer: main
@@ -551,6 +589,11 @@ No encouragement. No softening.
 - verdict file: ideas/<id>/verdict-v<n>.md
 - why it beat the others: <reasons with refs>
 
+## How it works
+## The need gap
+## How it makes money
+(each in plain language, from forge-v<n>.md and the conservative column of economics-v<n>.md, with refs)
+
 ## This week's 3 cheapest experiments
 | # | experiment | cost | time | success threshold | kill threshold |
 |---|---|---|---|---|---|
@@ -582,6 +625,13 @@ No encouragement. No softening.
 ## Summary
 - ideas generated: n, screened out: n, not carried: n, killed: n, pivoted: n   (count each idea once, by its final status)
 
+## The ideas, explained
+### <idea id> — <pitch>
+- how it works: ...
+- need gap: ...
+- how it makes money: ...
+- what happened: <final status and the one decisive reason, with the verdict or screen file>
+
 ## Deaths
 | idea | pitch | verdict file | decisive evidence |
 |---|---|---|---|
@@ -592,6 +642,12 @@ No encouragement. No softening.
 - assumptions: <list each assumption>
 
 ## Patterns across deaths
+## Why the search missed
+| idea | cause of death | where it should have been caught | type |
+|---|---|---|---|
+| I01 | no evidence anyone pays in Pune | generator: no demand anchor (D-id) | generation |
+- type is one of: generation (weak idea: no demand anchor, crowded, wrong segment, money math never worked) · constraint (good idea, but it breaks the contract) · evidence access (sources couldn't be opened: tool failure, thin local data) · bad luck (it was a reasonable bet that failed on new evidence)
+- generation lessons for the next run: <2–4 concrete instructions, e.g. "start from D02 and D05, where people already pay; avoid app-only ideas competing with funded national apps at ₹299">
 ## Flexible constraints that would most change the outcome
 | K# | current | stretch range | ideas it would revive | how |
 |---|---|---|---|---|
@@ -650,6 +706,7 @@ The ledger has a single H1 `# venture ledger` and one H2 per run, appended at th
 - useless sources: <...>
 - local data coverage: <0-10>
 - pivots used: <n>
+- generation lessons: <from 91-nothing-passed.md § Why the search missed, or 'n/a (passed)'>
 ```
 
 Verdict values in the ledger: `PASS`, `KILL`, `REJECTED (screen)`, `NOT CARRIED (rank)`, `PIVOTED → <new id>`, `HALTED (tamper)`.

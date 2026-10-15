@@ -10,3 +10,4 @@
 - useless sources: <...>
 - local data coverage: <0-10>
 - pivots used: <n>
+- generation lessons: <...>

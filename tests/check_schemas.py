@@ -61,10 +61,13 @@ for p in glob.glob("templates/**/*.md", recursive=True):
     if name in ("README.md", "LEDGER.md"):
         continue
     k = schema_key(name)
+    want = schema.get(k, [])
+    if name.startswith("03-ideas-pivot"):  # one main-written idea: no longlist
+        want = [s for s in want if s != "Longlist and pass pre-check"]
     if not k:
         errors.append(f"{p}: no schema")
-    elif h2(p) != schema[k]:
-        errors.append(f"{p}: sections {h2(p)} != schema {schema[k]}")
+    elif h2(p) != want:
+        errors.append(f"{p}: sections {h2(p)} != schema {want}")
 
 # 3. example run files
 for p in glob.glob("examples/**/*.md", recursive=True):
@@ -80,8 +83,11 @@ for p in glob.glob("examples/**/*.md", recursive=True):
         errors.append(f"{p}: no front matter")
     missing = [s for s in schema[k] if s not in h2(p)]
     # The examples are real v0.1 test output, kept unedited. Two sections were added to the
-    # schemas after those runs (DECISIONS.md D24 and D25), so they are allowed to be absent there.
-    added_later = {"Pivot candidate (KILL only)", "Fixes (round 2 only)"}
+    # schemas after those runs (DECISIONS.md D24, D25, D30 and D33), so they are allowed to be absent there.
+    added_later = {"Pivot candidate (KILL only)", "Fixes (round 2 only)",
+                   "How it works", "Need gap", "How it makes money", "The need gap", "The ideas, explained",
+                   "Money already moving", "Complaints about paid options", "Paid products people complain about",
+                   "Longlist and pass pre-check", "Why the search missed"}
     missing = [s for s in missing if s not in added_later]
     if missing:
         errors.append(f"{p}: missing sections {missing}")

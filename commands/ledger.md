@@ -31,6 +31,7 @@ The ledger (`ventures/LEDGER.md`) is the compounding memory of every run in this
 - useless sources: <domains or communities that produced nothing, or whose claims were struck>
 - local data coverage: <0-10 from 01-local-market.md, or 'n/a (direct kill)'>
 - pivots used: <n>
+- generation lessons: <from 91-nothing-passed.md § Why the search missed, or 'n/a (passed)'>
 ```
 
 - List **every** idea from `03-ideas.md` and any pivot files (for a judge-candidate pivot, the old idea's line reads `KILL → PIVOTED → <id>`), including screen rejections (`REJECTED (screen)`), ideas not carried (`NOT CARRIED (rank)`), pivots (`PIVOTED → <id>`), and halts (`HALTED (tamper)`).

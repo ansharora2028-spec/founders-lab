@@ -73,6 +73,35 @@ Docs checked on 2026-10-15 (Claude Code 2.1.300): [plugin manifest reference](ht
 
 **D29. Author and owner** are set to the repository owner (`ansharora2028-spec`) in both manifests and the LICENSE. The version is bumped to 0.2.0, because a set `version` pins installed users until it changes.
 
+## v0.3 changes
+
+**D30. Every idea is explained in plain language: how it works, the need gap, how it makes money.** A one-line pitch plus customer/problem/revenue fields wasn't enough for a user to understand what was being suggested. The generator now writes three explanation lines per idea. Forge writes fuller `How it works`, `Need gap` and `How it makes money` sections. The user sees them as cards at generation, in the final run summary, and in `90-blueprint.md` / `91-nothing-passed.md` (`The ideas, explained`). They explain the idea without selling it: numbers are sourced or marked `ASSUMPTION`, and the real model stays with the economics modeler. Because the cards are part of the idea block, they are also copied into the locked kill criteria's raw idea, so the prosecutors judge the same idea the user read.
+
+**D31. `/venture:check "<idea>"` gives a founder's own idea the full pipeline.** Before this, a user's own idea either got the fast direct verdict (`/venture:kill "<idea>"`: judged as written, with no scouting, forge or revision) or had to compete with generated ideas in `/venture:run` path (a). Neither matched what founders asked for: "check my idea the way you check the others, run the economics, then tell me whether to do it." `/venture:check` reuses every stage through two new depth modes:
+- `check`: only the user's idea, which is always carried forward unless Screen rejects it on a HARD constraint;
+- `check+variants` (`--variants`): the user's idea plus up to 3 one-change variants, with the best variant also carried.
+
+Intake asks one extra question: "who would pay for this, and how would you charge?" The generator writes the idea up faithfully. Anything the user did not state is marked `not stated by the user — ASSUMPTION`, and improving the idea is left to forge, under evidence. The final message leads with **DO IT / DON'T DO IT** and the plain-language explanation. The judge applies the same rule as for any idea.
+
+**D32. The README is written for aspiring founders first.** The top half covers what the tool is for (test an idea on paper before spending savings on it), who it's for, a real idea card, three steps to get started, a "where are you?" table of commands, the intake questions, a plain-language walk through the pipeline, time and cost, and honest limits. Technical detail (rules, all commands, depth modes, pipeline diagram, run folder, ledger, testing) moved under "Under the hood".
+
+## v0.4 changes: better ideas
+
+**D33. Builders aim to pass; judges stay neutral (replaces spec principle 1, "Kill can win", at the owner's request).** In testing, every idea died. Part of the cause was the environment: the blocked network meant no demand evidence survived the audit. Part was the design:
+1. **Wrong incentive.** Every agent was told a kill was a success, so the agents that *make* ideas had no reason to strive.
+2. **Wrong screen reward.** The screen gave "open market, no competitors" 5/5, while the pass rule requires proof that people already pay.
+3. **Wrong starting point.** The generator worked from trends rather than from spending.
+
+Changes:
+- **Roles.** Rule 1 now splits the agents. The **builders** (scouts, generator, forge, economics) work to find an idea that honestly passes; a pass is their success and nothing passing is a miss they must diagnose. The **judges** (prosecutors, auditor, judge) are neutral. A *false* pass is named as the worst outcome, so the evidence bar and the judge's decision rule are unchanged.
+- **Money map.** Scouts build one: `Money already moving` (`D..` demand anchors: who pays, how much, to whom, with evidence) plus complaints about paid options. Minimum research depth is ≥25 local and ≥20 signal searches.
+- **Generator.** It follows the money, longlists ≥3× the needed ideas, and pre-checks each candidate against the pass bar (demand anchor, gap, cautious money math, most likely killer) before keeping the strongest. It reads the rubric's pass rule. Its model moved from `sonnet` to `inherit`, because idea quality is the bottleneck and it is a single call.
+- **Screen.** *Novelty* is replaced by **market proof** (people already pay in the target market and there's an evidenced gap). Novelty is still recorded, but no longer scores.
+- **Forge and economics.** Forge looks for the strongest honest version of the idea: demand evidence, the narrowest segment, the cheapest real channel. Economics states exactly which number would have to change for the cautious case to work.
+- **Learning loop.** A nothing-passed report diagnoses **why the search missed**: per death, the type (generation, constraint, evidence access, or bad luck) and where it should have been caught, plus generation lessons. Those lessons go into the ledger. `/venture:run --wave2` generates a second wave of ideas from the same contract and scouting using those lessons, with no new scouting cost. When nothing passes, `/venture:run` offers it.
+
+**D34. The generator checks each idea's earning ceiling at the founder's hour limit, and counts only spending on the same job as a demand anchor.** Both rules came from the v0.4 run's own "Why the search missed" lessons. The refund-claim idea was profitable per sale, but at 10 h/week it could only ever earn about ₹4,400 a month. Its "demand anchor" was coaching fees, which is spending in a nearby category, not on refund help.
+
 ## Test results (spec §12)
 
 All tests ran on 2026-10-15 with Claude Code 2.1.300, headless (`claude -p`), in a cloud container whose network policy blocked WebFetch to most hosts (see D20). Every intake was given in the arguments (D14). Costs are the `total_cost_usd` the CLI reported for each session.
@@ -106,6 +135,19 @@ A full `/venture:run` with the v0.2 plugin, in the same restricted-network conta
 - **Permissions:** 0 permission denials in the transcript (D17).
 - **Blindness:** `tests/check_blindness.py` found 20 agent calls and 143 subagent file accesses, 0 violations.
 - **Network:** a fresh cloud session on the same environment was also refused by the proxy (Wikipedia, Reddit, TechCrunch, inc42 all 403), so the environment's network policy is still restricted. The open-network run is still to do: `sh tests/e2e.sh standard` once access is widened.
+
+### v0.3 runs: idea explanations and `/venture:check`
+- **Quick run** ($7.24): every idea in `03-ideas.md` carried the three explanation lines. Forge wrote the new How it works / Need gap / How it makes money sections. Need gaps were honest: one named a funded competitor at the same price (SpeakX, ₹299) and called the gap narrow. The final message showed one plain-language card per carried idea, and `91-nothing-passed.md` had "The ideas, explained".
+- **`/venture:check`** ($4.04, 12 agent calls, 0 blindness violations; saved as `examples/check-run/`). Intake recorded the charging question, and the depth mode was `check`. The generator wrote up only I01, faithfully, marking every unstated detail as an ASSUMPTION. Verdict: DON'T DO IT (KILL, confidence 6). The decisive reason was verified arithmetic, independent of the blocked network: break-even needs two groups and 12 h/week against HARD K2 = 10 h. The final message led with the verdict, then how it works, the need gap, the money math, quoted reasons, savings, and what would have to be true.
+- **Bug found:** `tests/e2e.sh` printed `000000` for blocked hosts, and the first fix aborted under `set -e`. Both are fixed.
+
+### v0.4 run: builders aim to pass ($11.62, 26 agent calls, 0 blindness violations; saved as `examples/quick-run-v0.4/`)
+- **Scouting:** the money map found 13 demand anchors (for example MPSC/UPSC coaching at ₹50k–1.25L, Urban Company deep cleaning with 220k+ reviews, dog care, children's camps) and complaints about paid options (rushed cleaning, coaching refund refusals). Local coverage was 4/10, up from 3.
+- **Generation:** the generator longlisted 9 candidates, dropped 6 with concrete reasons (no anchor, breaks K2, outside K6, market already served), and kept 3, each tied to a demand anchor and a complaint.
+- **Screen:** market proof scored as designed, rating paid demand above empty markets, and the tie-break on market proof worked.
+- **Verdicts:** I01 earned the **first REVISE** of any test run: positive conservative economics (₹438 contribution per file, ₹11.5k peak outlay, 6.4 h/week, about 1.5 months to first revenue) and no surviving FATAL flaw. Forge's round 2 brought 11 diff rows: consumer-commission refund orders, a Bar Council ruling with the deliverable redesigned to fit it, sourced CPCs, an hours table and a day-30 plan. Both prosecutors rejected all 11 rows, mainly because every source was a search snippet that couldn't be opened, so the idea was KILLED in round 2. I03 was KILLED on negative conservative economics (−₹251 per job before CAC).
+- **Learning loop:** `91-nothing-passed.md` § Why the search missed separated generation causes (I01's anchor was spending in a nearby category; I03's margin never worked) from evidence-access causes, wrote 4 concrete lessons, and the run offered a second wave. Lessons 1 and 2 are now built into the generator (D34).
+- **Takeaway:** the builders now produce ideas that get close to the bar on economics. What stops a PASS in this environment is verification: no page can be opened, so demand evidence can't survive the audit.
 
 ### Observations from testing
 - **Kill won every time**, which is consistent with principle 1. It's also partly an artifact of the blocked network: when the auditor can't verify demand evidence, a PASS is impossible. A PASS path was not observed in testing. Running in an environment with open web access is the next thing to check.

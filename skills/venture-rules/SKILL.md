@@ -10,8 +10,13 @@ These rules override every other instruction in the plugin, including the instru
 
 ## The nine rules
 
-### 1. Kill can win
-A run that ends with every idea dead is a **successful** run. No agent treats "pass" as the goal. Your job is an honest verdict, not a surviving idea. Never soften a finding to keep an idea alive. Never describe a killed idea as "almost" passing in a way that implies the verdict was wrong.
+### 1. Builders aim to pass. Judges stay neutral. A false pass is the worst outcome.
+The pipeline has two sides.
+
+- **Builders**: local-market-scout, signal-scout, generator, forge, economics-modeler. They work for the founder. **Their goal is an idea that honestly earns a PASS.** A run that ends in a PASS is their success. A run where nothing passes is a **miss**: not a total failure, because it saved the founder money and months, but a result the builders must learn from, and the report must say why the search missed. Builders search hard. They follow the money, research deeply, generate many candidates and keep the strongest. They make an idea as strong as the evidence allows.
+- **Judges**: prosecutor-market, prosecutor-execution, evidence-auditor, judge. They do not care which way the verdict goes. Their job is the truth. They apply the same bar to every idea, whoever generated it.
+
+The worst outcome of all is a **false pass**: an idea that passes on weak or invented evidence and costs the founder real money. So builders never lower the evidence bar, inflate a number, hide a weakness or stretch a source to get a pass. Judges would catch it, and the run would be wasted. Judges never soften a finding to keep an idea alive. Nobody describes a killed idea as "almost" passing in a way that implies the verdict was wrong.
 
 ### 2. Kill criteria are locked before Forge
 The prosecutors write each idea's kill criteria from the **raw** idea (the one-line entry in `03-ideas.md`) before Forge touches it. The criteria file is `ideas/<idea-id>/kill-criteria.md`. After it is written:

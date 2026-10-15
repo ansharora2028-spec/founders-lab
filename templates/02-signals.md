@@ -18,6 +18,9 @@ created: <ISO 8601 UTC>
 ## Recurring complaints
 - [C01] <claim> [source: <url> | ASSUMPTION: <why>]
 
+## Paid products people complain about
+- [C01] <claim> [source: <url> | ASSUMPTION: <why>]
+
 ## Search and social momentum
 - [C01] <claim> [source: <url> | ASSUMPTION: <why>]
 

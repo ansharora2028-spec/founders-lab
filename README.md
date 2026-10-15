@@ -1,118 +1,182 @@
 # venture
 
-**A multi-agent Claude Code plugin that takes you from "I have an idea" — or "I have no idea" — to an honest verdict.**
+**Test a business idea on paper before you spend your savings finding out the hard way.**
 
-`venture` scouts your market, generates ideas, and then tries hard to kill them. Ideas must survive blind prosecution against kill criteria locked *before* anyone polishes them, an evidence audit that strikes every unsourced or misquoted claim, and a judge who follows a fixed rule. It's modeled on Every's Compound Engineering plugin: specialist agents, files as the interface, and a ledger that makes every run smarter than the last.
+Most new businesses don't fail because the founder wasn't hard-working. They fail because nobody wanted to pay, or because the numbers never added up, and the founder only found out after putting in months of time and money.
 
-A run ends one of two ways, and both are wins:
+`venture` helps aspiring founders find that out *first*, for the cost of a few dollars of AI usage. Its research agents work hard to find an idea that can win: one that fits your budget, time and skills, in a market where people already pay (or it takes the idea you already have). Then independent critics try hard to kill each one. Each idea must pass a fixed checklist, written before anyone polishes the idea, and survive a fact-check of every claim. Only ideas that hold up get a green light.
 
-1. **PASS** — an idea with evidence that it can make money *for you*, under *your* constraints, in *your* market, plus a blueprint for testing it cheaply this week.
-2. **NOTHING PASSED** — every idea that died, the evidence that killed it, and an estimate of the money and months you saved by not building it.
+You end up with one of two answers:
 
-> This is research assistance, not financial advice.
+- ✅ **Do it.** You get an idea with real evidence that people pay for this and that the numbers work even in a cautious scenario, plus three cheap experiments to run this week.
+- ❌ **Don't do it.** You get the reasons, the evidence, why the search missed, and an estimate of the money and months you just saved. It's not the answer you hoped for, but it's far cheaper than learning it after spending your savings, and you can ask for a second wave of ideas built on those lessons.
 
-## Philosophy: Kill can win
+> `venture` is research help, not financial advice. A "do it" means the desk research holds up. You still test it in the real world, cheaply, before you spend real money.
 
-Most idea tools are built to say yes. This one isn't.
+---
 
-- **Kill can win.** A run where everything dies is a successful run. No agent is rewarded for a pass.
-- **Criteria are locked before polishing.** Prosecutors write each idea's kill criteria from the raw one-liner. The file is made read-only and hashed. Forge (the agent that sharpens ideas) never sees it, and the judge refuses to rule if it changed.
-- **A pass needs positive evidence.** Running out of objections is not a pass. You need verified demand (competitors with revenue, measurable search demand, or people already paying for something worse) *and* unit economics that work in the *conservative* case.
-- **Fixes need evidence, not rhetoric.** In the single revision round, prosecutors see a structured diff with an evidence URL per change — never Forge's prose.
-- **A pivot is a new idea.** Change the customer, the problem or the revenue model, and the idea goes back to screening from zero. Two pivots per run, max.
-- **Locks are enforced, not just requested.** A plugin hook limits the judge's shell to hashing the locked criteria file. Nothing else runs.
-- **Your constraint contract is law.** Capital, hours, skills, risk, time to revenue: HARD or FLEXIBLE with an explicit stretch condition. Only you can change it.
-- **No invented facts.** Every claim has a URL or is labeled `ASSUMPTION`. Thin local data is admitted, not papered over with national numbers.
+## Who it's for
 
-## Install
+- You want to start something but don't know what.
+- You have an idea and want an honest answer on whether it's worth doing.
+- You have limited money and time, and can't afford to learn by failing.
 
-In Claude Code:
+You don't need a business background. Every idea is explained in plain language.
+
+## What you'll see for every idea
+
+```
+I01 — WhatsApp voice-note spoken-English practice for Pune working adults, ₹299 for 30 days
+
+  How it works:       You pay ₹299 by UPI and get a daily speaking prompt on WhatsApp. You send
+                      back a one-minute voice note and get corrections and a model sentence,
+                      explained in Hindi or Marathi if you want.
+  The need gap:       Today these learners use free YouTube lessons or pay for fixed-time classes.
+                      Neither gives feedback on their own speech at a time that suits them.
+                      (The scouts found no Pune demand data, so this gap is marked as a guess.)
+  How it makes money: ₹299 per 30-day pack. Delivery costs roughly ₹20–40 per customer per month,
+                      so about 15 paying customers a month cover the running costs (an estimate).
+
+  Verdict:            KILL (confidence 4/10). In the cautious case each customer costs about
+                      ₹1,631 to win against ₹299 paid, and the proof that people pay could
+                      not be verified.
+```
+
+That's a real idea card from a test run, lightly trimmed. Every number is either linked to a source or marked as an estimate, and the verdict comes with the judge's reasons and the files behind them. (This test ran on a network that blocked source checking, which is why the proof that people pay couldn't be verified.)
+
+---
+
+## Get started in 3 steps
+
+**1. Get Claude Code.** venture is a plugin for [Claude Code](https://claude.com/claude-code), Anthropic's AI assistant. It runs in your terminal, in the desktop app, or at claude.ai/code.
+
+**2. Install venture.** Paste these two lines into Claude Code:
 
 ```
 /plugin marketplace add ansharora2028-spec/founders-lab
 /plugin install venture@venture
 ```
 
-Or from your shell:
+**3. Pick the command that matches where you are:**
 
-```bash
-claude plugin marketplace add ansharora2028-spec/founders-lab
-claude plugin install venture@venture
+| Where you are | Type this | What happens |
+|---|---|---|
+| **I have no idea yet** | `/venture:run` | It asks about you, researches your market, suggests ideas that fit you, and tests the best ones. |
+| **I have an idea and want the full check** | `/venture:check "your idea"` | Your idea goes through the full process: market research, sharpening, money math in a cautious, a realistic and an optimistic case, a fact-checked prosecution, and one chance to fix weak spots. Then a clear **do it / don't do it**. |
+| **I have an idea and want a quick verdict** | `/venture:kill "your idea"` | A faster, cheaper verdict on the idea exactly as you wrote it, with no research or improvement step. |
+
+Examples:
+
+```
+/venture:check "home-cooked tiffin subscription for students near Pune University, ₹2,500/month"
+/venture:check "online Excel classes for small shop owners in Hindi" --variants
+/venture:kill "a new social network for everyone, ₹50k budget"
 ```
 
-On Claude Code 2.1.275 or later, one line also works: `/plugin install venture --marketplace ansharora2028-spec/founders-lab`.
+`--variants` also tests up to 3 versions of your idea, each changing one thing (a different customer, channel, price model or city). It carries the best variant alongside your original.
 
-To try it from a local clone without installing: `claude --plugin-dir /path/to/founders-lab`.
+## What it will ask you
 
-Run it from the project folder where you want the `ventures/` workspace to live.
+Before anything runs, venture asks a few questions, one at a time. Your answers become your **contract**, and every idea has to respect it:
 
-## Commands
+1. **Your idea** (or that you don't have one yet), in your own words, and how you'd charge for it, if you know.
+2. **Where you live**, and **who you want to sell to** (your city, your country, abroad, or online).
+3. **Your limits:** money you can put in, hours per week, your skills, how much risk you can take, how soon you need income, B2B or B2C, and anything that's off-limits for you.
+   For each limit you say whether it's **hard** ("never more than ₹1 lakh") or **flexible** ("₹1 lakh, up to ₹2 lakh if it pays back within 6 months").
+4. **Any unfair advantage**, like a family business, a community you're part of, or industry contacts. This is optional.
+
+It reads your answers back to you, and nothing starts until you confirm. Only you can change the contract.
+
+## What happens next (plain version)
+
+1. **Research.** Two researchers dig into your city and target market (what sells, what failed, prices, competitors, rules and licences) and recent trends. Most of all, they look for *where people already spend money* and what paying customers complain about.
+2. **Ideas.** It writes up your idea, or finds new ones by following the money. It starts where people already pay and complain, lists about three times as many candidates as it needs, does quick money math on each, and keeps only the strongest. Each comes with the three explanations above.
+3. **Quick screen.** It drops anything that breaks your hard limits, checks for competitors, and ranks the rest.
+4. **Lock the test.** Before anyone improves the idea, two critics write the exact conditions under which it should die. That checklist is then locked, so it can't be quietly softened later.
+5. **Sharpen.** The idea is made specific: the exact customer, the smallest first version, how you'd find your first 100 customers, and the money math in three scenarios.
+6. **Try to kill it.** The two critics test the idea against the locked checklist, and a fact-checker opens every cited source and throws out claims that don't hold. A judge then applies a fixed rule. It can only pass an idea with real evidence that people pay and money math that works in the cautious case.
+7. **One second chance.** If the problems are fixable, the idea gets one revision, backed by evidence. If it fails again, it's done.
+8. **Your answer.** You get either a **do-it plan** (the 3 cheapest experiments to run this week, what to build first and what to skip, pricing, a 30-day plan, and the warning signs that should make you stop) or a **don't-do-it report** (what killed each idea, why the search missed, the money and months saved, and an offer to try a second wave of ideas built on those lessons).
+
+Everything is saved in a `ventures/` folder in your project. A running log of every past check means future runs don't repeat ideas that already died for someone in your situation.
+
+## Time and cost
+
+| What you run | Typical time | Typical AI usage cost* |
+|---|---|---|
+| `/venture:kill "idea"` | a few minutes | about $2–3 |
+| `/venture:check "idea"` | 10–20 minutes | about $4–6 |
+| `/venture:check "idea" --variants` | 15–30 minutes | about $7–10 |
+| `/venture:run` in `quick` mode (2 ideas tested) | 15–30 minutes | about $7–12 (more if an idea earns a revision round) |
+| `/venture:run` in `standard` mode (3 ideas tested) | 20–40 minutes | about $10–12 |
+
+\*On the default models. The `/venture:kill`, `/venture:check` and `quick` figures were measured in testing. The others are estimates, based on each fully tested idea costing roughly $3–4. A revision round or a pivot adds more.
+
+## Good to know
+
+- **Small cities have less data online.** venture says so plainly, never passes national numbers off as local, and lowers its confidence. Expect more "don't do it" answers there.
+- **It tries hard to find a winner, and judges strictly.** The research and idea agents work to find an idea that passes. They follow where people already spend money, list many candidates, and pre-check each against the bar. The critics and the judge stay neutral. When nothing passes, the report says why the search missed and offers a second wave of ideas built on those lessons. An honest "no" is still far cheaper than a year of trying.
+- **It doesn't make things up.** Every fact has a link or is labeled as an estimate, and a fact-checker removes anything that doesn't hold up.
+- **It needs web access.** The fact-checker has to open sources. If your network blocks sites, claims get struck and every idea dies, and venture warns you when that happens.
+
+---
+
+## Under the hood
+
+The rest is for the curious and for contributors.
+
+### The rules every agent follows
+
+- **Builders aim to pass. Judges stay neutral.** The scouts, generator, forge and economics modeler work to find an idea that honestly passes. A pass is their success, and nothing passing is a miss they must diagnose. The prosecutors, auditor and judge don't care which way the verdict goes. A *false* pass is the worst outcome, so the evidence bar never moves.
+- **Follow the money.** Scouts map where people in the target market already pay and what paying customers complain about. The generator longlists about 3× the ideas it needs, pre-checks each against the pass bar, and keeps the strongest. The screen rewards *market proof* (people already pay, and there's a specific gap), not empty markets.
+- **Criteria are locked before polishing.** Prosecutors write each idea's kill criteria from the raw idea. The file is made read-only and hashed. Forge (the agent that sharpens ideas) never sees it, and the judge refuses to rule if it changed.
+- **A pass needs positive evidence.** Running out of objections is not a pass. A pass needs verified demand (competitors with revenue, measurable search demand, or people already paying for something worse) *and* unit economics that work in the *conservative* case.
+- **Fixes need evidence, not rhetoric.** In the single revision round, prosecutors see a structured diff with an evidence URL per change, never Forge's prose.
+- **A pivot is a new idea.** Change the customer, the problem or the revenue model, and the idea goes back to screening from zero. Two pivots per run, max. The judge may propose a pivot candidate on a KILL only when it rests on surviving evidence.
+- **Locks are enforced, not just requested.** A plugin hook limits the judge's shell to hashing the locked criteria file.
+- **The contract is law.** HARD limits are never crossed. A FLEXIBLE limit stretches only when its stated condition is met, and the stretch is flagged.
+- **No invented facts.** Every claim has a URL or is labeled `ASSUMPTION`. Thin local data is admitted, not papered over with national numbers.
+
+### All commands
 
 | Command | What it does |
 |---|---|
-| `/venture:run` | The full pipeline, start to verdict. Start here. |
+| `/venture:run` | The full pipeline, from no idea (or a space) to a verdict. |
+| `/venture:run --wave2 [run_id]` | When nothing passed: a second wave of new ideas from the same contract and research, using the lessons from what died. No new scouting cost. |
+| `/venture:check "<idea>" [--variants]` | The full pipeline on your own idea: scout, explain, screen, lock criteria, forge, economics, kill, one revision, verdict. |
+| `/venture:kill "<idea>"` | A fast verdict on an idea as stated: minimal intake, locked criteria, economics, prosecution, audit, judgement. No forge, no revision. |
 | `/venture:intake` | Builds your constraint contract (`00-contract.md`). |
 | `/venture:scout` | Local-market and signal research, in parallel. |
-| `/venture:generate` | Generates ideas, screens them, locks kill criteria for the top N. |
+| `/venture:generate` | Generates and explains ideas, screens them, and locks kill criteria for the top N. |
 | `/venture:forge` | Sharpens each carried idea and models its unit economics. |
-| `/venture:kill` | Prosecution, audit and verdict. Also works directly on any idea. |
+| `/venture:kill` (no idea) | Prosecution, audit and verdict for the current run, including the revision round. |
 | `/venture:blueprint` | Writes the blueprint (pass) or nothing-passed report, and updates the ledger. |
-| `/venture:ledger` | Summarizes or searches past runs. |
+| `/venture:ledger [search]` | Summarizes or searches past runs by location, idea or cause of death. |
 
-### Examples
+You can pre-fill intake answers in any command. For example: `/venture:run Pune, India; target Pune; ₹1L capital HARD; 10 hrs/week HARD; B2C only; no idea yet; quick`.
 
-```text
-/venture:run
-```
-Starts intake and asks you one topic at a time: starting point, location, target market, constraints, unfair advantages, depth.
+### Depth modes
 
-```text
-/venture:run Pune, India; target Pune; ₹1L capital HARD; 10 hrs/week HARD; B2C only; no idea yet; quick
-```
-Pre-fills intake answers. You'll only be asked for what's missing, then asked to confirm the contract.
-
-```text
-/venture:intake
-/venture:scout
-/venture:generate
-/venture:forge
-/venture:kill
-/venture:blueprint
-```
-The same pipeline one stage at a time (each takes an optional run id; the default is the latest run).
-
-```text
-/venture:kill "a subscription laundry pickup service for students in Indore, ₹3L budget"
-```
-Direct verdict on an existing idea: a minimal intake (location and constraints only), locked criteria, economics, prosecution, audit, judgement. No forge, no revision.
-
-```text
-/venture:ledger
-/venture:ledger Pune
-/venture:ledger licensing
-```
-Summary of all past runs, or a search by location, idea, or cause of death.
-
-## Depth modes
-
-| Mode | Ideas generated | Carried to forge & kill | Agent calls (no revisions) |
+| Mode | Ideas written up | Carried to forge and kill | Agent calls (no revisions) |
 |---|---|---|---|
+| `check` (from `/venture:check`) | 1: your idea | 1 | ~12 |
+| `check+variants` (from `--variants`) | your idea + up to 3 variants | 2 | ~20 |
 | `quick` | 3 | 2 | ~20 |
-| `standard` (default) | 8 | 3 | ~28 |
+| `standard` (default for `/venture:run`) | 8 | 3 | ~28 |
 | `deep` | 12 | 5 | ~44 |
 
-Cost scales mostly with the number of carried ideas: each one gets 2 criteria writers, forge, economics, 2 prosecutors, an auditor and a judge (8 calls), plus about 6 more if it earns a revision round, and a pivot starts a new idea from zero. In testing, a single carried idea cost roughly $3–4 end to end on the default models. Prosecutors, auditor and judge inherit your session model; the screener runs on Haiku; everything else runs on Sonnet. Each choice is one `model:` line in `agents/*.md` if you want to change it.
+Each carried idea gets 2 criteria writers, forge, economics, 2 prosecutors, an auditor and a judge (8 calls), plus about 6 more if it earns a revision round. Prosecutors, auditor and judge use your session model, the screener runs on Haiku, and everything else runs on Sonnet. Each choice is one `model:` line in `agents/*.md`.
 
-## The pipeline
+### The pipeline
 
 ```mermaid
 flowchart TD
-    A["/venture:intake<br/>00-contract.md"] --> B
-    subgraph B["/venture:scout (parallel)"]
+    A["intake<br/>00-contract.md"] --> B
+    subgraph B["scout (parallel)"]
         B1[local-market-scout<br/>01-local-market.md]
         B2[signal-scout<br/>02-signals.md]
     end
-    B --> C[generator<br/>03-ideas.md]
+    B --> C["generator<br/>03-ideas.md<br/>(your idea in check mode)"]
     C --> D[screener<br/>04-screen.md]
     D -->|top N by depth mode| E
     D -->|all rejected| N
@@ -131,8 +195,8 @@ flowchart TD
         K2 --> K3
         K3 --> K4[judge<br/>verifies hash, applies rule]
     end
-    K4 -->|PASS| P["/venture:blueprint<br/>90-blueprint.md"]
-    K4 -->|KILL| N["91-nothing-passed.md<br/>(if nothing passed)"]
+    K4 -->|PASS| P["90-blueprint.md<br/>DO IT"]
+    K4 -->|KILL| N["91-nothing-passed.md<br/>DON'T"]
     K4 -->|REVISE, round 1 only| R[forge-v2 → diff-v2.md<br/>evidence per change]
     R -->|customer / problem / revenue model changed| PV[PIVOT: new idea id<br/>back to screener, max 2]
     K4 -->|KILL with pivot candidate,<br/>pivots left| PV
@@ -143,99 +207,75 @@ flowchart TD
     N --> LG
 ```
 
-In round 2, prosecutors receive `diff-v2.md` and `economics-v2.md` — never `forge-v2.md`. A REVISE in round 2 is a KILL.
+In round 2, prosecutors receive `diff-v2.md` and `economics-v2.md`, never `forge-v2.md`. A REVISE in round 2 is a KILL.
 
-## The run folder
-
-Every run writes to your current project directory:
+### The run folder
 
 ```
 ventures/
-├── LEDGER.md                       # persistent across runs
+├── LEDGER.md                       # persistent across runs: the compounding memory
 └── runs/<YYYY-MM-DD>-<slug>/
-    ├── 00-contract.md              # constraint contract + location profile
-    ├── 01-local-market.md          # local scout, with a 0–10 coverage score
-    ├── 02-signals.md               # dated, sourced signals
-    ├── 03-ideas.md                 # ideas, each citing signal ids
-    ├── 04-screen.md                # hard-constraint check, competitors, ranking
+    ├── 00-contract.md              # your contract + location profile
+    ├── 01-local-market.md          # local research, with a 0–10 coverage score
+    ├── 02-signals.md               # dated, sourced trends
+    ├── 03-ideas.md                 # ideas: how each works, the need gap, how it makes money
+    ├── 04-screen.md                # hard-limit check, competitors, ranking
     ├── ideas/<idea-id>/
-    │   ├── criteria-market.md      # prosecutor drafts (pre-forge)
-    │   ├── criteria-execution.md
     │   ├── kill-criteria.md        # LOCKED (read-only, hashed in run-log)
-    │   ├── forge-v1.md
-    │   ├── economics-v1.md
-    │   ├── prosecution-market-v1.md
-    │   ├── prosecution-execution-v1.md
-    │   ├── audit-v1.md
-    │   ├── verdict-v1.md
-    │   ├── fixable-flaws-v1.md     # revision round only
-    │   ├── forge-v2.md
-    │   ├── diff-v2.md              # what prosecutors see instead of forge-v2
-    │   ├── economics-v2.md
-    │   └── …-v2.md
-    ├── 90-blueprint.md             # only if something passed
-    ├── 91-nothing-passed.md        # only if nothing passed
+    │   ├── forge-v1.md             # the sharpened idea
+    │   ├── economics-v1.md         # money math, three scenarios
+    │   ├── prosecution-*-v1.md, audit-v1.md, verdict-v1.md
+    │   └── …-v2.md                 # revision round, if any
+    ├── 90-blueprint.md             # DO IT: the plan
+    ├── 91-nothing-passed.md        # DON'T: what died and why
     └── run-log.md                  # stages, every agent call with exact paths, locks, pivots
 ```
 
-Every file follows a fixed schema (`skills/file-schemas/SKILL.md`; empty copies in `templates/`). Claims look like `- [C07] <claim> [source: <url>]` or `[ASSUMPTION: <why>]`, so the auditor can check them and the judge can cite them. A complete fictional run is in [`examples/sample-run/`](examples/sample-run/).
+Every file follows a fixed schema (`skills/file-schemas/SKILL.md`), and empty copies are in `templates/`. Real runs are in [`examples/`](examples/).
 
-## The ledger, and why it compounds
+### The ledger, and why it compounds
 
-`ventures/LEDGER.md` gets one append-only entry per run: location, contract summary, outcome, every idea with its verdict, decisive reason and lens, which sources produced real signals and which were useless, local data coverage, and pivots used.
+`ventures/LEDGER.md` gets one append-only entry per run: location, contract summary, outcome, every idea with its verdict and decisive reason, which sources were useful or useless, local data coverage, and pivots used. The next run reads it first:
+- scouts skip sources that proved useless for your location;
+- the generator won't bring back an idea that already died under a similar contract unless something material changed.
 
-The next run reads it before doing anything:
+Search it with `/venture:ledger`.
 
-- **Scouts** skip sources that proved useless for your location and favor the ones that worked.
-- **The generator** won't regenerate an idea that already died under a similar contract and location unless it can name the material change (a new signal, a cost drop, a regulation) that justifies another look.
-- **You** can search it (`/venture:ledger licensing`) to see what keeps killing your ideas.
+### Testing and CI
 
-Each run makes the next one cheaper and sharper. That's the compounding.
+- `sh tests/e2e.sh quick` runs a full headless test for a fictional Pune user, then checks blindness on the transcript. It does real web research, at about $3–4 per carried idea.
+- `python3 tests/check_blindness.py run.log` checks any `claude -p --output-format stream-json --verbose` transcript. It fails if a prosecutor saw `forge-v2.md` or the other prosecutor's file, or if forge or the economics modeler touched the kill criteria.
+- CI (`.github/workflows/ci.yml`) runs on every push:
+  - strict manifest validation;
+  - schema and reference checks (`tests/check_schemas.py`);
+  - judge-hook unit tests (`tests/test_judge_guard.sh`);
+  - the blindness checker over recorded transcripts, including a planted leak it must catch.
 
-## Known limits
+Design decisions and full test results are in [DECISIONS.md](DECISIONS.md).
 
-- **Thin local data.** For smaller cities, there's often little online evidence. The local scout says so, gives a low coverage score, and labels any national or global data. Verdicts get lower confidence. Expect more INSUFFICIENT EVIDENCE and more kills. That's the honest outcome, not a bug.
-- **Cost.** Every stage that searches the web costs tokens. Each carried idea is about 8 agent calls, so `deep` costs roughly 2–2.5× `quick`. Start with `quick`.
-- **Web evidence isn't ground truth.** The auditor checks that sources say what the claims say, not that the sources are right. A PASS means "the desk research holds up", not "this will work". The blueprint's experiments exist to test that in the real world.
-- **Research assistance, not financial advice.** Nothing here is a recommendation to invest money. Talk to people who know your market before you spend real money.
-- **Interactive intake works best.** In non-interactive sessions (`claude -p`), give every intake answer in the arguments; the plugin won't invent a constraint.
+### Other ways to install
 
-## Checking blindness yourself
+From your shell: `claude plugin marketplace add ansharora2028-spec/founders-lab && claude plugin install venture@venture`. On Claude Code 2.1.275 or later, one line works: `/plugin install venture --marketplace ansharora2028-spec/founders-lab`. To try it from a local clone without installing: `claude --plugin-dir /path/to/founders-lab`.
 
-Every agent call is logged with its exact input paths in `run-log.md`. To check against the real transcript instead of the log:
+### Repository layout
 
-```bash
-claude -p '/venture:run <your intake answers>' --output-format stream-json --verbose > run.log
-python3 tests/check_blindness.py run.log
+```
+.claude-plugin/  plugin.json, marketplace.json (the name "venture" lives only here)
+agents/          10 specialist subagents
+commands/        9 /venture:* commands (the orchestrator)
+hooks/           judge-bash-guard: the judge's shell can only hash kill-criteria.md
+skills/          venture-rules, scoring-rubric, idea-lenses, file-schemas
+templates/       empty copies of every run file
+examples/        real test runs
+tests/           blindness, schema and hook checks; e2e script; recorded transcripts
+.github/         CI workflow
 ```
 
-It fails if a prosecutor was passed or opened `forge-v2.md` or the other prosecutor's file, if forge or the economics modeler touched the kill criteria, or if any other agent broke the visibility matrix.
-
-For a full end-to-end check (real web research, about $3–4 per carried idea): `sh tests/e2e.sh quick`. It runs the fictional Pune user through `/venture:run` headless and then runs the blindness checker on the transcript.
-
-CI (`.github/workflows/ci.yml`) runs on every push: strict manifest validation, the schema and reference checks (`tests/check_schemas.py`), the judge-hook unit tests (`tests/test_judge_guard.sh`), and the blindness checker over recorded test transcripts (`tests/fixtures/`), including a planted leak it must catch.
-
-## Roadmap (out of scope for v0.1)
+### Roadmap
 
 - A Claude.ai app version
 - Integrations (Airtable, Notion)
 - Scheduled or recurring scouting
-- More than 10 subagents
-
-## Repository layout
-
-```
-.claude-plugin/plugin.json, marketplace.json   # name "venture" lives only here
-agents/        10 specialist subagents
-commands/      8 /venture:* commands (the orchestrator)
-hooks/         judge-bash-guard: the judge's shell can only hash kill-criteria.md
-skills/        venture-rules, scoring-rubric, idea-lenses, file-schemas
-templates/     empty copies of every run file
-examples/      a complete fictional run, plus revision-round and pivot examples
-tests/         blindness, schema and hook checks, plus recorded transcript fixtures
-.github/       CI workflow
-DECISIONS.md   design choices where the spec was silent, and test results
-```
 
 ## License
 
