@@ -50,6 +50,12 @@ Docs checked on 2026-10-15 (Claude Code 2.1.300): [plugin manifest reference](ht
 
 **D21. `tests/check_blindness.py` checks blindness from transcripts, not from the self-reported run-log.** It parses `claude -p --output-format stream-json --verbose` logs and checks (1) the input paths passed in every venture Agent call and (2) every Read/Glob/Grep/Bash call each subagent actually made against the visibility matrix.
 
+**D22. Timestamps come from the clock, never from the model.** The first test runs showed invented times, such as a verdict "created" at 20:00 for a run that actually finished at 08:17. The main session now runs `date -u` before writing any time, and passes a `Timestamp:` line in every agent prompt for the agents' `created` field. Agents have no shell, so if a prompt carries no timestamp they write the date only.
+
+**D23. A pivoted idea is final.** Its round-1 `verdict-v1.md` still says REVISE, so `/venture:kill` skips any idea that `run-log.md` § Pivots records as PIVOTED or pivot-limit-killed. Without that, re-running the command resumed the old idea's revision round and pivoted it again. `/venture:blueprint` resolves final status in a fixed order: the pivot record, then the latest verdict, then the screen.
+
+**D24. Forge keeps the empty round-2 Fixes section in round 1** (`- none`), so every forge file matches the schema.
+
 ## Test results (spec §12)
 
 All tests ran on 2026-10-15 with Claude Code 2.1.300, headless (`claude -p`), in a cloud container whose network policy blocked WebFetch to most hosts (see D20). Every intake was given in the arguments (D14). Costs are the `total_cost_usd` the CLI reported for each session.
@@ -64,6 +70,12 @@ All tests ran on 2026-10-15 with Claude Code 2.1.300, headless (`claude -p`), in
 | 6 | Blindness test | **Pass.** `run-log.md` § Agent calls in every run shows prosecutors never received `forge-v2.md` or the other prosecutor's files, and forge/economics never received kill criteria. Independently, `tests/check_blindness.py` over all four transcripts checked **35 agent calls and 261 subagent file accesses: 0 violations**. The revision round was exercised on a copy of the test-3 run whose I03 verdict-v1 was changed to REVISE with three desk-researchable fixable flaws (labeled `TEST FIXTURE`). The real forge wrote `forge-v2.md`, the main session wrote `diff-v2.md` (NOT A PIVOT; 3 rows, one with evidence `NONE`), and round-2 prosecutors received only `diff-v2.md`, `economics-v2.md` and their own v1 file. The market prosecutor's file states "forge-v2.md was not read", and it rejected all three diff rows as insufficient. Final: **KILL in round 2** (≈ $2.20). Saved as `examples/revision-round/`. |
 | 7 | Pivot test | **Pass** (≈ $3.12). On another copy with the same REVISE fixture, a `forge-v2.md` was injected that switched the revenue model from a ₹199 listing fee to a 10% commission while still saying `pivot declared: no`. The main session's pivot check caught the undeclared change before writing any diff. It marked `I03 → PIVOTED → I03-P1` (pivots 1/2), wrote `03-ideas-pivot1.md`, and re-screened (`04-screen-pivot1.md`, 7/25). It then locked fresh criteria for I03-P1 (new hash `bb57d9c8…`) and ran forge, economics, both prosecutors, the audit and the judge from zero. I03-P1 was **KILLED** in round 1: conservative contribution ₹117 per sale vs ₹1,064 blended CAC, and a 40% commission collection rate vs the 60% its locked criteria require. Saved as `examples/pivot/`. |
 | 8 | Save one complete run | **Done.** `examples/sample-run/` is the unmodified test-3 run (absolute paths replaced with `<project>`, and the kill-criteria hash still matches). `examples/revision-round/` and `examples/pivot/` hold the round-2 and pivot artifacts. |
+
+### Debugging pass (after the §12 tests)
+- **Static checks:** every `${CLAUDE_PLUGIN_ROOT}` path referenced in agents, commands and skills exists. Every template's H2 sections match its schema. Every agent output from the test runs matched its schema, except forge round 1 omitting the empty Fixes section (fixed, D24).
+- **Prompt leak check:** every Agent prompt in all four transcripts contained only the standard fields (run folder, mode, idea id, round, input paths, output path, date, focus). No chat context or summaries of other files leaked.
+- **Bugs found and fixed:** invented timestamps (D22), and the re-pivot of an already-pivoted idea on re-run (D23).
+- **D23 verified live:** re-running `/venture:kill` on the finished pivot run launched no agents and changed no files. `/venture:blueprint` then resolved I03 → PIVOTED, I03-P1 → KILL and I01/I02 → NOT CARRIED. It appended an `(amended)` ledger entry and kept the original. Its timestamp (09:11:13Z) fell inside the command's real run window (09:10:40–09:12:03).
 
 ### Observations from testing
 - **Kill won every time**, which is consistent with principle 1. It's also partly an artifact of the blocked network: when the auditor can't verify demand evidence, a PASS is impossible. A PASS path was not observed in testing. Running in an environment with open web access is the next thing to check.

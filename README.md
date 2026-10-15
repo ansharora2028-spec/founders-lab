@@ -96,7 +96,7 @@ Summary of all past runs, or a search by location, idea, or cause of death.
 
 | Mode | Ideas generated | Carried to forge & kill | Relative cost |
 |---|---|---|---|
-| `quick` | 3 | 1 | 1× (roughly 12–16 agent calls) |
+| `quick` | 3 | 1 | 1× (12 agent calls and about 13 minutes in testing) |
 | `standard` (default) | 8 | 3 | ~3× |
 | `deep` | 12 | 5 | ~5× |
 

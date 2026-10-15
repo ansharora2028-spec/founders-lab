@@ -571,7 +571,7 @@ No encouragement. No softening.
 ---
 
 ## Summary
-- ideas generated: n, screened out: n, killed: n, pivoted: n
+- ideas generated: n, screened out: n, not carried: n, killed: n, pivoted: n   (count each idea once, by its final status)
 
 ## Deaths
 | idea | pitch | verdict file | decisive evidence |
