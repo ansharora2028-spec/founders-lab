@@ -26,13 +26,13 @@ Collect every claim (`[Cnn] ... [source: ...]` or `[ASSUMPTION: ...]`) in the fi
 - Label:
   - **VERIFIED** — the source says what the claim says (rounding and fair paraphrase are fine);
   - **MISREPRESENTED** — the source exists but says something different (wrong number, wrong geography, wrong date, a national figure presented as local, a cherry-picked quote that reverses meaning);
-  - **UNREACHABLE** — the URL fails, is paywalled with no visible support, or redirects to an unrelated page. Try once more before labeling;
+  - **UNREACHABLE** — the URL fails, is paywalled with no visible support, or redirects to an unrelated page. Try once more before labeling. If the failure is your fetch tool itself (for example a proxy or network refusal that hits every host), write `UNREACHABLE (tool failure)` in the note column so the main session can tell an environment problem from a bad source;
   - **UNSOURCED** — a factual claim with no source and no `ASSUMPTION` label.
 - A claim honestly labeled `ASSUMPTION` is not struck, but list it if it is load-bearing (the basis of a criterion status, a FATAL flaw, or a conservative-case input).
 - A wrong arithmetic result in economics is MISREPRESENTED against the economics file itself.
 
 ## Struck claims
-Every MISREPRESENTED, UNREACHABLE and UNSOURCED claim is **struck**. List each one in "Struck claims". The Judge must ignore struck claims.
+Every MISREPRESENTED, UNREACHABLE and UNSOURCED claim is **struck**, including tool-failure cases (rule 8 has no exception). Report the number of tool-failure strikes in the Summary. List each one in "Struck claims". The Judge must ignore struck claims.
 
 ## Output
 Write exactly one file at the `audit-v<n>.md` path you were given, in the schema. Return a summary under 120 words: counts by label, struck claims that were load-bearing, and whether any demand evidence survived.

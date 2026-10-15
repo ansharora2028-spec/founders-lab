@@ -483,7 +483,7 @@ Prosecutors may only assess criteria that are in `kill-criteria.md`; they can ad
 - <ref> — ASSUMPTION used as the basis of <a criterion / a FATAL flaw / a conservative input>
 
 ## Summary
-- verified: n, misrepresented: n, unreachable: n, unsourced: n
+- verified: n, misrepresented: n, unreachable: n (of which tool failure: n), unsourced: n
 - demand evidence surviving the audit: <refs or 'none'>
 ```
 

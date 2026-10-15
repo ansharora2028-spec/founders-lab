@@ -52,6 +52,8 @@ Progress note: `Kill round <n>: prosecuting <k> idea(s) — 2 prosecutors each i
 
 (The auditor runs after the prosecutors, not alongside them, because it must check the evidence behind every FATAL flaw a prosecutor raises.)
 
+**Audit health check.** If an audit's notes say more than half of its UNREACHABLE labels are `UNREACHABLE (tool failure)` (the fetch tool could not reach any host, e.g. a blocked network), tell the user before judging: "The auditor could not open sources for <id> (network/tool failure). Struck claims will push the verdict toward KILL. Fix network access and re-run `/venture:kill <run_id> <id>` for a fair audit." Then continue. The rule still applies, and you never un-strike claims yourself. Record the warning in run-log § Stages.
+
 **Step 3 — judge, in parallel across ideas (one message).** `venture:judge` with `run-log.md` and every file for the idea (all rounds so far, including `03-ideas.md`/pivot file and `04-screen.md`); output `ideas/<id>/verdict-v<n>.md`.
 
 **Step 4 — read each verdict.**
