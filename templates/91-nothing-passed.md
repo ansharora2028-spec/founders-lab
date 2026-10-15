@@ -26,6 +26,11 @@ created: <ISO 8601 UTC>
 
 ## Patterns across deaths
 
+## Why the search missed
+| idea | cause of death | where it should have been caught | type |
+|---|---|---|---|
+- generation lessons for the next run:
+
 ## Flexible constraints that would most change the outcome
 | K# | current | stretch range | ideas it would revive | how |
 |---|---|---|---|---|

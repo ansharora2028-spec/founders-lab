@@ -4,12 +4,12 @@
 
 Most new businesses don't fail because the founder wasn't hard-working. They fail because nobody wanted to pay, or because the numbers never added up, and the founder only found out after putting in months of time and money.
 
-`venture` helps aspiring founders find that out *first*, for the cost of a few dollars of AI usage. It researches your market, comes up with ideas that fit your budget, time and skills (or takes the idea you already have), and then tries hard to kill each one. Each idea must pass a fixed checklist, written before anyone polishes the idea, and survive a fact-check of every claim. Only ideas that hold up get a green light.
+`venture` helps aspiring founders find that out *first*, for the cost of a few dollars of AI usage. Its research agents work hard to find an idea that can win: one that fits your budget, time and skills, in a market where people already pay (or it takes the idea you already have). Then independent critics try hard to kill each one. Each idea must pass a fixed checklist, written before anyone polishes the idea, and survive a fact-check of every claim. Only ideas that hold up get a green light.
 
-You end up with one of two answers, and both are good news:
+You end up with one of two answers:
 
 - ✅ **Do it.** You get an idea with real evidence that people pay for this and that the numbers work even in a cautious scenario, plus three cheap experiments to run this week.
-- ❌ **Don't do it.** You get the reasons, the evidence, and an estimate of the money and months you just saved.
+- ❌ **Don't do it.** You get the reasons, the evidence, why the search missed, and an estimate of the money and months you just saved. It's not the answer you hoped for, but it's far cheaper than learning it after spending your savings, and you can ask for a second wave of ideas built on those lessons.
 
 > `venture` is research help, not financial advice. A "do it" means the desk research holds up. You still test it in the real world, cheaply, before you spend real money.
 
@@ -87,14 +87,14 @@ It reads your answers back to you, and nothing starts until you confirm. Only yo
 
 ## What happens next (plain version)
 
-1. **Research.** Two researchers look at your city and target market (what sells, what failed, prices, competitors, rules and licences) and at recent trends.
-2. **Ideas.** It writes up your idea, or suggests new ones from the research. Each comes with the three explanations above.
+1. **Research.** Two researchers dig into your city and target market (what sells, what failed, prices, competitors, rules and licences) and recent trends. Most of all, they look for *where people already spend money* and what paying customers complain about.
+2. **Ideas.** It writes up your idea, or finds new ones by following the money. It starts where people already pay and complain, lists about three times as many candidates as it needs, does quick money math on each, and keeps only the strongest. Each comes with the three explanations above.
 3. **Quick screen.** It drops anything that breaks your hard limits, checks for competitors, and ranks the rest.
 4. **Lock the test.** Before anyone improves the idea, two critics write the exact conditions under which it should die. That checklist is then locked, so it can't be quietly softened later.
 5. **Sharpen.** The idea is made specific: the exact customer, the smallest first version, how you'd find your first 100 customers, and the money math in three scenarios.
 6. **Try to kill it.** The two critics test the idea against the locked checklist, and a fact-checker opens every cited source and throws out claims that don't hold. A judge then applies a fixed rule. It can only pass an idea with real evidence that people pay and money math that works in the cautious case.
 7. **One second chance.** If the problems are fixable, the idea gets one revision, backed by evidence. If it fails again, it's done.
-8. **Your answer.** You get either a **do-it plan** (the 3 cheapest experiments to run this week, what to build first and what to skip, pricing, a 30-day plan, and the warning signs that should make you stop) or a **don't-do-it report** (what killed each idea, the money and months saved, and what to try next).
+8. **Your answer.** You get either a **do-it plan** (the 3 cheapest experiments to run this week, what to build first and what to skip, pricing, a 30-day plan, and the warning signs that should make you stop) or a **don't-do-it report** (what killed each idea, why the search missed, the money and months saved, and an offer to try a second wave of ideas built on those lessons).
 
 Everything is saved in a `ventures/` folder in your project. A running log of every past check means future runs don't repeat ideas that already died for someone in your situation.
 
@@ -113,7 +113,7 @@ Everything is saved in a `ventures/` folder in your project. A running log of ev
 ## Good to know
 
 - **Small cities have less data online.** venture says so plainly, never passes national numbers off as local, and lowers its confidence. Expect more "don't do it" answers there.
-- **It's built to say no.** Most ideas die, and that's the point. One honest "no" now is cheaper than a year of trying.
+- **It tries hard to find a winner, and judges strictly.** The research and idea agents work to find an idea that passes. They follow where people already spend money, list many candidates, and pre-check each against the bar. The critics and the judge stay neutral. When nothing passes, the report says why the search missed and offers a second wave of ideas built on those lessons. An honest "no" is still far cheaper than a year of trying.
 - **It doesn't make things up.** Every fact has a link or is labeled as an estimate, and a fact-checker removes anything that doesn't hold up.
 - **It needs web access.** The fact-checker has to open sources. If your network blocks sites, claims get struck and every idea dies, and venture warns you when that happens.
 
@@ -125,7 +125,8 @@ The rest is for the curious and for contributors.
 
 ### The rules every agent follows
 
-- **Kill can win.** A run where everything dies is a successful run. No agent is rewarded for a pass.
+- **Builders aim to pass. Judges stay neutral.** The scouts, generator, forge and economics modeler work to find an idea that honestly passes. A pass is their success, and nothing passing is a miss they must diagnose. The prosecutors, auditor and judge don't care which way the verdict goes. A *false* pass is the worst outcome, so the evidence bar never moves.
+- **Follow the money.** Scouts map where people in the target market already pay and what paying customers complain about. The generator longlists about 3× the ideas it needs, pre-checks each against the pass bar, and keeps the strongest. The screen rewards *market proof* (people already pay, and there's a specific gap), not empty markets.
 - **Criteria are locked before polishing.** Prosecutors write each idea's kill criteria from the raw idea. The file is made read-only and hashed. Forge (the agent that sharpens ideas) never sees it, and the judge refuses to rule if it changed.
 - **A pass needs positive evidence.** Running out of objections is not a pass. A pass needs verified demand (competitors with revenue, measurable search demand, or people already paying for something worse) *and* unit economics that work in the *conservative* case.
 - **Fixes need evidence, not rhetoric.** In the single revision round, prosecutors see a structured diff with an evidence URL per change, never Forge's prose.
@@ -139,6 +140,7 @@ The rest is for the curious and for contributors.
 | Command | What it does |
 |---|---|
 | `/venture:run` | The full pipeline, from no idea (or a space) to a verdict. |
+| `/venture:run --wave2 [run_id]` | When nothing passed: a second wave of new ideas from the same contract and research, using the lessons from what died. No new scouting cost. |
 | `/venture:check "<idea>" [--variants]` | The full pipeline on your own idea: scout, explain, screen, lock criteria, forge, economics, kill, one revision, verdict. |
 | `/venture:kill "<idea>"` | A fast verdict on an idea as stated: minimal intake, locked criteria, economics, prosecution, audit, judgement. No forge, no revision. |
 | `/venture:intake` | Builds your constraint contract (`00-contract.md`). |

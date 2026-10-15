@@ -6,7 +6,7 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Task, AskUserQuestion, Bash
 
 # /venture:check
 
-The user brought their own idea and wants to know whether to do it. Give it the same full treatment generated ideas get — no shortcuts, and no easier standard because it is theirs. Kill can win here too, and a clear "don't" that saves them money and months is a good result.
+The user brought their own idea and wants to know whether to do it. Give it the same full treatment generated ideas get — no shortcuts, and no easier standard because it is theirs. The builders work to make the user's idea as strong as the evidence allows, and the judges apply the same bar as always. A clear "don't" is a miss, not a disaster: it saves the user money and months, and the report says what would have to change.
 
 (`/venture:kill "<idea>"` is the fast version: it judges the idea exactly as written, with no research or sharpening. `/venture:check` researches the market for the idea, sharpens it, models the economics, and allows one evidence-backed revision before the final verdict.)
 

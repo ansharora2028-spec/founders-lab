@@ -85,6 +85,21 @@ Intake asks one extra question: "who would pay for this, and how would you charg
 
 **D32. The README is written for aspiring founders first.** The top half covers what the tool is for (test an idea on paper before spending savings on it), who it's for, a real idea card, three steps to get started, a "where are you?" table of commands, the intake questions, a plain-language walk through the pipeline, time and cost, and honest limits. Technical detail (rules, all commands, depth modes, pipeline diagram, run folder, ledger, testing) moved under "Under the hood".
 
+## v0.4 changes: better ideas
+
+**D33. Builders aim to pass; judges stay neutral (replaces spec principle 1, "Kill can win", at the owner's request).** In testing, every idea died. Part of the cause was the environment: the blocked network meant no demand evidence survived the audit. Part was the design:
+1. **Wrong incentive.** Every agent was told a kill was a success, so the agents that *make* ideas had no reason to strive.
+2. **Wrong screen reward.** The screen gave "open market, no competitors" 5/5, while the pass rule requires proof that people already pay.
+3. **Wrong starting point.** The generator worked from trends rather than from spending.
+
+Changes:
+- **Roles.** Rule 1 now splits the agents. The **builders** (scouts, generator, forge, economics) work to find an idea that honestly passes; a pass is their success and nothing passing is a miss they must diagnose. The **judges** (prosecutors, auditor, judge) are neutral. A *false* pass is named as the worst outcome, so the evidence bar and the judge's decision rule are unchanged.
+- **Money map.** Scouts build one: `Money already moving` (`D..` demand anchors: who pays, how much, to whom, with evidence) plus complaints about paid options. Minimum research depth is ≥25 local and ≥20 signal searches.
+- **Generator.** It follows the money, longlists ≥3× the needed ideas, and pre-checks each candidate against the pass bar (demand anchor, gap, cautious money math, most likely killer) before keeping the strongest. It reads the rubric's pass rule. Its model moved from `sonnet` to `inherit`, because idea quality is the bottleneck and it is a single call.
+- **Screen.** *Novelty* is replaced by **market proof** (people already pay in the target market and there's an evidenced gap). Novelty is still recorded, but no longer scores.
+- **Forge and economics.** Forge looks for the strongest honest version of the idea: demand evidence, the narrowest segment, the cheapest real channel. Economics states exactly which number would have to change for the cautious case to work.
+- **Learning loop.** A nothing-passed report diagnoses **why the search missed**: per death, the type (generation, constraint, evidence access, or bad luck) and where it should have been caught, plus generation lessons. Those lessons go into the ledger. `/venture:run --wave2` generates a second wave of ideas from the same contract and scouting using those lessons, with no new scouting cost. When nothing passes, `/venture:run` offers it.
+
 ## Test results (spec §12)
 
 All tests ran on 2026-10-15 with Claude Code 2.1.300, headless (`claude -p`), in a cloud container whose network policy blocked WebFetch to most hosts (see D20). Every intake was given in the arguments (D14). Costs are the `total_cost_usd` the CLI reported for each session.

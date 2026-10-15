@@ -9,6 +9,12 @@ created: <ISO 8601 UTC>
 - depth mode: <mode>, ideas generated: <n>
 - starting path: <a | b | c>
 - ledger ideas avoided:
+- lessons applied:
+
+## Longlist and pass pre-check
+| # | candidate (one line) | demand anchor | gap | cautious money math | most likely killer | keep / drop |
+|---|---|---|---|---|---|---|
+| 1 | | | | | | |
 
 ## Ideas
 

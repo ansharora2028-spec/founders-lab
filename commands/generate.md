@@ -31,7 +31,7 @@ Timestamp: <output of date -u +%Y-%m-%dT%H:%M:%SZ, run just before this call>
 ## 1. Generate
 Progress note: `Generating <count> ideas (depth: <mode>).`
 
-Agent `venture:generator` with inputs `00-contract.md`, `01-local-market.md`, `02-signals.md`, `ventures/LEDGER.md` (if it exists); output `03-ideas.md`. Log the call in `run-log.md`.
+Agent `venture:generator` with inputs `00-contract.md`, `01-local-market.md`, `02-signals.md`, `ventures/LEDGER.md` (if it exists), and, in a second wave, the previous run's `91-nothing-passed.md`; output `03-ideas.md`. Log the call in `run-log.md`.
 
 ## 2. Screen
 Progress note: `Screening <count> ideas against hard constraints and competitors (paid stage: web search).`
