@@ -34,6 +34,8 @@ Today's date: <YYYY-MM-DD>
 
 Ideas to judge: the given ids, or every idea in `RUN/ideas/` that has `economics-v1.md` and no `verdict-v1.md`, plus any idea with `economics-v2.md` and no `verdict-v2.md`.
 
+**Resuming:** an idea whose `verdict-v1.md` is REVISE and that has no `verdict-v2.md` resumes at §A2. Skip any §A2 step whose output file already exists (`fixable-flaws-v1.md`, `forge-v2.md`, `diff-v2.md`, `economics-v2.md`), but always run the pivot detection in step 3 before using an existing `forge-v2.md`.
+
 ### A1. Kill round (run for all ideas at once, stage by stage)
 
 Progress note: `Kill round <n>: prosecuting <k> idea(s) — 2 prosecutors each in parallel, then audit, then judge (paid stage).`
@@ -97,7 +99,7 @@ Add a Stages row `kill — done`. Show a table: idea, final verdict, round, conf
 
 For users who just want an existing idea judged. No scouting, no generation, no forge, no revision.
 
-1. **Minimal intake.** Ask (AskUserQuestion where available, one topic at a time) only for: location (city, country), target market, and the constraints K1–K9 with HARD/FLEXIBLE (and stretch range + unlock condition for FLEXIBLE). Constraints or a budget stated inside the idea description count as answers — e.g. "₹50k budget" is K1 = ₹50,000; ask whether it is HARD or FLEXIBLE if you can; in a non-interactive session treat stated budgets as HARD. Read the contract back and get explicit confirmation (non-interactive: follow the arguments rule in `${CLAUDE_PLUGIN_ROOT}/commands/intake.md` §1; anything not stated is recorded as `not stated` and is not a constraint).
+1. **Minimal intake.** The idea is the quoted text in the arguments. Any text after the quoted idea is pre-filled intake answers; use them and ask only for what is missing. Ask (AskUserQuestion where available, one topic at a time) only for: location (city, country), target market, and the constraints K1–K9 with HARD/FLEXIBLE (and stretch range + unlock condition for FLEXIBLE). Constraints or a budget stated inside the idea description count as answers — e.g. "₹50k budget" is K1 = ₹50,000; ask whether it is HARD or FLEXIBLE if you can; in a non-interactive session treat stated budgets as HARD. Read the contract back and get explicit confirmation (non-interactive: follow the arguments rule in `${CLAUDE_PLUGIN_ROOT}/commands/intake.md` §1; anything not stated is recorded as `not stated` and is not a constraint).
 2. **Create the run.** `run_id` = `<YYYY-MM-DD>-kill-<slug>`. `mkdir -p ventures/runs/<run_id>/ideas/I01`. Write `00-contract.md` (starting point: path a, in their words: the idea; depth mode: `direct-kill`) and `run-log.md`. Create `ventures/LEDGER.md` with `# venture ledger` if missing.
 3. Write `ideas/I01/idea.md` in the schema: the idea **as stated**, parsed but not improved.
 4. **Criteria (parallel, one message):** `venture:prosecutor-market` and `venture:prosecutor-execution`, `Mode: criteria`, inputs `00-contract.md`, `ideas/I01/idea.md`; outputs `ideas/I01/criteria-market.md`, `ideas/I01/criteria-execution.md`.
