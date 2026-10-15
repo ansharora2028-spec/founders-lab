@@ -94,6 +94,19 @@ All tests ran on 2026-10-15 with Claude Code 2.1.300, headless (`claude -p`), in
 - **Bugs found and fixed:** invented timestamps (D22), and the re-pivot of an already-pivoted idea on re-run (D23).
 - **D23 verified live:** re-running `/venture:kill` on the finished pivot run launched no agents and changed no files. `/venture:blueprint` then resolved I03 → PIVOTED, I03-P1 → KILL and I01/I02 → NOT CARRIED. It appended an `(amended)` ledger entry and kept the original. Its timestamp (09:11:13Z) fell inside the command's real run window (09:10:40–09:12:03).
 
+### v0.2.0 end-to-end run (quick mode, same fictional Pune user)
+A full `/venture:run` with the v0.2 plugin, in the same restricted-network container. It is saved as `examples/quick-run-v0.2/`, with its trimmed transcript in `tests/fixtures/v2-quick.jsonl`.
+- **Outcome: NOTHING PASSED** ($6.81, 15 minutes, 09:23–09:38 UTC). Quick mode carried **2** ideas (D26), using 20 agent calls as estimated.
+  - I01 (₹199 WhatsApp refund-complaint service): **KILL**, confidence 7. Forge's own file names free AI chat tools as the substitute for the drafting, which a locked criterion forbids. The locked volume doesn't fit in 10 h/week, and the conservative case loses ₹403/month.
+  - I03 (₹399 tenant protection kit): **KILL**, confidence 5. Conservative CAC is ₹1,426 against ₹170 gross profit on a one-time sale.
+  - I02 was not carried (7/25).
+- **Pivot candidate (D25):** both judges evaluated it and wrote `none`. Pivots were available and the fatal flaws did point to a change of payer or revenue model, but no surviving evidence showed that the alternative payer would pay. Proposing one would have meant inventing it. That is the intended conservative behavior. A candidate that is actually spawned has not yet been observed, and needs open network access for evidence to survive.
+- **Hook (D27):** both judges' `sha256sum` calls passed the guard (hash MATCH on both).
+- **Timestamps (D22):** every `created`, Locks and Stages time came from `date -u`. Agent files carry their launch timestamp, and no file claims a time after its modification time.
+- **Permissions:** 0 permission denials in the transcript (D17).
+- **Blindness:** `tests/check_blindness.py` found 20 agent calls and 143 subagent file accesses, 0 violations.
+- **Network:** a fresh cloud session on the same environment was also refused by the proxy (Wikipedia, Reddit, TechCrunch, inc42 all 403), so the environment's network policy is still restricted. The open-network run is still to do: `sh tests/e2e.sh standard` once access is widened.
+
 ### Observations from testing
 - **Kill won every time**, which is consistent with principle 1. It's also partly an artifact of the blocked network: when the auditor can't verify demand evidence, a PASS is impossible. A PASS path was not observed in testing. Running in an environment with open web access is the next thing to check.
 - In tests 6 and 7 the orchestrator noticed the fixture's inconsistency (verdict-v1 says REVISE; the ledger and nothing-passed report say KILL) and reported it rather than hiding it. It also declined to edit agent files or the append-only ledger.

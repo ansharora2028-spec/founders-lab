@@ -24,6 +24,10 @@ Note: in the test container, the auditor's fetches were blocked by network polic
 The same run, continued after the round-1 verdict was changed to REVISE by the test harness (marked `TEST FIXTURE` in `ideas/I03/verdict-v1.md`). Everything else was produced by the plugin:
 `fixable-flaws-v1.md` (the only part of the verdict forge sees) → `forge-v2.md` → `diff-v2.md` (the only part of forge-v2 the prosecutors see) → `economics-v2.md` → round-2 prosecutions, audit, and `verdict-v2.md` (**KILL in round 2**).
 
+## quick-run-v0.2/ — the v0.2.0 plugin, unmodified
+
+The same fictional user on v0.2.0: quick mode now carries two ideas (I01 and I03, both KILLED). Every verdict has a **Pivot candidate** section, and both are `none` with the reason. Timestamps are real (`date -u`).
+
 ## pivot/ — a pivot caught and re-screened
 
 The same REVISE fixture, plus an injected `ideas/I03/forge-v2.md` (marked `TEST FIXTURE`) that changes the revenue model to a commission while claiming `pivot declared: no`. The main session detected it, marked I03 `PIVOTED → I03-P1` (`run-log.md` § Pivots), and wrote `03-ideas-pivot1.md` and `04-screen-pivot1.md`. It then ran I03-P1 from zero: new locked criteria, forge, economics, prosecution, audit, and `verdict-v1.md` (**KILL**).
