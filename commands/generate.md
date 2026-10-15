@@ -25,6 +25,7 @@ Input files (read only these):
 Output file (write exactly this one file):
 - <path>
 Today's date: <YYYY-MM-DD>
+Timestamp: <output of date -u +%Y-%m-%dT%H:%M:%SZ, run just before this call>
 ```
 
 ## 1. Generate
@@ -63,7 +64,7 @@ For each carried idea:
    chmod 444 "RUN/ideas/<id>/kill-criteria.md"
    sha256sum "RUN/ideas/<id>/kill-criteria.md"   # or: shasum -a 256 "<path>"
    ```
-3. Append a row to `run-log.md` § Locks: idea, path, sha256, time.
+3. Append a row to `run-log.md` § Locks: idea, path, sha256, and the time from `date -u +%Y-%m-%dT%H:%M:%SZ`.
 
 Add a Stages row `generate — <n> ideas, <k> carried, criteria locked`.
 

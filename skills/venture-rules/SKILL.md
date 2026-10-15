@@ -59,7 +59,7 @@ When research for the user's city or target market is thin, say so plainly, lowe
 3. Write **exactly one** output file, at the path you were given, in the required schema.
 4. Return a short summary (under 120 words) to the main session. The summary is not evidence; the file is.
 5. No persuasive language. No encouragement. No softening. State claims, evidence and assumptions.
-6. Dates: use absolute dates (`YYYY-MM-DD`). Note the date of every source when you can find it.
+6. Dates: use absolute dates (`YYYY-MM-DD`). Note the date of every source when you can find it. For your file's `created` field, copy the `Timestamp:` line from your prompt exactly; if your prompt has none, write today's date only (`YYYY-MM-DD`). Never estimate or invent a time of day.
 7. Currency: use the currency of the user's contract, and state conversions with a source or an `ASSUMPTION` rate.
 
 ## Operating rules for the main session (commands)
@@ -70,4 +70,5 @@ When research for the user's city or target market is thin, say so plainly, lowe
 4. Log every agent call in `run-log.md` with the exact paths passed (see the run-log schema). The log is the audit trail for blindness.
 5. Launch independent agents in a single message so they run in parallel.
 6. Create and change files with the Write and Edit tools, not with shell redirection. Use Bash only for `mkdir -p`, `chmod 444`, `sha256sum`/`shasum -a 256` and `date`, one command per call, with literal paths (no shell variables). This keeps permission prompts to a minimum.
-7. Never edit an agent's output file to change its findings. The main session may only create the files it owns: `00-contract.md`, `kill-criteria.md` (merge), `idea.md` (direct kill), `fixable-flaws-v1.md`, `diff-v2.md`, `90-blueprint.md`, `91-nothing-passed.md`, `run-log.md`, `03-ideas-pivot<k>.md`, and the ledger.
+7. **Real timestamps only.** Immediately before writing any time into a file (run-log rows, `created`, `locked at`, `started`, `finished`) or into an agent prompt's `Timestamp:` line, run `date -u +%Y-%m-%dT%H:%M:%SZ` and use its output. Never estimate a time; the run-log is an audit trail.
+8. Never edit an agent's output file to change its findings. The main session may only create the files it owns: `00-contract.md`, `kill-criteria.md` (merge), `idea.md` (direct kill), `fixable-flaws-v1.md`, `diff-v2.md`, `90-blueprint.md`, `91-nothing-passed.md`, `run-log.md`, `03-ideas-pivot<k>.md`, and the ledger.

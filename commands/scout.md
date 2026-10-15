@@ -30,6 +30,7 @@ Input files (read only these):
 Output file (write exactly this one file):
 - <RUN>/01-local-market.md            (signal-scout: <RUN>/02-signals.md)
 Today's date: <YYYY-MM-DD>
+Timestamp: <output of date -u +%Y-%m-%dT%H:%M:%SZ, run just before this call>
 ```
 
 If the contract's starting point is path (a), add one line: `Focus: research the market for the user's stated idea in 00-contract.md § Starting point, not a broad search.` For path (b): `Focus: stay within the space stated in 00-contract.md § Starting point.`

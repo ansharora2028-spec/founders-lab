@@ -18,7 +18,7 @@ run_id: 2026-01-31-pune-b2c          # <YYYY-MM-DD>-<slug>
 idea_id: I03                          # only for per-idea files; omit otherwise
 agent: prosecutor-market              # agent name, or "main" for files the main session writes
 version: 1                            # round number for per-idea files (1 or 2); 1 otherwise
-created: 2026-01-31T10:42:00Z         # ISO 8601 UTC
+created: 2026-01-31T10:42:00Z         # ISO 8601 UTC: main session = output of `date -u +%Y-%m-%dT%H:%M:%SZ`; agents = the Timestamp line of their prompt
 ---
 ```
 

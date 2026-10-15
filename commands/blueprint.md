@@ -9,7 +9,12 @@ allowed-tools: Read, Write, Edit, Glob, Bash(date *)
 ## 0. Load the rules and find the run
 1. Read `${CLAUDE_PLUGIN_ROOT}/skills/venture-rules/SKILL.md`, and the `90-blueprint.md` and `91-nothing-passed.md` sections of `${CLAUDE_PLUGIN_ROOT}/skills/file-schemas/SKILL.md`.
 2. `RUN` = `ventures/runs/<$ARGUMENTS>` or the most recent run folder.
-3. Collect every idea's final status: for each `RUN/ideas/<id>/`, the latest `verdict-v<n>.md` (REVISE in round 2 = KILL); plus screened-out ideas from `04-screen*.md`, ideas not carried (rank), and pivots from `run-log.md`.
+3. Collect every idea's final status, in this order of precedence:
+   1. recorded in `run-log.md` § Pivots as `PIVOTED → <id>` → **PIVOTED** (ignore its leftover round-1 REVISE verdict);
+   2. recorded in § Pivots as `KILLED (pivot limit)` → **KILL**;
+   3. otherwise the latest `verdict-v<n>.md`: PASS, KILL or HALTED; REVISE in round 2 = **KILL**;
+   4. rejected in `04-screen.md` / `04-screen-pivot<k>.md` → **REJECTED (screen)**; screened but not carried → **NOT CARRIED (rank)**.
+   If any carried idea has a round-1 REVISE verdict and is not pivoted, or has no verdict at all, the kill stage is unfinished: tell the user to run `/venture:kill <run_id>` and stop.
 
 You (the main session) write this file. You may read every file in the run. You may not change any verdict. Every factual statement in the blueprint is copied from a surviving (non-struck) claim with its reference, or labeled `ASSUMPTION`.
 

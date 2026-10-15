@@ -33,6 +33,7 @@ Input files (read only these):
 Output file (write exactly this one file):
 - <RUN>/ideas/<id>/forge-v1.md
 Today's date: <YYYY-MM-DD>
+Timestamp: <output of date -u +%Y-%m-%dT%H:%M:%SZ, run just before this call>
 ```
 
 **Never** include `kill-criteria.md`, `criteria-*.md`, or any text from them. Log each call in `run-log.md` with its exact paths.

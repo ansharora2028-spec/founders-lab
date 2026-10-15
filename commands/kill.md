@@ -24,6 +24,7 @@ Input files (read only these):
 Output file (write exactly this one file):
 - <path>
 Today's date: <YYYY-MM-DD>
+Timestamp: <output of date -u +%Y-%m-%dT%H:%M:%SZ, run just before this call>
 ```
 
 **Before every agent call, check its path list against the Visibility matrix.** Never pass `forge-v2.md` to a prosecutor. Never pass one prosecutor's file to the other. Never pass `kill-criteria.md` or `criteria-*.md` to forge or the economics modeler. Never pass a verdict to the auditor. Log every call in `run-log.md` § Agent calls with the exact paths.
@@ -34,7 +35,9 @@ Today's date: <YYYY-MM-DD>
 
 Ideas to judge: the given ids, or every idea in `RUN/ideas/` that has `economics-v1.md` and no `verdict-v1.md`, plus any idea with `economics-v2.md` and no `verdict-v2.md`.
 
-**Resuming:** an idea whose `verdict-v1.md` is REVISE and that has no `verdict-v2.md` resumes at §A2. Skip any §A2 step whose output file already exists (`fixable-flaws-v1.md`, `forge-v2.md`, `diff-v2.md`, `economics-v2.md`), but always run the pivot detection in step 3 before using an existing `forge-v2.md`.
+**Never re-handle a finished idea.** Read `run-log.md` § Pivots and § Stages first. An idea recorded there as `PIVOTED → <id>` or as killed by the pivot limit is final: skip it, even though its `verdict-v1.md` still says REVISE (its successor is handled under its own id).
+
+**Resuming:** an idea whose `verdict-v1.md` is REVISE, that has no `verdict-v2.md`, and that is not recorded as PIVOTED or pivot-limit-killed, resumes at §A2. Skip any §A2 step whose output file already exists (`fixable-flaws-v1.md`, `forge-v2.md`, `diff-v2.md`, `economics-v2.md`), but always run the pivot detection in step 3 before using an existing `forge-v2.md`.
 
 ### A1. Kill round (run for all ideas at once, stage by stage)
 
@@ -84,7 +87,7 @@ Run revision rounds for several ideas in parallel where possible (same step, one
 ### Pivot procedure
 
 1. Read `pivots used` from `run-log.md`.
-2. If it is already **2**: the idea is **KILLED** — `pivot required but pivot limit (2) reached`. Record it in run-log § Pivots and Stages. Stop.
+2. If it is already **2**: the idea is **KILLED** — `pivot required but pivot limit (2) reached`. Record it in run-log § Pivots (`to: KILLED (pivot limit)`) and § Stages. Stop.
 3. Otherwise `k` = pivots used + 1. New id = `<old-id>-P<k>`.
    - Record the old idea as `PIVOTED → <new id>` in run-log § Pivots, with the field(s) changed. Set `pivots used: k/2`.
    - Write `RUN/03-ideas-pivot<k>.md` in the `03-ideas` schema with one idea: id `<new id>`, pitch, customer, problem and revenue model taken verbatim from the forge file's Core identity, lens unchanged, signal ids unchanged, `pivoted from: <old-id>`, `pivot reason: <field changed>`.

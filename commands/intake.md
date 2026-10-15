@@ -45,7 +45,7 @@ Infer the local search language(s) and currency from the location and target mar
 Read the whole contract back as a compact table. Ask: "Is this contract correct? Only you can change it after this point." Apply corrections and read back again until the user explicitly confirms. Do not proceed without explicit confirmation (or the non-interactive rule in §1).
 
 ## 4. Create the run
-1. `run_id` = `<YYYY-MM-DD>-<slug>`, where the slug is 2–4 kebab-case words from location and path (e.g. `2026-01-31-pune-b2c-open`). If the folder exists, append `-2`, `-3`…
+1. Run `date -u +%Y-%m-%dT%H:%M:%SZ` and use it for the date in the run id and every timestamp below. `run_id` = `<YYYY-MM-DD>-<slug>`, where the slug is 2–4 kebab-case words from location and path (e.g. `2026-01-31-pune-b2c-open`). If the folder exists, append `-2`, `-3`…
 2. `mkdir -p ventures/runs/<run_id>/ideas`
 3. Write `ventures/runs/<run_id>/00-contract.md` in the schema.
 4. Write `ventures/runs/<run_id>/run-log.md` in the schema, with the depth mode, `pivots used: 0/2`, the start time, and a Stages row `intake — contract confirmed`.

@@ -25,6 +25,7 @@ Write, with evidence:
 - **Positioning vs named competitors**: a table with real competitors, URLs, prices.
 - **Moat over time**: what, if anything, gets stronger with scale or time. "None yet" is an acceptable answer.
 - **Assumptions**: every load-bearing assumption, listed.
+- **Fixes (round 2 only)**: in round 1, keep this section and write `- none` under it.
 
 ## Round 2 — fixes only
 - Address **only** the flaws listed in `fixable-flaws-v1.md`. Do not rewrite or expand other sections beyond what a fix requires; copy unchanged sections from `forge-v1.md`.
