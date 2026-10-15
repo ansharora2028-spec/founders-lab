@@ -1,0 +1,12 @@
+{
+  "name": "venture",
+  "description": "Single-plugin marketplace for venture: an ideation-to-verdict pipeline where Kill is allowed to win.",
+  "owner": { "name": "TBD" },
+  "plugins": [
+    {
+      "name": "venture",
+      "source": "./",
+      "description": "Multi-agent ideation-to-verdict pipeline. Ideas must survive blind prosecution and evidence audit, or they die. Kill is allowed to win."
+    }
+  ]
+}

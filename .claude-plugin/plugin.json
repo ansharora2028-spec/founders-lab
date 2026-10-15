@@ -1,0 +1,8 @@
+{
+  "name": "venture",
+  "version": "0.1.0",
+  "description": "Multi-agent ideation-to-verdict pipeline. Ideas must survive blind prosecution and evidence audit, or they die. Kill is allowed to win.",
+  "author": { "name": "TBD" },
+  "license": "MIT",
+  "keywords": ["startup", "ideation", "validation", "multi-agent", "business"]
+}
