@@ -11,7 +11,7 @@ allowed-tools: Read, Write, Edit, Glob, Agent, Task, Bash(mkdir *), Bash(chmod *
 2. Read the `kill-criteria.md` and `run-log.md` sections of `${CLAUDE_PLUGIN_ROOT}/skills/file-schemas/SKILL.md`, and its Visibility matrix.
 3. `RUN` = `ventures/runs/<$ARGUMENTS>` if a run id is given, else the most recent folder in `ventures/runs/`.
 4. Require `RUN/00-contract.md`, `RUN/01-local-market.md`, `RUN/02-signals.md`. If scouting is missing, tell the user to run `/venture:scout` and stop.
-5. Read the depth mode from the contract: quick → N=1, standard → N=3, deep → N=5.
+5. Read the depth mode from the contract: quick → N=2, standard → N=3, deep → N=5.
 
 All agent prompts below use this form and contain nothing else (no chat context, no summaries of other files):
 

@@ -29,7 +29,7 @@ Running out of objections is **not** a pass. A PASS requires both:
 In a revision round, prosecutors see only `diff-v2.md` (field, old value, new value, evidence URL) and `economics-v2.md`. They never see Forge's prose (`forge-v2.md`). A fix with no evidence URL is scored as **no fix**.
 
 ### 5. A pivot is a new idea
-If a change touches the **target customer**, the **core problem**, or the **revenue model**, it is a pivot. The old idea is marked `PIVOTED`. The new idea gets a new id, goes back to Screen, and starts from zero (new locked criteria, new forge, new kill). A run allows **at most 2 pivots in total**. After 2, any further pivot attempt is a KILL.
+If a change touches the **target customer**, the **core problem**, or the **revenue model**, it is a pivot. A pivot can come from Forge (declared, or detected by the main session) or from the Judge, as a *pivot candidate* on a KILL whose only fix would change one of those three fields. Either way, the old idea is marked `PIVOTED`. The new idea gets a new id, goes back to Screen, and starts from zero (new locked criteria, new forge, new kill). A pivot candidate is not a pass and earns nothing; it only re-enters the pipeline. A run allows **at most 2 pivots in total**. After 2, any further pivot attempt is a KILL and the Judge writes no candidate.
 
 ### 6. One revision round only
 Each idea gets at most one Forge revision after its first Kill verdict. A second failure is final. A REVISE verdict in round 2 is automatically a KILL.

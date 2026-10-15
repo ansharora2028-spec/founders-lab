@@ -37,7 +37,7 @@ Use the AskUserQuestion tool where it is available; otherwise ask in plain chat 
    - K9 anything else they want to add
    If the user gives a value without saying HARD or FLEXIBLE, ask. If they don't know, default to HARD and tell them.
 5. **Unfair advantages** — industry access, a community, distribution, a family business, rare skills. Optional, but explain that it matters. "None" is a valid answer.
-6. **Depth mode** — `quick` (generate 3, carry 1 forward; cheapest), `standard` (generate 8, carry 3; default), `deep` (generate 12, carry 5; most expensive). Default to `standard` if they have no preference.
+6. **Depth mode** — `quick` (generate 3, carry 2 forward; cheapest), `standard` (generate 8, carry 3; default), `deep` (generate 12, carry 5; most expensive). Default to `standard` if they have no preference.
 
 Infer the local search language(s) and currency from the location and target market; state them in the read-back so the user can correct them.
 

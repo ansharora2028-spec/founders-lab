@@ -34,7 +34,7 @@ created: <ISO 8601 UTC>
 ## Depth mode
 - mode: <quick | standard | deep>
 - ideas to generate: <3 | 8 | 12>
-- ideas to carry forward: <1 | 3 | 5>
+- ideas to carry forward: <2 | 3 | 5>
 
 ## Confirmation
 - confirmed by user: <yes>

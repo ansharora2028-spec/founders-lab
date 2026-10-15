@@ -1,7 +1,10 @@
 {
   "name": "venture",
   "description": "Single-plugin marketplace for venture: an ideation-to-verdict pipeline where Kill is allowed to win.",
-  "owner": { "name": "TBD" },
+  "owner": {
+    "name": "ansharora2028-spec",
+    "url": "https://github.com/ansharora2028-spec"
+  },
   "plugins": [
     {
       "name": "venture",

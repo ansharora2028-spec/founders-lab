@@ -58,7 +58,7 @@ Relative to the contract's time-to-first-revenue constraint.
 
 ### Use
 - The screener ranks by total score. Ties are broken by signal strength, then by constraint fit.
-- The main session carries the top N forward (quick 1, standard 3, deep 5).
+- The main session carries the top N forward (quick 2, standard 3, deep 5).
 - **The screen score is used only for ranking. It never decides a PASS.**
 
 ## Part 2 — The Judge's decision rule. Overrides every score.
@@ -87,6 +87,14 @@ Rule, applied in this order:
    - every failure is FIXABLE;
    - no fix would change the customer, problem or revenue model.
 5. Otherwise **KILL**. A REVISE in round 2 is a KILL.
+
+**Pivot candidate (KILL only).** The Judge writes one only if all of these hold. Otherwise it writes `- none` and the reason:
+- the verdict is KILL;
+- a decisive reason is that the only plausible fix changes the customer, the problem or the revenue model (so REVISE was unavailable);
+- `run-log.md` shows fewer than 2 pivots used;
+- the candidate changes at least one of those three fields, keeps the rest of the idea, and fits every HARD constraint in `00-contract.md`;
+- the change is grounded in surviving (unstruck) evidence that the Judge cites, not invented.
+A candidate never changes the verdict. The killed idea stays killed; the candidate is a new idea that must survive Screen, freshly locked criteria, forge and kill on its own.
 
 Confidence (1–10) reflects the quality of the surviving evidence, not how much the Judge likes the idea. Lower it when local coverage is below 5, when load-bearing inputs are ASSUMPTIONs, or when the auditor struck many claims.
 

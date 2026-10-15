@@ -56,6 +56,23 @@ Docs checked on 2026-10-15 (Claude Code 2.1.300): [plugin manifest reference](ht
 
 **D24. Forge keeps the empty round-2 Fixes section in round 1** (`- none`), so every forge file matches the schema.
 
+## v0.2 changes (after review)
+
+**D25. The judge can name a pivot candidate on a KILL.** Under the spec's rules, REVISE is unavailable whenever the only fix changes the customer, problem or revenue model, so the judge kills, and a pivot could only happen if Forge changed the idea on its own. Principle 5 ("a pivot is a new idea") had almost no path. The judge now writes a *pivot candidate* on a KILL only when that is the sole fix, fewer than 2 pivots have been used, the candidate fits every HARD constraint, and it rests on surviving evidence. The KILL stands. The main session turns the candidate into a new idea that goes back to Screen and gets fresh locked criteria, forge and kill. Direct-kill mode only reports the candidate. The 2-pivot cap still bounds cost.
+
+**D26. Quick mode carries 2 ideas, not 1 (departs from spec §6.1).** In testing, quick mode killed its single carried idea and left the other two ideas unjudged, so a quick run said little. Carrying 2 costs about 8 more agent calls. Standard (3) and deep (5) are unchanged.
+
+**D27. The judge's Bash is enforced by a hook, not just instructions.** Plugin agents ignore `permissionMode` and `hooks` frontmatter, but plugin-level `hooks/hooks.json` runs inside subagents and identifies the caller (`agent_type`). `hooks/judge-bash-guard.sh` (POSIX `sh`, no jq/python/node) blocks every Bash call from `venture:judge` except one `sha256sum` or `shasum -a 256` on a single `kill-criteria.md`. It rejects chaining, substitution, redirection, globs, escapes and newlines. Calls from the main session and other agents pass through untouched. Verified live: the hook fired inside the judge with `agent_type: "venture:judge"` and allowed the real hash call. Replaying that exact payload with `ls /` or a chained command was blocked (exit 2). `tests/test_judge_guard.sh` covers 13 cases.
+
+**D28. CI** (`.github/workflows/ci.yml`, on every push and PR):
+- `claude plugin validate . --strict`.
+- `tests/check_schemas.py`: plugin-root references exist, templates match schemas, example run files match schemas, agent frontmatter is complete.
+- The hook unit tests.
+- `tests/check_blindness.py` over trimmed transcripts of the four §12 test runs (`tests/fixtures/*.jsonl`, made with `tests/trim_transcript.py`: tool calls only, no model text or web content).
+- A must-fail fixture with planted leaks, so the checker itself is tested.
+
+**D29. Author and owner** are set to the repository owner (`ansharora2028-spec`) in both manifests and the LICENSE. The version is bumped to 0.2.0, because a set `version` pins installed users until it changes.
+
 ## Test results (spec §12)
 
 All tests ran on 2026-10-15 with Claude Code 2.1.300, headless (`claude -p`), in a cloud container whose network policy blocked WebFetch to most hosts (see D20). Every intake was given in the arguments (D14). Costs are the `total_cost_usd` the CLI reported for each session.

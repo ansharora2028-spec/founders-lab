@@ -33,5 +33,14 @@ created: <ISO 8601 UTC>
 | flaw id | what evidence would fix it | desk-researchable |
 |---|---|---|
 
+## Pivot candidate (KILL only)
+- none — <reason> | or:
+- customer:
+- problem:
+- revenue model:
+- field(s) changed:
+- grounded in:
+- fits HARD constraints:
+
 ## Ignored as struck
 - 

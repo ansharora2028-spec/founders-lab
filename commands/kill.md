@@ -62,7 +62,7 @@ Progress note: `Kill round <n>: prosecuting <k> idea(s) — 2 prosecutors each i
 **Step 4 — read each verdict.**
 - `HALTED` → stop the whole run. Tell the user: "Kill criteria for <id> were modified after locking (hash mismatch). The run is halted." Record `HALTED (tamper)` in run-log. Do not continue to blueprint; still append the ledger entry with outcome `NOTHING PASSED` and the HALTED idea.
 - `PASS` → final for this idea.
-- `KILL` → final for this idea.
+- `KILL` → final for this idea. If the verdict's **Pivot candidate** section names a candidate (not `none`) and `run-log.md` shows fewer than 2 pivots used, run the **Pivot procedure** with the candidate as the source. The killed idea is recorded as `PIVOTED → <new id>`; its KILL verdict stays as written.
 - `REVISE` in round 2 → **treat as KILL**; note `REVISE in round 2 → KILL (rule 6)` in run-log.
 - `REVISE` in round 1 → §A2 for this idea.
 
@@ -87,10 +87,10 @@ Run revision rounds for several ideas in parallel where possible (same step, one
 ### Pivot procedure
 
 1. Read `pivots used` from `run-log.md`.
-2. If it is already **2**: the idea is **KILLED** — `pivot required but pivot limit (2) reached`. Record it in run-log § Pivots (`to: KILLED (pivot limit)`) and § Stages. Stop.
+2. If it is already **2**: the idea is **KILLED** (for a judge candidate, it simply stays KILLED) — `pivot required but pivot limit (2) reached`. Record it in run-log § Pivots (`to: KILLED (pivot limit)`) and § Stages. Stop.
 3. Otherwise `k` = pivots used + 1. New id = `<old-id>-P<k>`.
    - Record the old idea as `PIVOTED → <new id>` in run-log § Pivots, with the field(s) changed. Set `pivots used: k/2`.
-   - Write `RUN/03-ideas-pivot<k>.md` in the `03-ideas` schema with one idea: id `<new id>`, pitch, customer, problem and revenue model taken verbatim from the forge file's Core identity, lens unchanged, signal ids unchanged, `pivoted from: <old-id>`, `pivot reason: <field changed>`.
+   - Write `RUN/03-ideas-pivot<k>.md` in the `03-ideas` schema with one idea: id `<new id>`, customer, problem and revenue model taken verbatim from the source (the forge file's Core identity for a forge pivot, or the verdict's Pivot candidate section for a judge candidate), a one-line pitch built only from those fields, lens unchanged, signal ids unchanged, `pivoted from: <old-id>`, `pivot reason: <field changed>; source: forge | judge candidate`.
    - **Screen it from zero:** `venture:screener`, inputs `00`, `03-ideas-pivot<k>.md`, LEDGER; output `04-screen-pivot<k>.md`. If REJECTED, the new idea is dead (`REJECTED (screen)`).
    - Otherwise: criteria mode for both prosecutors on the new idea (inputs `00`, `01`, `02`, `03-ideas-pivot<k>.md`, idea id), merge, lock (chmod 444 + sha256 into run-log § Locks) — exactly as in `${CLAUDE_PLUGIN_ROOT}/commands/generate.md` §4–5.
    - Then forge round 1 and economics round 1 for the new idea (as in `${CLAUDE_PLUGIN_ROOT}/commands/forge.md`), then §A1 round 1. The new idea gets its own single revision round.
@@ -111,6 +111,6 @@ For users who just want an existing idea judged. No scouting, no generation, no 
 5. **Merge and lock** into `ideas/I01/kill-criteria.md` (raw idea = `idea.md` § Idea as stated), `chmod 444`, sha256 into run-log § Locks.
 6. **Economics:** `venture:economics-modeler`, inputs `00-contract.md`, `ideas/I01/idea.md`; output `ideas/I01/economics-v1.md`. (Without it, a PASS is impossible.)
 7. **Kill round 1:** prosecutors in parallel (`Mode: kill`, inputs `00`, `kill-criteria.md`, `idea.md`, `economics-v1.md`), then `venture:evidence-auditor` (inputs `00`, `kill-criteria.md`, `idea.md`, `economics-v1.md`, both prosecutions), then `venture:judge` (everything for I01 plus `run-log.md`).
-8. **Verdict.** PASS and KILL are final. A REVISE is reported as `KILL as stated — it would need: <fixable flaws>` (direct mode has no revision round), and recorded as KILL in the ledger. HALTED: report tampering.
+8. **Verdict.** PASS and KILL are final. A REVISE is reported as `KILL as stated — it would need: <fixable flaws>` (direct mode has no revision round), and recorded as KILL in the ledger. A Pivot candidate on a KILL is reported to the user as a suggestion to judge separately (`/venture:kill "<candidate>"`); direct mode does not run pivots. HALTED: report tampering.
 9. **Ledger.** Append an entry as in `${CLAUDE_PLUGIN_ROOT}/commands/ledger.md` § Append.
 10. **Report** to the user: verdict, confidence, decisive reasons with file references, and the path of the verdict file. If PASS, suggest `/venture:blueprint <run_id>`. If KILL, suggest `/venture:run` to explore alternatives under the same constraints.

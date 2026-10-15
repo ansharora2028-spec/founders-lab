@@ -10,7 +10,7 @@ allowed-tools: Read, Write, Edit, Glob, Bash(date *)
 1. Read `${CLAUDE_PLUGIN_ROOT}/skills/venture-rules/SKILL.md`, and the `90-blueprint.md` and `91-nothing-passed.md` sections of `${CLAUDE_PLUGIN_ROOT}/skills/file-schemas/SKILL.md`.
 2. `RUN` = `ventures/runs/<$ARGUMENTS>` or the most recent run folder.
 3. Collect every idea's final status, in this order of precedence:
-   1. recorded in `run-log.md` § Pivots as `PIVOTED → <id>` → **PIVOTED** (ignore its leftover round-1 REVISE verdict);
+   1. recorded in `run-log.md` § Pivots as `PIVOTED → <id>` → **PIVOTED** (ignore its leftover verdict file: a round-1 REVISE from a forge pivot, or a KILL that produced a judge pivot candidate);
    2. recorded in § Pivots as `KILLED (pivot limit)` → **KILL**;
    3. otherwise the latest `verdict-v<n>.md`: PASS, KILL or HALTED; REVISE in round 2 = **KILL**;
    4. rejected in `04-screen.md` / `04-screen-pivot<k>.md` → **REJECTED (screen)**; screened but not carried → **NOT CARRIED (rank)**.

@@ -33,6 +33,6 @@ The ledger (`ventures/LEDGER.md`) is the compounding memory of every run in this
 - pivots used: <n>
 ```
 
-- List **every** idea from `03-ideas.md` and any pivot files, including screen rejections (`REJECTED (screen)`), ideas not carried (`NOT CARRIED (rank)`), pivots (`PIVOTED → <id>`), and halts (`HALTED (tamper)`).
+- List **every** idea from `03-ideas.md` and any pivot files (for a judge-candidate pivot, the old idea's line reads `KILL → PIVOTED → <id>`), including screen rejections (`REJECTED (screen)`), ideas not carried (`NOT CARRIED (rank)`), pivots (`PIVOTED → <id>`), and halts (`HALTED (tamper)`).
 - Decisive reason: one line, from the verdict's first decisive reason (or the screen rejection reason).
 - Useful/useless sources: derive from the scouts' "Sources consulted" lists and from the audits (domains whose claims were VERIFIED vs struck).

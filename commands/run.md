@@ -33,11 +33,13 @@ Run each stage by reading its command file and following its instructions exactl
 ## 2. Depth mode
 Respect the contract's depth mode throughout:
 
-| mode | generate | carry forward | relative cost |
+| mode | generate | carry forward | agent calls (no revisions) |
 |---|---|---|---|
-| quick | 3 | 1 | ~1× (about 12–16 agent calls) |
-| standard | 8 | 3 | ~3× |
-| deep | 12 | 5 | ~5× |
+| quick | 3 | 2 | ~20 |
+| standard | 8 | 3 | ~28 |
+| deep | 12 | 5 | ~44 |
+
+Each carried idea costs 8 agent calls (2 criteria writers, forge, economics, 2 prosecutors, auditor, judge); a revision round adds about 6 more for that idea.
 
 ## 3. Early exits (both are valid outcomes)
 - Every idea rejected at Screen → go straight to stage 6 (nothing-passed).

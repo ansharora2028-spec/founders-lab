@@ -20,6 +20,7 @@ Most idea tools are built to say yes. This one isn't.
 - **A pass needs positive evidence.** Running out of objections is not a pass. You need verified demand (competitors with revenue, measurable search demand, or people already paying for something worse) *and* unit economics that work in the *conservative* case.
 - **Fixes need evidence, not rhetoric.** In the single revision round, prosecutors see a structured diff with an evidence URL per change — never Forge's prose.
 - **A pivot is a new idea.** Change the customer, the problem or the revenue model, and the idea goes back to screening from zero. Two pivots per run, max.
+- **Locks are enforced, not just requested.** A plugin hook limits the judge's shell to hashing the locked criteria file. Nothing else runs.
 - **Your constraint contract is law.** Capital, hours, skills, risk, time to revenue: HARD or FLEXIBLE with an explicit stretch condition. Only you can change it.
 - **No invented facts.** Every claim has a URL or is labeled `ASSUMPTION`. Thin local data is admitted, not papered over with national numbers.
 
@@ -94,13 +95,13 @@ Summary of all past runs, or a search by location, idea, or cause of death.
 
 ## Depth modes
 
-| Mode | Ideas generated | Carried to forge & kill | Relative cost |
+| Mode | Ideas generated | Carried to forge & kill | Agent calls (no revisions) |
 |---|---|---|---|
-| `quick` | 3 | 1 | 1× (12 agent calls and about 13 minutes in testing) |
-| `standard` (default) | 8 | 3 | ~3× |
-| `deep` | 12 | 5 | ~5× |
+| `quick` | 3 | 2 | ~20 |
+| `standard` (default) | 8 | 3 | ~28 |
+| `deep` | 12 | 5 | ~44 |
 
-Cost scales mostly with the number of carried ideas: each one gets 2 criteria writers, forge, economics, 2 prosecutors, an auditor and a judge — and up to the same again if it earns a revision round. Prosecutors, auditor and judge inherit your session model; the screener runs on Haiku; everything else runs on Sonnet. Each choice is one `model:` line in `agents/*.md` if you want to change it.
+Cost scales mostly with the number of carried ideas: each one gets 2 criteria writers, forge, economics, 2 prosecutors, an auditor and a judge (8 calls), plus about 6 more if it earns a revision round, and a pivot starts a new idea from zero. In testing, a single carried idea cost roughly $3–4 end to end on the default models. Prosecutors, auditor and judge inherit your session model; the screener runs on Haiku; everything else runs on Sonnet. Each choice is one `model:` line in `agents/*.md` if you want to change it.
 
 ## The pipeline
 
@@ -134,6 +135,7 @@ flowchart TD
     K4 -->|KILL| N["91-nothing-passed.md<br/>(if nothing passed)"]
     K4 -->|REVISE, round 1 only| R[forge-v2 → diff-v2.md<br/>evidence per change]
     R -->|customer / problem / revenue model changed| PV[PIVOT: new idea id<br/>back to screener, max 2]
+    K4 -->|KILL with pivot candidate,<br/>pivots left| PV
     PV --> D
     R -->|not a pivot| G2[economics-v2] --> K
     K4 -->|HALTED: hash mismatch| H[run stops]
@@ -193,7 +195,7 @@ Each run makes the next one cheaper and sharper. That's the compounding.
 ## Known limits
 
 - **Thin local data.** For smaller cities, there's often little online evidence. The local scout says so, gives a low coverage score, and labels any national or global data. Verdicts get lower confidence. Expect more INSUFFICIENT EVIDENCE and more kills. That's the honest outcome, not a bug.
-- **Cost.** Every stage that searches the web costs tokens; `standard` is about 3× `quick`, and `deep` about 5×. Start with `quick`.
+- **Cost.** Every stage that searches the web costs tokens. Each carried idea is about 8 agent calls, so `deep` costs roughly 2–2.5× `quick`. Start with `quick`.
 - **Web evidence isn't ground truth.** The auditor checks that sources say what the claims say, not that the sources are right. A PASS means "the desk research holds up", not "this will work". The blueprint's experiments exist to test that in the real world.
 - **Research assistance, not financial advice.** Nothing here is a recommendation to invest money. Talk to people who know your market before you spend real money.
 - **Interactive intake works best.** In non-interactive sessions (`claude -p`), give every intake answer in the arguments; the plugin won't invent a constraint.
@@ -209,6 +211,8 @@ python3 tests/check_blindness.py run.log
 
 It fails if a prosecutor was passed or opened `forge-v2.md` or the other prosecutor's file, if forge or the economics modeler touched the kill criteria, or if any other agent broke the visibility matrix.
 
+CI (`.github/workflows/ci.yml`) runs on every push: strict manifest validation, the schema and reference checks (`tests/check_schemas.py`), the judge-hook unit tests (`tests/test_judge_guard.sh`), and the blindness checker over recorded test transcripts (`tests/fixtures/`), including a planted leak it must catch.
+
 ## Roadmap (out of scope for v0.1)
 
 - A Claude.ai app version
@@ -222,10 +226,12 @@ It fails if a prosecutor was passed or opened `forge-v2.md` or the other prosecu
 .claude-plugin/plugin.json, marketplace.json   # name "venture" lives only here
 agents/        10 specialist subagents
 commands/      8 /venture:* commands (the orchestrator)
+hooks/         judge-bash-guard: the judge's shell can only hash kill-criteria.md
 skills/        venture-rules, scoring-rubric, idea-lenses, file-schemas
 templates/     empty copies of every run file
 examples/      a complete fictional run, plus revision-round and pivot examples
-tests/         check_blindness.py — audits a run transcript against the visibility matrix
+tests/         blindness, schema and hook checks, plus recorded transcript fixtures
+.github/       CI workflow
 DECISIONS.md   design choices where the spec was silent, and test results
 ```
 

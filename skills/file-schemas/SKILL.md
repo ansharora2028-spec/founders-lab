@@ -118,7 +118,7 @@ created: <iso>
 ## Depth mode
 - mode: quick | standard | deep
 - ideas to generate: 3 | 8 | 12
-- ideas to carry forward: 1 | 3 | 5
+- ideas to carry forward: 2 | 3 | 5
 
 ## Confirmation
 - confirmed by user: yes
@@ -523,6 +523,15 @@ Prosecutors may only assess criteria that are in `kill-criteria.md`; they can ad
 ## Fixable flaws (REVISE only)
 | flaw id | what evidence would fix it | desk-researchable |
 |---|---|---|
+
+## Pivot candidate (KILL only)
+- none — <reason> | or:
+- customer: <new or unchanged>
+- problem: <new or unchanged>
+- revenue model: <new or unchanged>
+- field(s) changed: <customer | problem | revenue model>
+- grounded in: <surviving file#claim refs>
+- fits HARD constraints: yes — <K# checked>
 
 ## Ignored as struck
 - <refs>

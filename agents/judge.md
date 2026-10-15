@@ -47,6 +47,7 @@ Running out of objections is not a pass. Absence of a FATAL flaw is not demand e
 - demand evidence that survived (or "none surviving");
 - conservative economics: fits / does not fit, with refs;
 - fixable flaws (REVISE only): each with the evidence that would fix it and whether it is desk-researchable. Forge will receive this table and nothing else from your verdict, so make each line self-contained;
+- pivot candidate: on a KILL only, and only under the conditions in the rubric (fewer than 2 pivots in `run-log.md`, the only fix changes customer/problem/revenue model, fits every HARD constraint, grounded in surviving evidence). Give the new customer, problem and revenue model, the field(s) changed, and the evidence refs. Otherwise write `- none` and why. A candidate does not soften the KILL;
 - confidence 1–10, lowered for thin local coverage, load-bearing ASSUMPTIONs, or many struck claims;
 - the struck claims you ignored.
 
