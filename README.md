@@ -211,6 +211,8 @@ python3 tests/check_blindness.py run.log
 
 It fails if a prosecutor was passed or opened `forge-v2.md` or the other prosecutor's file, if forge or the economics modeler touched the kill criteria, or if any other agent broke the visibility matrix.
 
+For a full end-to-end check (real web research, about $3–4 per carried idea): `sh tests/e2e.sh quick`. It runs the fictional Pune user through `/venture:run` headless and then runs the blindness checker on the transcript.
+
 CI (`.github/workflows/ci.yml`) runs on every push: strict manifest validation, the schema and reference checks (`tests/check_schemas.py`), the judge-hook unit tests (`tests/test_judge_guard.sh`), and the blindness checker over recorded test transcripts (`tests/fixtures/`), including a planted leak it must catch.
 
 ## Roadmap (out of scope for v0.1)
