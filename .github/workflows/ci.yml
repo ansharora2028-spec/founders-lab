@@ -1,0 +1,40 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Install Claude Code
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Validate plugin and marketplace manifests (strict)
+        run: claude plugin validate . --strict
+
+      - name: Schema and reference consistency
+        run: python3 tests/check_schemas.py
+
+      - name: Judge Bash guard hook
+        run: sh tests/test_judge_guard.sh
+
+      - name: Blindness on recorded test transcripts
+        run: python3 tests/check_blindness.py tests/fixtures/*.jsonl
+
+      - name: Blindness checker catches a planted leak
+        run: |
+          if python3 tests/check_blindness.py tests/fixtures/must-fail/*.jsonl; then
+            echo "check_blindness.py failed to flag the planted violations" >&2
+            exit 1
+          fi
