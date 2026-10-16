@@ -30,7 +30,7 @@ else
 fi
 
 claude -p "$prompt" \
-  --allowedTools "Read Write Edit Glob Grep Agent Task WebSearch WebFetch Bash(chmod *) Bash(sha256sum *) Bash(shasum *) Bash(mkdir *) Bash(date *) Bash(ls *)" \
+  --allowedTools "Read Write Edit Glob Grep Agent Task WebSearch WebFetch Bash(chmod *) Bash(sha256sum *) Bash(shasum *) Bash(mkdir *) Bash(date *) Bash(ls *) Bash(python3 *)" \
   --output-format stream-json --verbose > run.log 2>&1
 
 python3 "$repo/tests/check_blindness.py" run.log
