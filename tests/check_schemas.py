@@ -75,6 +75,18 @@ for p in glob.glob("examples/**/*.md", recursive=True):
     name = os.path.basename(p)
     if name in ("README.md", "LEDGER.md"):
         continue
+    if os.path.basename(os.path.dirname(p)) == "cities":  # ventures/cities/<city-slug>.md: append-only, one H2 per run
+        text = open(p, encoding="utf-8").read()
+        want = ["Verified facts", "Peer-town benchmark", "Big-brand presence", "City profile",
+                "Founder-reported (unverified)", "Useless sources for this town"]
+        runs = re.split(r"(?m)^## ", text)[1:]
+        if not text.startswith("# ") or not runs:
+            errors.append(f"{p}: city memory needs '# <City>, <Country>' and at least one '## <run_id>' section")
+        for r in runs:
+            got = [l[4:].strip() for l in r.splitlines() if l.startswith("### ")]
+            if got != want:
+                errors.append(f"{p}: run section {r.splitlines()[0]!r} has {got} != {want}")
+        continue
     k = schema_key(name)
     if not k:
         errors.append(f"{p}: no schema")
