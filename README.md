@@ -6,9 +6,10 @@ Most new businesses don't fail because the founder wasn't hard-working. They fai
 
 `venture` helps aspiring founders find that out *first*, for the cost of a few dollars of AI usage. Its research agents work hard to find an idea that can win: one that fits your budget, time and skills, in a market where people already pay (or it takes the idea you already have). Then independent critics try hard to kill each one. Each idea must pass a fixed checklist, written before anyone polishes the idea, and survive a fact-check of every claim. Only ideas that hold up get a green light.
 
-You end up with one of two answers:
+You end up with one of three answers:
 
 - ✅ **Do it.** You get an idea with real evidence that people pay for this and that the numbers work even in a cautious scenario, plus three cheap experiments to run this week.
+- 🟡 **Viable on paper.** The money math works in most of thousands of simulated scenarios, the gap is backed by evidence (similar towns, missing big brands, things you counted yourself), and nothing fatal turned up. What's missing is proof that people in *your* town pay, because that proof isn't online. You get the 2–3 things to confirm, how to check each cheaply, and the numbers that should make you stop. This is the honest answer for many small-town ideas.
 - ❌ **Don't do it.** You get the reasons, the evidence, why the search missed, and an estimate of the money and months you just saved. It's not the answer you hoped for, but it's far cheaper than learning it after spending your savings, and you can ask for a second wave of ideas built on those lessons.
 
 > `venture` is research help, not financial advice. A "do it" means the desk research holds up. You still test it in the real world, cheaply, before you spend real money.
@@ -62,7 +63,7 @@ That's a real idea card from a test run, lightly trimmed. Every number is either
 | Where you are | Type this | What happens |
 |---|---|---|
 | **I have no idea yet** | `/venture:run` | It asks about you, researches your market, suggests ideas that fit you, and tests the best ones. |
-| **I have an idea and want the full check** | `/venture:check "your idea"` | Your idea goes through the full process: market research, sharpening, money math in a cautious, a realistic and an optimistic case, a fact-checked prosecution, and one chance to fix weak spots. Then a clear **do it / don't do it**. |
+| **I have an idea and want the full check** | `/venture:check "your idea"` | Your idea goes through the full process: market research, your local knowledge, sharpening, a full competitor and strategy check, money math plus a simulation of thousands of scenarios, a fact-checked prosecution, and one chance to fix weak spots. Then a clear **do it / viable on paper / don't do it**. |
 | **I have an idea and want a quick verdict** | `/venture:kill "your idea"` | A faster, cheaper verdict on the idea exactly as you wrote it, with no research or improvement step. |
 
 Examples:
@@ -84,6 +85,15 @@ Before anything runs, venture asks a few questions, one at a time. Your answers 
 3. **Your limits:** money you can put in, hours per week, your skills, how much risk you can take, how soon you need income, B2B or B2C, and anything that's off-limits for you.
    For each limit you say whether it's **hard** ("never more than ₹1 lakh") or **flexible** ("₹1 lakh, up to ₹2 lakh if it pays back within 6 months").
 4. **Any unfair advantage**, like a family business, a community you're part of, or industry contacts. This is optional.
+5. **What you know about your town.** About 8–12 quick questions about what you've *seen*, not what you think:
+   - roughly how many people and potential customers there are;
+   - what people travel elsewhere to buy, and which big brands are missing;
+   - how people find services, and which local groups you're in;
+   - local rent and wages;
+   - what people pay today for the thing your idea replaces;
+   - your competitors' prices and complaints.
+
+   For each number you give a range and say whether you counted it, heard it or are guessing. Skip anything you don't know. This matters most in smaller towns, where the internet knows little.
 
 It reads your answers back to you, and nothing starts until you confirm. Only you can change the contract.
 
@@ -93,12 +103,21 @@ It reads your answers back to you, and nothing starts until you confirm. Only yo
 2. **Ideas.** It writes up your idea, or finds new ones by following the money. It starts where people already pay and complain, lists about three times as many candidates as it needs, does quick money math on each, and keeps only the strongest. Each comes with the three explanations above.
 3. **Quick screen.** It drops anything that breaks your hard limits, checks for competitors, and ranks the rest.
 4. **Lock the test.** Before anyone improves the idea, two critics write the exact conditions under which it should die. That checklist is then locked, so it can't be quietly softened later.
-5. **Sharpen.** The idea is made specific: the exact customer, the smallest first version, how you'd find your first 100 customers, and the money math in three scenarios.
-6. **Try to kill it.** The two critics test the idea against the locked checklist, and a fact-checker opens every cited source and throws out claims that don't hold. A judge then applies a fixed rule. It can only pass an idea with real evidence that people pay and money math that works in the cautious case.
-7. **One second chance.** If the problems are fixable, the idea gets one revision, backed by evidence. If it fails again, it's done.
-8. **Your answer.** You get either a **do-it plan** (the 3 cheapest experiments to run this week, what to build first and what to skip, pricing, a 30-day plan, and the warning signs that should make you stop) or a **don't-do-it report** (what killed each idea, why the search missed, the money and months saved, and an offer to try a second wave of ideas built on those lessons).
+5. **Sharpen.** The idea is made specific: the exact customer, the smallest first version, and how you'd find your first 100 customers.
+6. **Strategy check, done independently.** A separate strategist, who didn't come up with the idea, runs the full set of business frameworks before any judge sees it:
+   - **competitors:** who they are, big brands included, whether you can win their customers, and your price against theirs;
+   - **market forces:** Porter's Five Forces and Blue Ocean;
+   - **the customer:** the need gap, Jobs-to-be-Done, the value proposition, Kano (what the first version must have) and consumer behaviour (trust, habits, who buys first);
+   - **strategy:** target segment and positioning, market size built from the ground up, Ansoff risk, PESTLE (law, economy, society, technology), the 4Ps, and how many people you reach versus how many buy;
+   - **a simulated customer panel**, to surface objections.
 
-Everything is saved in a `ventures/` folder in your project. A running log of every past check means future runs don't repeat ideas that already died for someone in your situation.
+   If the strategy doesn't hold up, the idea is dropped here, cheaply.
+7. **Money math and simulation.** Costs, price and cost per customer in three scenarios. Then a simulation runs thousands of what-if combinations. It tells you how often the business breaks even in time without running out of money, and which two or three numbers matter most.
+8. **Try to kill it.** The two critics test the idea against the locked checklist, and a fact-checker opens every cited source and throws out claims that don't hold. A judge then applies a fixed rule. It can only pass an idea with real evidence that people pay and money math that works in the cautious case.
+9. **One second chance.** If the problems are fixable, the idea gets one revision, backed by evidence. If it fails again, it's done.
+10. **Your answer.** You get a **do-it plan**, a **viable-on-paper plan** (the same, starting with the 2–3 things to confirm), or (the 3 cheapest experiments to run this week, what to build first and what to skip, pricing, a 30-day plan, and the warning signs that should make you stop) a **don't-do-it report** (what killed each idea, why the search missed, the money and months saved, and an offer to try a second wave of ideas built on those lessons).
+
+Everything is saved in a `ventures/` folder in your project. A running log of every past check means future runs don't repeat ideas that already died for someone in your situation. A memory file for each town keeps the verified facts, so the next run there starts smarter.
 
 ## Time and cost
 
@@ -114,9 +133,10 @@ Everything is saved in a `ventures/` folder in your project. A running log of ev
 
 ## Good to know
 
-- **Small cities have less data online.** venture says so plainly, never passes national numbers off as local, and lowers its confidence. Expect more "don't do it" answers there.
+- **Small towns have less data online, but that isn't held against them.** venture compares your town with similar towns (for example tutors per 10,000 people), checks which big brands haven't arrived, profiles how people buy there, and uses what you've counted yourself. When the only thing missing is local proof that isn't online, the answer is "viable on paper", not "don't". It never passes national numbers off as local.
 - **It tries hard to find a winner, and judges strictly.** The research and idea agents work to find an idea that passes. They follow where people already spend money, list many candidates, and pre-check each against the bar. The critics and the judge stay neutral. When nothing passes, the report says why the search missed and offers a second wave of ideas built on those lessons. An honest "no" is still far cheaper than a year of trying.
 - **It doesn't make things up.** Every fact has a link or is labeled as an estimate, and a fact-checker removes anything that doesn't hold up.
+- **It needs Python 3** for the simulation. It comes with most Macs and Linux machines; on Windows, install it from python.org. Without it, everything else still works, but "viable on paper" verdicts aren't possible.
 - **It needs web access.** The fact-checker has to open sources. If your network blocks sites, claims get struck and every idea dies, and venture warns you when that happens.
 
 ---
@@ -135,7 +155,15 @@ The rest is for the curious and for contributors.
 - **A pivot is a new idea.** Change the customer, the problem or the revenue model, and the idea goes back to screening from zero. Two pivots per run, max. The judge may propose a pivot candidate on a KILL only when it rests on surviving evidence.
 - **Locks are enforced, not just requested.** A plugin hook limits the judge's shell to hashing the locked criteria file.
 - **The contract is law.** HARD limits are never crossed. A FLEXIBLE limit stretches only when its stated condition is met, and the stretch is flagged.
-- **No invented facts.** Every claim has a URL or is labeled `ASSUMPTION`. Thin local data is admitted, not papered over with national numbers.
+- **No invented facts, and every claim says how much it's worth.** Each claim carries a label, from strongest to weakest: a source the fact-checker verifies; a peer-town benchmark; something the founder counted; a founder's guess; an assumption. A simulated persona is never evidence. Only verified sources can support a PASS. Peer-town and founder-counted evidence can support "viable on paper". Weaker inputs get a cautious haircut in the simulation.
+- **Independent strategy check.** The market-strategist runs every framework (`skills/frameworks/SKILL.md`) separately from forge. Each framework ends in SUPPORTS / NEUTRAL / AGAINST, and two critical AGAINSTs mean the idea is dropped before the judges see it.
+- **The simulation can't be faked by a builder.** The economics agent only supplies input ranges. The orchestrator runs `scripts/simulate.py` (seeded, so anyone can re-run it) and pastes its output unedited.
+- **Viable on paper, defined.** All five must hold:
+  1. ≥70% of simulated runs break even in time, and ≥90% stay within the hard capital limit;
+  2. no fatal flaw;
+  3. the gap is backed by peer-town, brand-absence or founder-counted evidence;
+  4. the only gaps left are offline-only;
+  5. it fits the contract, and the strategist says CARRY.
 
 ### All commands
 
@@ -159,13 +187,13 @@ You can pre-fill intake answers in any command. For example: `/venture:run Pune,
 
 | Mode | Ideas written up | Carried to forge and kill | Agent calls (no revisions) |
 |---|---|---|---|
-| `check` (from `/venture:check`) | 1: your idea | 1 | ~12 |
-| `check+variants` (from `--variants`) | your idea + up to 3 variants | 2 | ~20 |
-| `quick` | 3 | 2 | ~20 |
-| `standard` (default for `/venture:run`) | 8 | 3 | ~28 |
-| `deep` | 12 | 5 | ~44 |
+| `check` (from `/venture:check`) | 1: your idea | 1 | ~13 |
+| `check+variants` (from `--variants`) | your idea + up to 3 variants | 2 | ~22 |
+| `quick` | 3 | 2 | ~22 |
+| `standard` (default for `/venture:run`) | 8 | 3 | ~31 |
+| `deep` | 12 | 5 | ~49 |
 
-Each carried idea gets 2 criteria writers, forge, economics, 2 prosecutors, an auditor and a judge (8 calls), plus about 6 more if it earns a revision round. Prosecutors, auditor and judge use your session model, the screener runs on Haiku, and everything else runs on Sonnet. Each choice is one `model:` line in `agents/*.md`.
+Each carried idea gets 2 criteria writers, forge, the strategist, economics, 2 prosecutors, an auditor and a judge (9 calls), plus one simulation-script run, and about 6 more calls if it earns a revision round. An idea the strategist drops stops after 4 calls. Prosecutors, auditor and judge use your session model, the screener runs on Haiku, and everything else runs on Sonnet. Each choice is one `model:` line in `agents/*.md`.
 
 ### The pipeline
 
@@ -186,8 +214,11 @@ flowchart TD
     end
     E --> L[(kill-criteria.md<br/>chmod 444 + SHA-256)]
     L --> F[forge<br/>forge-v1.md<br/><i>never sees criteria</i>]
-    F --> G[economics-modeler<br/>conservative / base / optimistic]
-    G --> K
+    F --> ST[market-strategist<br/>frameworks, CARRY or DROP]
+    ST -->|DROP| DR[dropped cheaply]
+    ST --> G[economics-modeler<br/>three scenarios + simulation inputs]
+    G --> SIM[simulate.py run by main<br/>viable share + sensitivity]
+    SIM --> K
     subgraph K["Kill round"]
         K1[prosecutor-market]
         K2[prosecutor-execution]
@@ -196,6 +227,7 @@ flowchart TD
         K3 --> K4[judge<br/>verifies hash, applies rule]
     end
     K4 -->|PASS| P["90-blueprint.md<br/>DO IT"]
+    K4 -->|VIABLE ON PAPER| P
     K4 -->|KILL| N["91-nothing-passed.md<br/>DON'T"]
     K4 -->|REVISE, round 1 only| R[forge-v2 → diff-v2.md<br/>evidence per change]
     R -->|customer / problem / revenue model changed| PV[PIVOT: new idea id<br/>back to screener, max 2]
@@ -214,16 +246,20 @@ In round 2, prosecutors receive `diff-v2.md` and `economics-v2.md`, never `forge
 ```
 ventures/
 ├── LEDGER.md                       # persistent across runs: the compounding memory
+├── cities/<city>.md                # what venture has verified about each town
 └── runs/<YYYY-MM-DD>-<slug>/
     ├── 00-contract.md              # your contract + location profile
     ├── 01-local-market.md          # local research, with a 0–10 coverage score
     ├── 02-signals.md               # dated, sourced trends
     ├── 03-ideas.md                 # ideas: how each works, the need gap, how it makes money
     ├── 04-screen.md                # hard-limit check, competitors, ranking
+    ├── 00-founder-knowledge.md     # what you told it about your town
     ├── ideas/<idea-id>/
     │   ├── kill-criteria.md        # LOCKED (read-only, hashed in run-log)
     │   ├── forge-v1.md             # the sharpened idea
-    │   ├── economics-v1.md         # money math, three scenarios
+    │   ├── strategy-v1.md          # every framework, CARRY or DROP
+    │   ├── economics-v1.md         # money math, three scenarios, simulation inputs
+    │   ├── simulation-v1.md        # the simulation's output, unedited
     │   ├── prosecution-*-v1.md, audit-v1.md, verdict-v1.md
     │   └── …-v2.md                 # revision round, if any
     ├── 90-blueprint.md             # DO IT: the plan
@@ -244,6 +280,7 @@ Search it with `/venture:ledger`.
 ### Testing and CI
 
 - `sh tests/e2e.sh quick` runs a full headless test for a fictional Pune user, then checks blindness on the transcript. It does real web research, at about $3–4 per carried idea.
+- `python3 tests/test_simulate.py` covers the simulation script (good, bad, capital-limited and hours-capped businesses, determinism, input validation).
 - `python3 tests/check_blindness.py run.log` checks any `claude -p --output-format stream-json --verbose` transcript. It fails if a prosecutor saw `forge-v2.md` or the other prosecutor's file, or if forge or the economics modeler touched the kill criteria.
 - CI (`.github/workflows/ci.yml`) runs on every push:
   - strict manifest validation;
@@ -261,10 +298,11 @@ From your shell: `claude plugin marketplace add ansharora2028-spec/founders-lab 
 
 ```
 .claude-plugin/  plugin.json, marketplace.json (the name "venture" lives only here)
-agents/          10 specialist subagents
+agents/          11 specialist subagents
 commands/        9 /venture:* commands (the orchestrator)
+scripts/         simulate.py: the seeded Monte Carlo simulation (standard-library Python)
 hooks/           judge-bash-guard: the judge's shell can only hash kill-criteria.md
-skills/          venture-rules, scoring-rubric, idea-lenses, file-schemas
+skills/          venture-rules, scoring-rubric, idea-lenses, frameworks, file-schemas
 templates/       empty copies of every run file
 examples/        real test runs
 tests/           blindness, schema and hook checks; e2e script; recorded transcripts

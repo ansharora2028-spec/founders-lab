@@ -26,6 +26,9 @@ jobs:
       - name: Schema and reference consistency
         run: python3 tests/check_schemas.py
 
+      - name: Simulation unit tests
+        run: python3 tests/test_simulate.py
+
       - name: Judge Bash guard hook
         run: sh tests/test_judge_guard.sh
 

@@ -1,7 +1,7 @@
 ---
 description: venture kill — blind prosecution, evidence audit and judgement of forged ideas against their locked kill criteria, with at most one evidence-only revision round and pivot detection. Also usable directly on any idea - /venture:kill "<idea description>" - with a minimal intake and no forge.
 argument-hint: "[run_id] [idea_id ...]  |  \"<idea description>\" for a direct verdict"
-allowed-tools: Read, Write, Edit, Glob, Agent, Task, AskUserQuestion, Bash(mkdir *), Bash(chmod *), Bash(sha256sum *), Bash(shasum *), Bash(date *)
+allowed-tools: Read, Write, Edit, Glob, Agent, Task, AskUserQuestion, Bash(mkdir *), Bash(chmod *), Bash(sha256sum *), Bash(shasum *), Bash(date *), Bash(python3 *)
 ---
 
 # /venture:kill
@@ -33,7 +33,7 @@ Timestamp: <output of date -u +%Y-%m-%dT%H:%M:%SZ, run just before this call>
 
 ## A. Pipeline mode
 
-Ideas to judge: the given ids, or every idea in `RUN/ideas/` that has `economics-v1.md` and no `verdict-v1.md`, plus any idea with `economics-v2.md` and no `verdict-v2.md`.
+Ideas to judge: the given ids, or every idea in `RUN/ideas/` that has `economics-v1.md` and `simulation-v1.md` and no `verdict-v1.md` (skip any recorded `DROPPED (strategist)`), plus any idea with `economics-v2.md` and no `verdict-v2.md`.
 
 **Never re-handle a finished idea.** Read `run-log.md` § Pivots and § Stages first. An idea recorded there as `PIVOTED → <id>` or as killed by the pivot limit is final: skip it, even though its `verdict-v1.md` still says REVISE (its successor is handled under its own id).
 
@@ -44,13 +44,13 @@ Ideas to judge: the given ids, or every idea in `RUN/ideas/` that has `economics
 Progress note: `Kill round <n>: prosecuting <k> idea(s) — 2 prosecutors each in parallel, then audit, then judge (paid stage).`
 
 **Step 1 — prosecutors, in parallel across all ideas (one message).** For each idea launch both `venture:prosecutor-market` and `venture:prosecutor-execution`, `Mode: kill`:
-- round 1 inputs: `00-contract.md`, `01-local-market.md`, `02-signals.md`, `ideas/<id>/kill-criteria.md`, `ideas/<id>/forge-v1.md`, `ideas/<id>/economics-v1.md`;
-- round 2 inputs: `00-contract.md`, `01-local-market.md`, `02-signals.md`, `ideas/<id>/kill-criteria.md`, `ideas/<id>/diff-v2.md`, `ideas/<id>/economics-v2.md`, and **its own** `ideas/<id>/prosecution-<side>-v1.md`;
+- round 1 inputs: `00-contract.md`, `00-founder-knowledge.md`, `01-local-market.md`, `02-signals.md`, `ideas/<id>/kill-criteria.md`, `ideas/<id>/forge-v1.md`, `ideas/<id>/strategy-v1.md`, `ideas/<id>/economics-v1.md`, `ideas/<id>/simulation-v1.md`;
+- round 2 inputs: `00-contract.md`, `00-founder-knowledge.md`, `01-local-market.md`, `02-signals.md`, `ideas/<id>/kill-criteria.md`, `ideas/<id>/diff-v2.md`, `ideas/<id>/economics-v2.md`, `ideas/<id>/simulation-v2.md`, and **its own** `ideas/<id>/prosecution-<side>-v1.md`;
 - outputs: `ideas/<id>/prosecution-market-v<n>.md`, `ideas/<id>/prosecution-execution-v<n>.md`.
 
 **Step 2 — evidence auditor, in parallel across ideas (one message), after both prosecutions exist.** `venture:evidence-auditor` with every file for that idea in this round except the verdict:
-- round 1: `00`, `01`, `02`, `kill-criteria.md`, `forge-v1.md`, `economics-v1.md`, `prosecution-market-v1.md`, `prosecution-execution-v1.md`;
-- round 2: `00`, `01`, `02`, `kill-criteria.md`, `diff-v2.md`, `forge-v2.md`, `economics-v2.md`, `prosecution-market-v2.md`, `prosecution-execution-v2.md`;
+- round 1: `00`, `00-founder-knowledge.md`, `01`, `02`, `kill-criteria.md`, `forge-v1.md`, `strategy-v1.md`, `economics-v1.md`, `simulation-v1.md`, `prosecution-market-v1.md`, `prosecution-execution-v1.md`;
+- round 2: `00`, `00-founder-knowledge.md`, `01`, `02`, `kill-criteria.md`, `diff-v2.md`, `forge-v2.md`, `strategy-v1.md`, `economics-v2.md`, `simulation-v2.md`, `prosecution-market-v2.md`, `prosecution-execution-v2.md`;
 - output: `ideas/<id>/audit-v<n>.md`.
 
 (The auditor runs after the prosecutors, not alongside them, because it must check the evidence behind every FATAL flaw a prosecutor raises.)
@@ -62,6 +62,7 @@ Progress note: `Kill round <n>: prosecuting <k> idea(s) — 2 prosecutors each i
 **Step 4 — read each verdict.**
 - `HALTED` → stop the whole run. Tell the user: "Kill criteria for <id> were modified after locking (hash mismatch). The run is halted." Record `HALTED (tamper)` in run-log. Do not continue to blueprint; still append the ledger entry with outcome `NOTHING PASSED` and the HALTED idea.
 - `PASS` → final for this idea.
+- `VIABLE ON PAPER` → final for this idea. It is not a PASS: report it as "viable on paper, confirm <the assumptions> first".
 - `KILL` → final for this idea. If the verdict's **Pivot candidate** section names a candidate (not `none`) and `run-log.md` shows fewer than 2 pivots used, run the **Pivot procedure** with the candidate as the source. The killed idea is recorded as `PIVOTED → <new id>`; its KILL verdict stays as written.
 - `REVISE` in round 2 → **treat as KILL**; note `REVISE in round 2 → KILL (rule 6)` in run-log.
 - `REVISE` in round 1 → §A2 for this idea.
@@ -79,7 +80,7 @@ Progress note: `<id> got REVISE: one evidence-only revision round.`
    - did forge set `pivot declared: YES`?
    If any is yes → run the **Pivot procedure** below for this idea and stop handling it here.
 4. Write `ideas/<id>/diff-v2.md` in the schema. One row per change: flaw addressed, field, old value (verbatim from forge-v1), new value (verbatim from forge-v2), evidence URL (verbatim from forge-v2's Fixes table, or `NONE`). Also list unaddressed flaws. **Copy, do not paraphrase.** No prose from forge-v2 beyond the new values.
-5. `venture:economics-modeler`, inputs `00`, `01`, `ideas/<id>/forge-v2.md`, `ideas/<id>/economics-v1.md`; output `ideas/<id>/economics-v2.md`.
+5. `venture:economics-modeler`, inputs `00`, `00-founder-knowledge.md`, `01`, `ideas/<id>/forge-v2.md`, `ideas/<id>/strategy-v1.md`, `ideas/<id>/economics-v1.md`; output `ideas/<id>/economics-v2.md`. Then run the simulation on it exactly as in `${CLAUDE_PLUGIN_ROOT}/commands/forge.md` §5, writing `ideas/<id>/simulation-v2.md`.
 6. Run §A1 again for this idea with round 2.
 
 Run revision rounds for several ideas in parallel where possible (same step, one message).
@@ -93,7 +94,7 @@ Run revision rounds for several ideas in parallel where possible (same step, one
    - Write `RUN/03-ideas-pivot<k>.md` in the `03-ideas` schema with one idea: id `<new id>`, customer, problem and revenue model taken verbatim from the source (the forge file's Core identity for a forge pivot, or the verdict's Pivot candidate section for a judge candidate), a one-line pitch built only from those fields, lens unchanged, signal ids unchanged, `pivoted from: <old-id>`, `pivot reason: <field changed>; source: forge | judge candidate`.
    - **Screen it from zero:** `venture:screener`, inputs `00`, `03-ideas-pivot<k>.md`, LEDGER; output `04-screen-pivot<k>.md`. If REJECTED, the new idea is dead (`REJECTED (screen)`).
    - Otherwise: criteria mode for both prosecutors on the new idea (inputs `00`, `01`, `02`, `03-ideas-pivot<k>.md`, idea id), merge, lock (chmod 444 + sha256 into run-log § Locks) — exactly as in `${CLAUDE_PLUGIN_ROOT}/commands/generate.md` §4–5.
-   - Then forge round 1 and economics round 1 for the new idea (as in `${CLAUDE_PLUGIN_ROOT}/commands/forge.md`), then §A1 round 1. The new idea gets its own single revision round.
+   - Then forge round 1, strategy, economics round 1 and the simulation for the new idea (as in `${CLAUDE_PLUGIN_ROOT}/commands/forge.md`), then §A1 round 1. The new idea gets its own single revision round.
 
 ### A3. Report
 Add a Stages row `kill — done`. Show a table: idea, pitch, final verdict, round, confidence, top decisive reason. Under it, one line per idea on how it was meant to make money (from `03-ideas.md`), so the verdict reads in context. Next step: `/venture:blueprint` (writes the blueprint or the nothing-passed report).
@@ -109,8 +110,8 @@ For users who just want an existing idea judged. No scouting, no generation, no 
 3. Write `ideas/I01/idea.md` in the schema: the idea **as stated**, parsed but not improved.
 4. **Criteria (parallel, one message):** `venture:prosecutor-market` and `venture:prosecutor-execution`, `Mode: criteria`, inputs `00-contract.md`, `ideas/I01/idea.md`; outputs `ideas/I01/criteria-market.md`, `ideas/I01/criteria-execution.md`.
 5. **Merge and lock** into `ideas/I01/kill-criteria.md` (raw idea = `idea.md` § Idea as stated), `chmod 444`, sha256 into run-log § Locks.
-6. **Economics:** `venture:economics-modeler`, inputs `00-contract.md`, `ideas/I01/idea.md`; output `ideas/I01/economics-v1.md`. (Without it, a PASS is impossible.)
-7. **Kill round 1:** prosecutors in parallel (`Mode: kill`, inputs `00`, `kill-criteria.md`, `idea.md`, `economics-v1.md`), then `venture:evidence-auditor` (inputs `00`, `kill-criteria.md`, `idea.md`, `economics-v1.md`, both prosecutions), then `venture:judge` (everything for I01 plus `run-log.md`).
+6. **Economics and simulation:** `venture:economics-modeler`, inputs `00-contract.md`, `ideas/I01/idea.md`; output `ideas/I01/economics-v1.md`. (Without it, a PASS is impossible.) Then run the simulation as in `${CLAUDE_PLUGIN_ROOT}/commands/forge.md` §5, writing `ideas/I01/simulation-v1.md`. Direct mode is the fast version, so it skips the strategist; VIABLE ON PAPER is therefore not available here. Suggest `/venture:check` for the full framework check.
+7. **Kill round 1:** prosecutors in parallel (`Mode: kill`, inputs `00`, `kill-criteria.md`, `idea.md`, `economics-v1.md`, `simulation-v1.md`), then `venture:evidence-auditor` (inputs `00`, `kill-criteria.md`, `idea.md`, `economics-v1.md`, `simulation-v1.md`, both prosecutions), then `venture:judge` (everything for I01 plus `run-log.md`).
 8. **Verdict.** PASS and KILL are final. A REVISE is reported as `KILL as stated — it would need: <fixable flaws>` (direct mode has no revision round), and recorded as KILL in the ledger. A Pivot candidate on a KILL is reported to the user as a suggestion to judge separately (`/venture:kill "<candidate>"`); direct mode does not run pivots. HALTED: report tampering.
 9. **Ledger.** Append an entry as in `${CLAUDE_PLUGIN_ROOT}/commands/ledger.md` § Append.
 10. **Report** to the user: verdict, confidence, decisive reasons with file references, and the path of the verdict file. If PASS, suggest `/venture:blueprint <run_id>`. If KILL, suggest `/venture:run` to explore alternatives under the same constraints.

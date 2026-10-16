@@ -31,7 +31,7 @@ Timestamp: <output of date -u +%Y-%m-%dT%H:%M:%SZ, run just before this call>
 ## 1. Generate
 Progress note: `Generating <count> ideas (depth: <mode>).`
 
-Agent `venture:generator` with inputs `00-contract.md`, `01-local-market.md`, `02-signals.md`, `ventures/LEDGER.md` (if it exists), and, in a second wave, the previous run's `91-nothing-passed.md`; output `03-ideas.md`. Log the call in `run-log.md`.
+Agent `venture:generator` with inputs `00-contract.md`, `00-founder-knowledge.md`, `01-local-market.md`, `02-signals.md`, `ventures/LEDGER.md` (if it exists), the city memory file (if it exists), and, in a second wave, the previous run's `91-nothing-passed.md`; output `03-ideas.md`. Log the call in `run-log.md`.
 
 ## 2. Screen
 Progress note: `Screening <count> ideas against hard constraints and competitors (paid stage: web search).`
@@ -62,7 +62,7 @@ Progress note: `Locking kill criteria for <N> ideas — 2 prosecutors per idea i
 For each carried idea `<id>`: `mkdir -p RUN/ideas/<id>`.
 
 Then launch, **in one message**, for every carried idea, both:
-- `venture:prosecutor-market`, `Mode: criteria`, inputs `00-contract.md`, `01-local-market.md`, `02-signals.md`, `03-ideas.md`, `Idea id: <id>`; output `ideas/<id>/criteria-market.md`;
+- `venture:prosecutor-market`, `Mode: criteria`, inputs `00-contract.md`, `00-founder-knowledge.md`, `01-local-market.md`, `02-signals.md`, `03-ideas.md`, `Idea id: <id>`; output `ideas/<id>/criteria-market.md`;
 - `venture:prosecutor-execution`, same inputs, `Mode: criteria`; output `ideas/<id>/criteria-execution.md`.
 
 Log every call with its exact paths.

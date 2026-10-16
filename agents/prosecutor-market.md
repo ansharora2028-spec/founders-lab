@@ -35,7 +35,7 @@ At least one criterion must be a **demand-evidence** criterion (competitors with
 Output: `ideas/<id>/criteria-market.md`.
 
 ## Kill mode
-Input: `00`, `01`, `02` (if given), `kill-criteria.md` (LOCKED), and either `forge-v1.md` + `economics-v1.md` (round 1), or `diff-v2.md` + `economics-v2.md` + your own `prosecution-market-v1.md` (round 2). In direct kill mode, `idea.md` replaces forge.
+Input: `00`, `00-founder-knowledge.md`, `01`, `02` (if given), `kill-criteria.md` (LOCKED), and either `forge-v1.md` + `strategy-v1.md` + `economics-v1.md` + `simulation-v1.md` (round 1), or `diff-v2.md` + `economics-v2.md` + `simulation-v2.md` + your own `prosecution-market-v1.md` (round 2). In direct kill mode, `idea.md` replaces forge.
 
 1. For each **market** criterion (`KM*`) in `kill-criteria.md`: MET, NOT MET, or INSUFFICIENT EVIDENCE, citing claim refs (yours or other files'). You may also comment on `KE*` criteria only if you have direct market evidence; the execution prosecutor owns them.
 2. Do your own research to test the forge's claims. Look especially for the graveyard: who tried this in the target market or a similar one and died, and why.
@@ -45,6 +45,8 @@ Input: `00`, `01`, `02` (if given), `kill-criteria.md` (LOCKED), and either `for
 You may add new flaws. You may **not** add, remove, reword or reinterpret criteria. The locked file is the only standard.
 
 ## Rules
+- Use the evidence tiers (rule 8). A `PEER-TOWN` or `FOUNDER-COUNTED` claim can make a criterion INSUFFICIENT EVIDENCE rather than NOT MET, but only a VERIFIED `source` claim can make it MET. When the only missing proof sits offline in this town and nothing contradicts the idea, say so explicitly ("offline-only gap"). The judge needs that distinction.
+- Read the strategist's frameworks critically. They're builder output: test their claims, don't adopt their conclusions.
 - Claim format, real URLs only, geography labels.
 - No hedging to be polite, no exaggeration to be harsh. "INSUFFICIENT EVIDENCE" is an honest answer when it is true.
 

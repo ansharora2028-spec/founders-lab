@@ -13,7 +13,7 @@ These rules override every other instruction in the plugin, including the instru
 ### 1. Builders aim to pass. Judges stay neutral. A false pass is the worst outcome.
 The pipeline has two sides.
 
-- **Builders**: local-market-scout, signal-scout, generator, forge, economics-modeler. They work for the founder. **Their goal is an idea that honestly earns a PASS.** A run that ends in a PASS is their success. A run where nothing passes is a **miss**: not a total failure, because it saved the founder money and months, but a result the builders must learn from, and the report must say why the search missed. Builders search hard. They follow the money, research deeply, generate many candidates and keep the strongest. They make an idea as strong as the evidence allows.
+- **Builders**: local-market-scout, signal-scout, generator, forge, market-strategist, economics-modeler. They work for the founder. **Their goal is an idea that honestly earns a PASS.** A run that ends in a PASS is their success. A run where nothing passes is a **miss**: not a total failure, because it saved the founder money and months, but a result the builders must learn from, and the report must say why the search missed. Builders search hard. They follow the money, research deeply, generate many candidates and keep the strongest. They make an idea as strong as the evidence allows.
 - **Judges**: prosecutor-market, prosecutor-execution, evidence-auditor, judge. They do not care which way the verdict goes. Their job is the truth. They apply the same bar to every idea, whoever generated it.
 
 The worst outcome of all is a **false pass**: an idea that passes on weak or invented evidence and costs the founder real money. So builders never lower the evidence bar, inflate a number, hide a weakness or stretch a source to get a pass. Judges would catch it, and the run would be wasted. Judges never soften a finding to keep an idea alive. Nobody describes a killed idea as "almost" passing in a way that implies the verdict was wrong.
@@ -44,18 +44,29 @@ Each idea gets at most one Forge revision after its first Kill verdict. A second
 - HARD: never exceed it. An idea that needs more is rejected or killed.
 - FLEXIBLE: you may use the stretch range **only** when the stated unlock condition is met, and you must write `STRETCH USED: <constraint> — condition "<condition>" met because <evidence>` wherever you do.
 
-### 8. No invented facts
-Every factual claim carries a source URL or is labeled `ASSUMPTION`. Format:
+### 8. No invented facts: every claim carries its evidence tier
+Every factual claim carries exactly one evidence label. From strongest to weakest:
 
-```
-- <claim> [source: <url>]
-- <claim> [ASSUMPTION: <why this is reasonable>]
-```
+| label | meaning | can it support a PASS? |
+|---|---|---|
+| `[source: <url>]` | a page you opened or saw in a search result; the auditor checks it | yes, once VERIFIED |
+| `[PEER-TOWN: <towns, sources>]` | derived from sourced data on comparable towns (for example supply per 10,000 people) | supports VIABLE ON PAPER, not PASS |
+| `[FOUNDER-COUNTED: <what was counted, when>]` | something the founder observed or counted (`00-founder-knowledge.md`) | supports VIABLE ON PAPER, not PASS |
+| `[FOUNDER-ESTIMATE: <answer>]` | a founder's guess or hearsay | modelling input only, with an optimism haircut |
+| `[ASSUMPTION: <why>]` | your own reasoned assumption | modelling input only, with a haircut |
+| `[SIMULATED]` | a simulated customer persona | **never evidence**; objections only |
 
-Never invent a URL. Never cite a URL you did not open or see in a search result. If you cannot find a source, label it `ASSUMPTION` or drop the claim. The Evidence Auditor strikes unsourced, unreachable or misrepresented claims, and the Judge ignores struck claims.
+Format: `- [C07] <claim> [source: <url>]`.
 
-### 9. Honest about thin local data
+- Never invent a URL. Never cite a URL you did not open or see in a search result.
+- Never upgrade a label: a founder's guess is not a count, and a comparable town is not this town.
+- If you can't support a claim, label it `ASSUMPTION` or drop it.
+- The Evidence Auditor strikes unsourced, unreachable or misrepresented `source` claims, checks that `PEER-TOWN` claims rest on real sources, and confirms that `FOUNDER-*` claims match the founder's file. The Judge ignores struck claims.
+
+### 9. Honest about thin local data, and fair to small towns
 When research for the user's city or target market is thin, say so plainly, lower your confidence, and **never** present national or global data as local. Label every claim's geography when it is not the target market: `(national)`, `(global)`, `(other city: <name>)`.
+
+Thin *online* data is not evidence *against* an idea. Small towns are often under-served precisely because big brands and the internet haven't reached them. Before concluding something is unknowable, use what small towns do have: peer-town benchmarks, the big-brand presence map, the city profile, government data (census, district handbooks, registrations), local social footprints, and what the founder counted. When local proof that people pay is missing only because it isn't online, and nothing contradicts it, the right outcome may be **VIABLE ON PAPER** (scoring rubric), not KILL.
 
 ## Operating rules for every agent
 
@@ -74,6 +85,6 @@ When research for the user's city or target market is thin, say so plainly, lowe
 3. Enforce the visibility matrix in `skills/file-schemas/SKILL.md` § Visibility matrix. Before each agent call, check the list of paths against the matrix. If a path is not allowed, do not pass it.
 4. Log every agent call in `run-log.md` with the exact paths passed (see the run-log schema). The log is the audit trail for blindness.
 5. Launch independent agents in a single message so they run in parallel.
-6. Create and change files with the Write and Edit tools, not with shell redirection. Use Bash only for `mkdir -p`, `chmod 444`, `sha256sum`/`shasum -a 256` and `date`, one command per call, with literal paths (no shell variables). This keeps permission prompts to a minimum.
+6. Create and change files with the Write and Edit tools, not with shell redirection. Use Bash only for `mkdir -p`, `chmod 444`, `sha256sum`/`shasum -a 256`, `date` and `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/simulate.py" <economics file>`, one command per call, with literal paths (no shell variables). This keeps permission prompts to a minimum.
 7. **Real timestamps only.** Immediately before writing any time into a file (run-log rows, `created`, `locked at`, `started`, `finished`) or into an agent prompt's `Timestamp:` line, run `date -u +%Y-%m-%dT%H:%M:%SZ` and use its output. Never estimate a time; the run-log is an audit trail.
-8. Never edit an agent's output file to change its findings. The main session may only create the files it owns: `00-contract.md`, `kill-criteria.md` (merge), `idea.md` (direct kill), `fixable-flaws-v1.md`, `diff-v2.md`, `90-blueprint.md`, `91-nothing-passed.md`, `run-log.md`, `03-ideas-pivot<k>.md`, and the ledger.
+8. Never edit an agent's output file to change its findings. The main session may only create the files it owns: `00-contract.md`, `00-founder-knowledge.md`, `kill-criteria.md` (merge), `idea.md` (direct kill), `fixable-flaws-v1.md`, `diff-v2.md`, `simulation-v<n>.md` (output of `scripts/simulate.py`, never edited), `ventures/cities/<city>.md` (append only), `90-blueprint.md`, `91-nothing-passed.md`, `run-log.md`, `03-ideas-pivot<k>.md`, and the ledger.

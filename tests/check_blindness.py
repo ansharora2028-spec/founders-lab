@@ -17,8 +17,9 @@ import sys
 FORBID = {
     "prosecutor-market": ["forge-v2", "prosecution-execution", "criteria-execution", "audit-v", "verdict-v"],
     "prosecutor-execution": ["forge-v2", "prosecution-market", "criteria-market", "audit-v", "verdict-v"],
-    "forge": ["kill-criteria", "criteria-", "prosecution-", "audit-v", "verdict-v"],
+    "forge": ["kill-criteria", "criteria-", "strategy-v", "prosecution-", "audit-v", "verdict-v"],
     "economics-modeler": ["kill-criteria", "criteria-", "prosecution-", "audit-v", "verdict-v"],
+    "market-strategist": ["kill-criteria", "criteria-", "economics-v", "simulation-v", "prosecution-", "audit-v", "verdict-v"],
     "evidence-auditor": ["verdict-v"],
     "screener": ["01-local-market", "02-signals"],
     "generator": ["04-screen", "kill-criteria", "verdict-v"],

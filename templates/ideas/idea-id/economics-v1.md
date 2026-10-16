@@ -24,6 +24,12 @@ created: <ISO 8601 UTC>
 
 ## Calculations
 
+## Simulation inputs
+```json
+{"currency": "", "months": 12, "break_even_by_month": 0, "capital_limit": 0, "hours_limit_per_week": 0,
+ "inputs": {"price": {"low": 0, "likely": 0, "high": 0, "evidence": "assumption"}}}
+```
+
 ## Constraint check (conservative case only)
 | K# | constraint | conservative value | result |
 |---|---|---|---|

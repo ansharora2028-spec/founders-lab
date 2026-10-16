@@ -1,5 +1,5 @@
 ---
-description: venture check — put YOUR idea through the full feasibility check (market research focused on it, sharpening, unit economics in three scenarios, blind prosecution, evidence audit, one revision round) and get a clear verdict - DO IT (with a cheap test plan for this week) or DON'T (with the evidence and the money it saves you). Add --variants to also test up to 3 variations of your idea.
+description: venture check — put YOUR idea through the full feasibility check (market research focused on it, your own local knowledge, sharpening, a full competitor and framework analysis, unit economics in three scenarios plus a simulation, blind prosecution, evidence audit, one revision round) and get a clear verdict - DO IT (with a cheap test plan for this week), LOOKS VIABLE ON PAPER (with the assumptions to confirm first), or DON'T (with the evidence and the money it saves you). Add --variants to also test up to 3 variations of your idea.
 argument-hint: "\"<your idea in your own words>\" [--variants] [optional intake answers]"
 allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Task, AskUserQuestion, Bash(mkdir *), Bash(chmod *), Bash(sha256sum *), Bash(shasum *), Bash(date *)
 ---
@@ -36,7 +36,7 @@ Follow each stage's command file exactly, with this run's id:
 |---|---|---|---|
 | 1 | scout | `${CLAUDE_PLUGIN_ROOT}/commands/scout.md` | researches the market for this idea (path (a) focus) — local competitors, prices, failures, regulation, demand signals |
 | 2 | generate + screen + lock | `${CLAUDE_PLUGIN_ROOT}/commands/generate.md` | writes up the idea as I01, explained (how it works, need gap, how it makes money); in `check+variants`, adds up to 3 variants; screens against HARD constraints and competitors; locks kill criteria **before** any sharpening |
-| 3 | forge | `${CLAUDE_PLUGIN_ROOT}/commands/forge.md` | sharpens the idea: exact customer, narrowest wedge, path to first 100 customers, positioning, and the unit economics in conservative / base / optimistic cases |
+| 3 | forge, strategy, economics, simulation | `${CLAUDE_PLUGIN_ROOT}/commands/forge.md` | sharpens the idea (exact customer, narrowest wedge, path to first 100 customers); runs the **full framework check** independently: competitors and big players, whether you can steal their customers, your price against theirs, Porter's Five Forces, need gap, Jobs-to-be-Done, Kano, consumer behaviour, STP, bottom-up market size, Ansoff, PESTLE, 4Ps, funnel, moat and a simulated customer panel; models the unit economics; and **simulates** thousands of scenarios |
 | 4 | kill | `${CLAUDE_PLUGIN_ROOT}/commands/kill.md` § A | blind prosecution against the locked criteria, evidence audit, verdict; one evidence-only revision round if the judge says REVISE; pivots as usual |
 | 5 | verdict report and ledger | `${CLAUDE_PLUGIN_ROOT}/commands/blueprint.md` | `90-blueprint.md` (DO IT) or `91-nothing-passed.md` (DON'T), and the ledger |
 
@@ -47,16 +47,19 @@ Lead with the answer, in plain language:
 
 ```
 Your idea: <pitch>
-Verdict: DO IT — it passed | DON'T DO IT — it was killed | DON'T DO IT AS IS — it breaks <constraint>
+Verdict: DO IT — it passed | LOOKS VIABLE ON PAPER — confirm <n> things first | DON'T DO IT — it was killed | DON'T DO IT AS IS — it breaks <constraint> | DROPPED — the framework check found <reason>
 Confidence: <judge's 1–10>
 
 How it would work:   <from forge-v<n>.md / 03-ideas.md>
 The need gap:        <one or two sentences, with what the evidence did or didn't show>
 How it makes money:  <who pays, price, and the conservative case: cost per sale, customers needed to break even, months to first revenue>
+Simulation:          <viable share>% of simulated cases break even by month <K6> within your capital; it depends most on <top 2 inputs>
+Competition:         <biggest competitor, their price vs yours, and who you can win from them, from strategy-v1.md>
 Why:                 <the judge's top two decisive reasons, quoted, with file refs>
 ```
 
 Then:
+- **LOOKS VIABLE ON PAPER** → the 2–3 assumptions to confirm first, each with how to check it cheaply and a "stop if" number, then the experiments. Say plainly: "The numbers work in most simulated cases, but nobody has yet shown that people in <town> will pay. Confirm these before you spend real money."
 - **DO IT** → the 3 cheapest experiments to run this week (cost, time, success threshold) from `90-blueprint.md`, and the kill signals that should make them stop.
 - **DON'T** → the estimated money and months saved (labeled ESTIMATE), what would have to be true for it to work, and whether a variant or pivot candidate did better. Suggest `/venture:check "<revised idea>" --variants` or `/venture:run` as the next step.
 - For `check+variants`, a one-line verdict for each variant that was carried.

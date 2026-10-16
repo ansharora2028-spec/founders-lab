@@ -1,5 +1,5 @@
 ---
-description: venture run — the full pipeline from "I have an idea" (or none) to an honest verdict - intake, scout, generate, screen, lock kill criteria, forge, kill, one evidence-only revision, verdict, then a blueprint or a nothing-passed report, and the ledger. Kill is allowed to win.
+description: venture run — the full pipeline from "I have an idea" (or none) to an honest verdict - intake, scout, generate, screen, lock kill criteria, forge, kill, one evidence-only revision, verdict, then a blueprint (PASS or VIABLE ON PAPER) or a nothing-passed report, and the ledger. Builders aim to pass; judges stay neutral.
 argument-hint: "[optional intake answers, e.g. 'Pune, India; ₹1L HARD; 10 hrs/week HARD; B2C; no idea yet; quick'] | --wave2 [run_id]"
 allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Task, AskUserQuestion, Bash(mkdir *), Bash(chmod *), Bash(sha256sum *), Bash(shasum *), Bash(date *)
 ---
@@ -23,7 +23,7 @@ If `$ARGUMENTS` contains `--wave2`, this is a **second wave**: new ideas for the
 ## 1. The pipeline
 
 ```
-intake → scout → generate → screen → lock kill criteria → forge → kill → (one revision) → verdict → blueprint or nothing-passed → ledger
+intake (+ founder knowledge) → scout → generate → screen → lock kill criteria → forge → strategy (frameworks) → economics → simulation → kill → (one revision) → verdict → blueprint or nothing-passed → ledger and city memory
 ```
 
 Run each stage by reading its command file and following its instructions exactly, with the run folder created in stage 1 as the run id. Do not skip stages. Before each paid stage, print the one-line progress note the stage defines.
@@ -33,7 +33,7 @@ Run each stage by reading its command file and following its instructions exactl
 | 1 | intake | `${CLAUDE_PLUGIN_ROOT}/commands/intake.md` — pass it these arguments: `$ARGUMENTS` | `00-contract.md`, `run-log.md` |
 | 2 | scout | `${CLAUDE_PLUGIN_ROOT}/commands/scout.md` | `01-local-market.md`, `02-signals.md` |
 | 3 | generate + screen + lock | `${CLAUDE_PLUGIN_ROOT}/commands/generate.md` | `03-ideas.md`, `04-screen.md`, `ideas/<id>/kill-criteria.md` (locked) |
-| 4 | forge | `${CLAUDE_PLUGIN_ROOT}/commands/forge.md` | `forge-v1.md`, `economics-v1.md` |
+| 4 | forge, strategy, economics, simulation | `${CLAUDE_PLUGIN_ROOT}/commands/forge.md` | `forge-v1.md`, `strategy-v1.md`, `economics-v1.md`, `simulation-v1.md` |
 | 5 | kill (+ one revision, + pivots) | `${CLAUDE_PLUGIN_ROOT}/commands/kill.md` § A | `prosecution-*`, `audit-*`, `verdict-*`, `diff-v2.md`… |
 | 6 | blueprint or nothing-passed, ledger | `${CLAUDE_PLUGIN_ROOT}/commands/blueprint.md` | `90-blueprint.md` or `91-nothing-passed.md`, `LEDGER.md` |
 
@@ -42,11 +42,11 @@ Respect the contract's depth mode throughout:
 
 | mode | generate | carry forward | agent calls (no revisions) |
 |---|---|---|---|
-| quick | 3 | 2 | ~20 |
-| standard | 8 | 3 | ~28 |
-| deep | 12 | 5 | ~44 |
+| quick | 3 | 2 | ~22 |
+| standard | 8 | 3 | ~31 |
+| deep | 12 | 5 | ~49 |
 
-Each carried idea costs 8 agent calls (2 criteria writers, forge, economics, 2 prosecutors, auditor, judge); a revision round adds about 6 more for that idea.
+Each carried idea costs 9 agent calls (2 criteria writers, forge, strategist, economics, 2 prosecutors, auditor, judge) plus one script run; a revision round adds about 6 more for that idea. An idea the strategist drops stops after 4.
 
 ## 3. Early exits (both are valid outcomes)
 - Every idea rejected at Screen → go straight to stage 6 (nothing-passed).
@@ -63,13 +63,15 @@ Each carried idea costs 8 agent calls (2 criteria writers, forge, economics, 2 p
 First, for each idea that was carried forward, a short plain-language card (from the files, adding no new claims):
 
 ```
-<id> — <pitch> → <PASS | KILL | PIVOTED → id>
+<id> — <pitch> → <PASS | VIABLE ON PAPER | KILL | DROPPED (strategist) | PIVOTED → id>
   How it works:       <one or two sentences>
   The need gap:       <one sentence>
   How it makes money: <one sentence with price and who pays>
-  Verdict reason:     <the judge's top decisive reason>
+  Competition:        <biggest competitor, their price vs ours>
+  Simulation:         <viable share>% of simulated cases work
+  Verdict reason:     <the judge's top decisive reason, or the strategist's DROP reason>
 ```
 
-Then two or three plain sentences: the outcome (PASS with the idea, or NOTHING PASSED), the most decisive evidence, and the path to `90-blueprint.md` or `91-nothing-passed.md`. Then one line pointing to `/venture:ledger`.
+Then two or three plain sentences: the outcome (PASS with the idea, VIABLE ON PAPER with the assumptions to confirm, or NOTHING PASSED), the most decisive evidence, and the path to `90-blueprint.md` or `91-nothing-passed.md`. Then one line pointing to `/venture:ledger`.
 
 **If nothing passed**, say plainly that this run missed. Name the main reason from `91-nothing-passed.md` § Why the search missed, and the generation lessons. Then offer a second wave: "Try a second wave of new ideas using these lessons? It reuses your contract and research, so it costs about $3–4 per idea tested." Use AskUserQuestion where available. If the user says yes, continue with §0b on this run. In a non-interactive session, don't start it; print the command `/venture:run --wave2 <run_id>`. If most deaths were evidence-access (sources couldn't be opened), say a second wave won't help until web access works.

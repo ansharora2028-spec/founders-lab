@@ -1,6 +1,6 @@
 ---
 name: scoring-rubric
-description: The venture screen score (0-25) used only to rank ideas, and the Judge's PASS / REVISE / KILL decision rule that no score can override. Use when screening ideas or ruling on a verdict.
+description: The venture screen score (0-25) used only to rank ideas, and the Judge's PASS / VIABLE ON PAPER / REVISE / KILL decision rule that no score can override. Use when screening ideas or ruling on a verdict.
 user-invocable: false
 ---
 
@@ -71,7 +71,8 @@ Apply to claims that **survived the audit** only. Struck claims do not exist.
 
 Definitions:
 - A criterion's status is the **lower** of the two prosecutors' assessments where they overlap, and the Judge's own reading of the surviving evidence otherwise. Order: NOT MET < INSUFFICIENT EVIDENCE < MET.
-- **INSUFFICIENT EVIDENCE** counts as NOT MET for PASS purposes. It counts as FIXABLE for REVISE only if the missing evidence is obtainable through desk research (web search, public data, published reports), not through running an experiment, building a product or surveying customers.
+- **INSUFFICIENT EVIDENCE** counts as NOT MET for PASS purposes. It counts as FIXABLE for REVISE only if the missing evidence is obtainable through desk research (web search, public data, published reports), not through running an experiment, building a product or surveying customers. When the evidence is missing only because it sits offline in this town (no listings, no reviews, no local data), and nothing contradicts it, it is an **offline-only gap**: the one kind of failure VIABLE ON PAPER tolerates.
+- **Evidence tiers** (rule 8). `source` claims VERIFIED by the auditor can support a PASS. `PEER-TOWN` and `FOUNDER-COUNTED` claims can support VIABLE ON PAPER only. `FOUNDER-ESTIMATE` and `ASSUMPTION` are modelling inputs, never support. `SIMULATED` is never evidence.
 - **Demand evidence** is one of: competitors with verifiable revenue or paying customers; measurable search demand (a sourced volume or trend figure); existing spending on a worse solution. It must be VERIFIED by the auditor.
 
 Rule, applied in this order:
@@ -88,9 +89,25 @@ Rule, applied in this order:
    - the conservative economics are positive and fit the contract (FLEXIBLE stretches only where the unlock condition is met and stated).
 4. **REVISE** only if all of:
    - it is round 1;
-   - every failure is FIXABLE;
+   - every failure is FIXABLE, or is INSUFFICIENT EVIDENCE only because local data isn't findable online (an *offline-only gap*);
+   - at least one failure is fixable by desk research (otherwise a revision round can't help: go to step 5);
    - no fix would change the customer, problem or revenue model.
-5. Otherwise **KILL**. A REVISE in round 2 is a KILL.
+5. **VIABLE ON PAPER** (round 1 or 2) only if **all five** conditions hold:
+   1. **Simulation bar met.** `simulation-v<n>.md` shows ≥ **70%** of runs breaking even by the contract's time-to-first-revenue limit within the capital limit, **and** ≥ **90%** of runs staying within the HARD capital limit. Rationale: a false pass is the worst outcome, so 30% odds of failure is the most the bar tolerates, and losing more than the founder can afford must be rare.
+   2. **No FATAL flaw survived** the audit.
+   3. **The gap is backed by evidence beyond the founder's opinion.** At least one surviving `PEER-TOWN` benchmark showing under-supply, a big-brand absence with evidence, or a `FOUNDER-COUNTED` observation, consistent with the strategist's need-gap analysis.
+   4. **Only offline-only gaps remain.** Every locked criterion that isn't MET is INSUFFICIENT EVIDENCE because the proof sits offline in this town. None is NOT MET on contrary evidence, and none is desk-fixable but unfixed.
+   5. **It fits the contract and the strategy holds.** It fits every HARD constraint, and the strategist recommended CARRY with no unmitigated critical AGAINST.
+
+   A VIABLE ON PAPER verdict must list the **2–3 assumptions to confirm**: the top inputs from the simulation's sensitivity ranking that rest on founder, peer-town or assumption evidence. For each, give a cheap way to confirm it and a "stop if" threshold.
+6. Otherwise **KILL**. A REVISE in round 2 is a KILL; VIABLE ON PAPER in round 2 is allowed.
+
+**What each verdict means for the founder.**
+- **PASS:** demand is verified and the cautious economics work; run this week's experiments.
+- **VIABLE ON PAPER:** the simulated economics work in most realistic cases and the gap is backed, but proof of payment from this town couldn't be found online. Confirm the named assumptions before spending real money.
+- **KILL:** don't start.
+
+PASS is a full success for the builders. VIABLE ON PAPER is a partial success: it is never described as proven demand.
 
 **Pivot candidate (KILL only).** The Judge writes one only if all of these hold. Otherwise it writes `- none` and the reason:
 - the verdict is KILL;

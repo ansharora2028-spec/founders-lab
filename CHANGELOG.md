@@ -2,6 +2,24 @@
 
 All notable changes to this plugin are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.5.0] — 2026-10-15
+
+### Added
+- **VIABLE ON PAPER** verdict, between PASS and KILL: ≥70% of simulated runs viable, ≥90% within capital, no fatal flaw, the gap backed by peer-town / brand-absence / founder-counted evidence, only offline-only gaps left, and a strategist CARRY. It lists the 2–3 assumptions to confirm, with cheap checks and stop numbers.
+- **market-strategist** (11th agent): an independent full framework check (competitors and steal-ability, price ladder, Five Forces, Blue Ocean, JTBD, need-gap, value proposition, Kano, consumer behaviour, STP, bottom-up TAM/SAM/SOM, Ansoff, PESTLE, 4Ps, funnel, moat, simulated customer panel), with CARRY or DROP before any judge. New `frameworks` skill.
+- **Simulation:** `scripts/simulate.py`, a seeded Monte Carlo with evidence haircuts and sensitivity ranking, run by the orchestrator. `simulation-v<n>.md` per idea; `tests/test_simulate.py` in CI.
+- **Founder knowledge questionnaire** (`00-founder-knowledge.md`): observation-based, with ranges and how-known tags.
+- **Small-town toolkit** for the local scout: peer-town benchmark, big-brand presence map, city profile, government and proxy data.
+- **City memory:** `ventures/cities/<city>.md`, append-only.
+- **Evidence tiers** in rule 8: verified, peer-town, founder-counted, founder-estimate, assumption, and simulated (never evidence).
+- The generator's longlist adds the biggest competitor, our price versus theirs, why customers would switch, and the Ansoff quadrant.
+
+### Changed
+- Pipeline: forge → **strategist** → economics → **simulation** → kill.
+- Rule 9: thin online data is not evidence against an idea.
+- REVISE requires at least one desk-fixable failure.
+- Blueprint handles VIABLE ON PAPER, appends city memory, and no longer calls nothing-passed a "successful run".
+
 ## [0.4.0] — 2026-10-15
 
 ### Changed

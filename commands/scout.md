@@ -26,7 +26,9 @@ Each prompt contains **only** file paths and the output path, in this form (no c
 Run folder: <absolute RUN path>
 Input files (read only these):
 - <RUN>/00-contract.md
+- <RUN>/00-founder-knowledge.md
 - <project>/ventures/LEDGER.md        (omit this line if the ledger does not exist)
+- <project>/ventures/cities/<city>.md (local-market-scout only; omit if it does not exist)
 Output file (write exactly this one file):
 - <RUN>/01-local-market.md            (signal-scout: <RUN>/02-signals.md)
 Today's date: <YYYY-MM-DD>

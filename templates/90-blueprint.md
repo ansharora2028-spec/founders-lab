@@ -7,6 +7,7 @@ created: <ISO 8601 UTC>
 
 ## Winning idea
 - idea:
+- verdict: <PASS | VIABLE ON PAPER>
 - verdict file:
 - why it beat the others:
 
@@ -15,6 +16,10 @@ created: <ISO 8601 UTC>
 ## The need gap
 
 ## How it makes money
+
+## Assumptions to confirm first (VIABLE ON PAPER only)
+| # | assumption | how to confirm cheaply | stop if |
+|---|---|---|---|
 
 ## This week's 3 cheapest experiments
 | # | experiment | cost | time | success threshold | kill threshold |

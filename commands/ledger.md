@@ -24,7 +24,7 @@ The ledger (`ventures/LEDGER.md`) is the compounding memory of every run in this
 ## <run_id>
 - location: <city, country> | target market: <...>
 - contract summary: <one line: capital (HARD/FLEX), hours, B2B/B2C, time to revenue, risk>
-- outcome: PASS (<idea_id> — <pitch>) | NOTHING PASSED
+- outcome: PASS (<idea_id> — <pitch>) | VIABLE ON PAPER (<idea_id> — <pitch>) | NOTHING PASSED
 - ideas:
   - <idea_id> | <pitch> | <verdict> | <decisive reason> | <lens>
 - useful sources: <domains or communities that produced real, verified signals>
@@ -34,6 +34,6 @@ The ledger (`ventures/LEDGER.md`) is the compounding memory of every run in this
 - generation lessons: <from 91-nothing-passed.md § Why the search missed, or 'n/a (passed)'>
 ```
 
-- List **every** idea from `03-ideas.md` and any pivot files (for a judge-candidate pivot, the old idea's line reads `KILL → PIVOTED → <id>`), including screen rejections (`REJECTED (screen)`), ideas not carried (`NOT CARRIED (rank)`), pivots (`PIVOTED → <id>`), and halts (`HALTED (tamper)`).
+- List **every** idea from `03-ideas.md` and any pivot files (for a judge-candidate pivot, the old idea's line reads `KILL → PIVOTED → <id>`), including screen rejections (`REJECTED (screen)`), strategist drops (`DROPPED (strategist)`), viable-on-paper ideas (`VIABLE ON PAPER`), ideas not carried (`NOT CARRIED (rank)`), pivots (`PIVOTED → <id>`), and halts (`HALTED (tamper)`).
 - Decisive reason: one line, from the verdict's first decisive reason (or the screen rejection reason).
 - Useful/useless sources: derive from the scouts' "Sources consulted" lists and from the audits (domains whose claims were VERIFIED vs struck).

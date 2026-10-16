@@ -102,6 +102,43 @@ Changes:
 
 **D34. The generator checks each idea's earning ceiling at the founder's hour limit, and counts only spending on the same job as a demand anchor.** Both rules came from the v0.4 run's own "Why the search missed" lessons. The refund-claim idea was profitable per sale, but at 10 h/week it could only ever earn about ₹4,400 a month. Its "demand anchor" was coaching fees, which is spending in a nearby category, not on refund help.
 
+## v0.5 changes: fair to small towns, full framework check, simulation
+
+**D35. Thin online data is no longer treated as evidence against an idea.** Before v0.5, "no local data online" became INSUFFICIENT EVIDENCE, which counted as NOT MET, which meant KILL. That systematically punished small towns, which are often under-served precisely because big brands and the internet haven't reached them. Five changes fix it:
+1. **Evidence tiers (rule 8).** `source` (verified) > `PEER-TOWN` > `FOUNDER-COUNTED` > `FOUNDER-ESTIMATE` > `ASSUMPTION`, and `SIMULATED` is never evidence. Only verified sources support a PASS. Peer-town and founder-counted claims support VIABLE ON PAPER. The auditor checks peer-town arithmetic and sources, and checks that founder claims match the founder's file and carry the right tier.
+2. **Founder knowledge questionnaire** (`00-founder-knowledge.md`): 8 town questions plus 4 idea questions. It asks for observations, not opinions ("what did you last pay?", not "would people pay?"), with ranges and a how-known tag (counted / heard / guess), all skippable, never filled in for the founder.
+3. **The local scout's small-town toolkit:**
+   - a peer-town benchmark (5–10 comparable towns, suppliers per 10,000 people, under-served or over-served);
+   - a big-brand presence map;
+   - a city profile (how people buy, payment, trust, language, seasonality, income cycles, delivery reach, migration);
+   - government and proxy data.
+4. **City memory** (`ventures/cities/<city>.md`): append-only, verified facts only, plus peer-town results, brand presence, the city profile and founder answers (marked unverified). Every later run in that town reads it.
+5. **A new verdict, VIABLE ON PAPER** (D37).
+
+**D36. An 11th agent, `market-strategist`, runs the full framework check independently of forge (lifts the spec's 10-agent cap, at the owner's request).** It covers:
+- **competition:** competitor map (including big national players and "do nothing"), steal-ability, price ladder, Porter's Five Forces, Blue Ocean ERRC;
+- **the customer:** Jobs-to-be-Done, need-gap, value proposition canvas, Kano, consumer behaviour (adoption, trust, habit, price sensitivity, decision-maker versus user);
+- **market and strategy:** STP, bottom-up TAM/SAM/SOM, Ansoff, PESTLE, 4Ps, AIDA funnel, moat;
+- **a simulated customer panel**, for objections only.
+
+Every framework answers one decision question and ends with SUPPORTS / NEUTRAL / AGAINST (`skills/frameworks/SKILL.md`). Two critical AGAINSTs (on buyer power or substitutes, steal-ability, price ladder or channel access), or one on verified evidence that can't be fixed without a pivot, mean **DROP**: the idea stops before any judge, cheaply. A drop is a builder's own call and can't create a false pass. The strategist runs after forge, because it needs the sharpened idea, and before economics, which uses its price, funnel and churn numbers. It never sees kill criteria. The generator also gets a light version in its longlist (biggest competitor, their price versus ours, why customers would switch, Ansoff quadrant), so weak ideas die before forge. SWOT is deliberately left out: the strategist's strengths/risks summary covers it.
+
+**D37. VIABLE ON PAPER: definition and threshold.** All five must hold:
+1. ≥**70%** of simulated runs break even by the contract's time-to-first-revenue limit within the capital limit, **and** ≥**90%** of runs never exceed the HARD capital limit;
+2. no FATAL flaw survived the audit;
+3. the gap is backed by surviving PEER-TOWN, brand-absence or FOUNDER-COUNTED evidence;
+4. every unmet criterion is an *offline-only gap* (the proof sits offline in this town, and nothing contradicts it);
+5. it fits the contract, and the strategist said CARRY with no unmitigated critical AGAINST.
+
+The threshold was the owner's call to delegate. **70%** was chosen over 60% because a false pass is the worst outcome: the bar tolerates at most 30% odds of not breaking even in time, and losing more than the founder can afford must be rare (≤10% of runs). The verdict lists the 2–3 assumptions to confirm, taken from the simulation's sensitivity ranking, each with a cheap check and a "stop if" number. It is reported as "viable on paper, not proven", never as a PASS. REVISE was adjusted: round 1 REVISE now needs at least one desk-fixable failure, and tolerates offline-only gaps alongside it, so a revision round is used only when desk research can help. VIABLE ON PAPER is allowed in round 1 or 2. Direct `/venture:kill` skips the strategist, so it can't give VIABLE ON PAPER; it points to `/venture:check`.
+
+**D38. The simulation is a real script run by the orchestrator, not a builder.** `scripts/simulate.py` (standard-library Python) runs a seeded Monte Carlo: 5,000 runs by default, with triangular distributions from each input's low / likely / high. It models monthly acquisition (reach × conversion, capped by the founder's hour limit), churn, revenue, variable and fixed costs, marketing spend and cash. It reports:
+- the viable share and the share within capital;
+- P10 / P50 / P90 profit, cash and peak cash need;
+- a sensitivity ranking ("what matters most").
+
+Weaker evidence gets a cautious haircut in the unfavourable direction: 0% for verified, 10% for peer-town and founder-counted, 25% for founder estimates and assumptions. The economics agent only writes the `## Simulation inputs` JSON block. The main session runs the script and pastes its stdout unedited into `simulation-v<n>.md`, so the builder whose idea it is can't author the result. Because the seed is fixed, anyone can re-run it. Without `python3`, the simulation is marked "not run" and VIABLE ON PAPER isn't available; PASS and KILL still work. `tests/test_simulate.py` (10 tests) runs in CI.
+
 ## Test results (spec §12)
 
 All tests ran on 2026-10-15 with Claude Code 2.1.300, headless (`claude -p`), in a cloud container whose network policy blocked WebFetch to most hosts (see D20). Every intake was given in the arguments (D14). Costs are the `total_cost_usd` the CLI reported for each session.

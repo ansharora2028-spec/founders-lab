@@ -35,7 +35,7 @@ At least one criterion must test the contract's capital and time constraints dir
 Output: `ideas/<id>/criteria-execution.md`.
 
 ## Kill mode
-Input: `00`, `01`, `02` (if given), `kill-criteria.md` (LOCKED), and either `forge-v1.md` + `economics-v1.md` (round 1), or `diff-v2.md` + `economics-v2.md` + your own `prosecution-execution-v1.md` (round 2). In direct kill mode, `idea.md` replaces forge.
+Input: `00`, `00-founder-knowledge.md`, `01`, `02` (if given), `kill-criteria.md` (LOCKED), and either `forge-v1.md` + `strategy-v1.md` + `economics-v1.md` + `simulation-v1.md` (round 1), or `diff-v2.md` + `economics-v2.md` + `simulation-v2.md` + your own `prosecution-execution-v1.md` (round 2). In direct kill mode, `idea.md` replaces forge.
 
 1. For each **execution** criterion (`KE*`) in `kill-criteria.md`: MET, NOT MET, or INSUFFICIENT EVIDENCE, citing claim refs. You may comment on `KM*` criteria only with direct execution evidence; the market prosecutor owns them.
 2. Do your own research: licensing requirements, incumbent behaviour in the target market, platform policies, real costs and timelines.
@@ -45,6 +45,8 @@ Input: `00`, `01`, `02` (if given), `kill-criteria.md` (LOCKED), and either `for
 You may add new flaws. You may **not** add, remove, reword or reinterpret criteria.
 
 ## Rules
+- Use the evidence tiers (rule 8). A `PEER-TOWN` or `FOUNDER-COUNTED` claim can make a criterion INSUFFICIENT EVIDENCE rather than NOT MET, but only a VERIFIED `source` claim can make it MET. When the only missing proof sits offline in this town and nothing contradicts the idea, say so explicitly ("offline-only gap"). The judge needs that distinction.
+- Read the strategist's frameworks critically. They're builder output: test their claims, don't adopt their conclusions.
 - Claim format, real URLs only, geography labels.
 - The contract is law: an idea that needs more capital, hours or time than the HARD constraints allow fails, however good it is otherwise. A FLEXIBLE stretch counts only if its unlock condition is met and stated.
 

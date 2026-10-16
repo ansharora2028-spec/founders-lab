@@ -28,6 +28,11 @@ Collect every claim (`[Cnn] ... [source: ...]` or `[ASSUMPTION: ...]`) in the fi
   - **MISREPRESENTED** — the source exists but says something different (wrong number, wrong geography, wrong date, a national figure presented as local, a cherry-picked quote that reverses meaning);
   - **UNREACHABLE** — the URL fails, is paywalled with no visible support, or redirects to an unrelated page. Try once more before labeling. If the failure is your fetch tool itself (for example a proxy or network refusal that hits every host), write `UNREACHABLE (tool failure)` in the note column so the main session can tell an environment problem from a bad source;
   - **UNSOURCED** — a factual claim with no source and no `ASSUMPTION` label.
+- **Evidence tiers** (rule 8):
+  - `PEER-TOWN` claims: check that the underlying counts and population figures come from real, reachable sources, and that the arithmetic (per 10,000 people, the peer median) is right.
+  - `FOUNDER-COUNTED` and `FOUNDER-ESTIMATE` claims: check that they match `00-founder-knowledge.md` word for word and carry the right tier (a "guess" or "heard" answer labelled COUNTED is MISREPRESENTED).
+  - `SIMULATED` lines: check that they're never used as evidence anywhere. If they are, that use is MISREPRESENTED.
+- **Simulation:** check that every input in the economics file's `## Simulation inputs` block has an evidence tier matching the claim it comes from (for example, a price from a founder guess must be `founder-estimate`, not `verified`). Check that `simulation-v<n>.md` reports the same viable share the economics, strategy and prosecution files quote.
 - A claim honestly labeled `ASSUMPTION` is not struck, but list it if it is load-bearing (the basis of a criterion status, a FATAL flaw, or a conservative-case input).
 - A wrong arithmetic result in economics is MISREPRESENTED against the economics file itself.
 

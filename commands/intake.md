@@ -39,7 +39,32 @@ Use the AskUserQuestion tool where it is available; otherwise ask in plain chat 
 5. **Unfair advantages** — industry access, a community, distribution, a family business, rare skills. Optional, but explain that it matters. "None" is a valid answer.
 6. **Depth mode** — `quick` (generate 3, carry 2 forward; cheapest), `standard` (generate 8, carry 3; default), `deep` (generate 12, carry 5; most expensive). Default to `standard` if they have no preference. (When called from `/venture:check`, the depth mode is `check` or `check+variants` and this question is skipped.)
 
+7. **What you know about your town**: the founder knowledge questionnaire (§2b).
+
 Infer the local search language(s) and currency from the location and target market; state them in the read-back so the user can correct them.
+
+## 2b. Founder knowledge questionnaire
+The founder lives in this market and knows things no search engine does. Ask for **observations, not opinions**. "Will people pay?" gets an optimistic yes; "what did you last pay?" gets a fact. Tell the founder: "These help the research a lot, especially in smaller towns. Skip anything you don't know. A guess is fine if you say it's a guess."
+
+Ask in 2–3 short batches (AskUserQuestion where available). For every number, ask for a **range** (low / likely / high) and **how they know**: `counted` (they saw or counted it), `heard` (someone told them) or `guess`.
+
+**About the town (always):**
+1. Roughly how many people live in your town or area, and how many households or students are within 3 km of where you'd start?
+2. Who are the people you'd most likely sell to: age group, typical monthly income, salaried, business or farming families?
+3. What do people in your town travel to a bigger city to buy, or order online because it isn't available locally?
+4. Which big national brands or apps are *not* available or don't work well in your town (for example Urban Company, Blinkit, Swiggy, Lenskart, Cult.fit, PhysicsWallah centres)?
+5. How do people find services there: word of mouth, WhatsApp groups, local Instagram pages, a shopkeeper's recommendation, newspapers? Which local groups are you in, and roughly how many members do they have?
+6. How do people pay: cash, UPI, credit (udhaar)? When do they have money (salary date, harvest, festival or wedding seasons)?
+7. What do local rent (a small room or shop) and a helper's monthly wage cost?
+8. What do people around you complain about most in services or products they already pay for?
+
+**About the idea (only when there is one, as in `/venture:check` or path (a)):**
+9. What do the people you'd sell to pay *today* for this job or the nearest alternative, and how much? Give real examples: what you, your family or friends paid.
+10. Name 2–3 competitors or alternatives near you: their price, and the main complaint you've heard about each.
+11. How many potential customers could you personally reach in the first month (contacts, groups, shops, schools)?
+12. Anything else about your town that would make this work or fail?
+
+Write the answers to `00-founder-knowledge.md` in the schema, verbatim, with each number's range and how-known tag. "Skipped" is a valid answer. **Never fill in an answer the founder didn't give.** In a non-interactive session, use any answers given in the arguments and mark the rest `not asked (non-interactive)`.
 
 ## 3. Read back and confirm
 Read the whole contract back as a compact table. Ask: "Is this contract correct? Only you can change it after this point." Apply corrections and read back again until the user explicitly confirms. Do not proceed without explicit confirmation (or the non-interactive rule in §1).
@@ -47,9 +72,10 @@ Read the whole contract back as a compact table. Ask: "Is this contract correct?
 ## 4. Create the run
 1. Run `date -u +%Y-%m-%dT%H:%M:%SZ` and use it for the date in the run id and every timestamp below. `run_id` = `<YYYY-MM-DD>-<slug>`, where the slug is 2–4 kebab-case words from location and path (e.g. `2026-01-31-pune-b2c-open`). If the folder exists, append `-2`, `-3`…
 2. `mkdir -p ventures/runs/<run_id>/ideas`
-3. Write `ventures/runs/<run_id>/00-contract.md` in the schema.
+3. Write `ventures/runs/<run_id>/00-contract.md` and `ventures/runs/<run_id>/00-founder-knowledge.md` in the schema.
 4. Write `ventures/runs/<run_id>/run-log.md` in the schema, with the depth mode, `pivots used: 0/2`, the start time, and a Stages row `intake — contract confirmed`.
 5. If `ventures/LEDGER.md` does not exist, create it containing only the line `# venture ledger` and a blank line.
+6. If a city memory file `ventures/cities/<city-slug>.md` exists for the target market's city, note it in the run-log Stages row (scouts, the generator and the strategist will read it).
 
 ## 5. Report
 Tell the user the run id and folder, and the next step: `/venture:scout` (or that `/venture:run` will continue automatically).

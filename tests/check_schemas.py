@@ -28,11 +28,11 @@ heads = list(re.finditer(r"^## (\S+\.md)[^\n]*— writer[^\n]*$", text, re.M))
 schema = {}
 for i, m in enumerate(heads):
     body = text[m.end(): heads[i + 1].start() if i + 1 < len(heads) else len(text)]
-    block = re.search(r"```markdown\n(.*?)\n```", body, re.S)
+    block = re.search(r"(`{3,})markdown\n(.*?)\n\1(?!`)", body, re.S)
     if not block:
         errors.append(f"schema {m.group(1)} has no markdown block")
         continue
-    schema[os.path.basename(m.group(1))] = [l[3:].strip() for l in block.group(1).splitlines() if l.startswith("## ")]
+    schema[os.path.basename(m.group(1))] = [l[3:].strip() for l in block.group(2).splitlines() if l.startswith("## ")]
 
 
 def schema_key(name):
@@ -44,6 +44,7 @@ def schema_key(name):
         "prosecution-execution-v<n>.md": "prosecution-market-v<n>.md",
         "diff-v<n>.md": "diff-v2.md",
         "fixable-flaws-v<n>.md": "fixable-flaws-v1.md",
+        "city-slug.md": "<city-slug>.md",
     }
     for k in (name, generic, aliases.get(generic, "")):
         if k in schema:
@@ -83,11 +84,14 @@ for p in glob.glob("examples/**/*.md", recursive=True):
         errors.append(f"{p}: no front matter")
     missing = [s for s in schema[k] if s not in h2(p)]
     # The examples are real v0.1 test output, kept unedited. Two sections were added to the
-    # schemas after those runs (DECISIONS.md D24, D25, D30 and D33), so they are allowed to be absent there.
+    # schemas after those runs (DECISIONS.md D24, D25, D30, D33 and D35), so they are allowed to be absent there.
     added_later = {"Pivot candidate (KILL only)", "Fixes (round 2 only)",
                    "How it works", "Need gap", "How it makes money", "The need gap", "The ideas, explained",
                    "Money already moving", "Complaints about paid options", "Paid products people complain about",
-                   "Longlist and pass pre-check", "Why the search missed"}
+                   "Longlist and pass pre-check", "Why the search missed",
+                   "Peer-town benchmark", "Big-brand presence", "City profile", "Simulation inputs",
+                   "Simulation", "Viable-on-paper check", "Assumptions to confirm (VIABLE ON PAPER only)",
+                   "Assumptions to confirm first (VIABLE ON PAPER only)"}
     missing = [s for s in missing if s not in added_later]
     if missing:
         errors.append(f"{p}: missing sections {missing}")
