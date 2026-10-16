@@ -186,6 +186,16 @@ A full `/venture:run` with the v0.2 plugin, in the same restricted-network conta
 - **Learning loop:** `91-nothing-passed.md` § Why the search missed separated generation causes (I01's anchor was spending in a nearby category; I03's margin never worked) from evidence-access causes, wrote 4 concrete lessons, and the run offered a second wave. Lessons 1 and 2 are now built into the generator (D34).
 - **Takeaway:** the builders now produce ideas that get close to the bar on economics. What stops a PASS in this environment is verification: no page can be opened, so demand evidence can't survive the audit.
 
+### v0.5 run: small-town `/venture:check`, open network ($7.50, 14 agent calls, 0 blindness violations; saved as `examples/small-town-check-v0.5/`)
+- Idea: ₹600/month after-school spoken-English batches for class 6-10 in Satara, with K1 ₹75,000 HARD, K2 12 h/week and K6 2 months. Founder answers Q1-Q12 were given up front.
+- The whole v0.5 path ran: founder knowledge, peer-town and brand map, strategist (CARRY, no critical AGAINST), economics with simulation inputs, and `simulate.py` run by main. The simulation found 2.6% of runs viable by month 2, against the 70% bar, and 40% never break even in 12 months.
+- Verdict: **KILL**, confidence 6. The conservative case breaks the HARD capital limit (about -₹99,400 at month 12). No FATAL flaw, and the market criteria were INSUFFICIENT EVIDENCE rather than NOT MET. VIABLE ON PAPER was correctly withheld because the simulation bar failed. The report names what would flip it: a free venue, about 2.3 new students a month, and the draft Maharashtra coaching Act.
+- With the open network the auditor checked 58 claims and struck 14 for real reasons, not for blocked fetches.
+- Quirks:
+  - The judge's first `sha256sum` was blocked by the sandbox because the path was outside the shell's cwd, and the first judge call wrote no verdict. A re-run computed the matching hash with `shasum -a 256`, and the guard allows both.
+  - In this headless harness the orchestrator wrote files under a path whose directory name differed from the shell cwd. That is a test-harness artifact.
+- The standard-mode open-network run was stopped early at the user's request to save tokens. A PASS or VIABLE ON PAPER has still not been observed live.
+
 ### Observations from testing
 - **Kill won every time**, which is consistent with principle 1. It's also partly an artifact of the blocked network: when the auditor can't verify demand evidence, a PASS is impossible. A PASS path was not observed in testing. Running in an environment with open web access is the next thing to check.
 - In tests 6 and 7 the orchestrator noticed the fixture's inconsistency (verdict-v1 says REVISE; the ledger and nothing-passed report say KILL) and reported it rather than hiding it. It also declined to edit agent files or the append-only ledger.

@@ -39,3 +39,7 @@ The same fictional user on v0.4. The money map in `01-local-market.md` lists 13 
 ## pivot/ — a pivot caught and re-screened
 
 The same REVISE fixture, plus an injected `ideas/I03/forge-v2.md` (marked `TEST FIXTURE`) that changes the revenue model to a commission while claiming `pivot declared: no`. The main session detected it, marked I03 `PIVOTED → I03-P1` (`run-log.md` § Pivots), and wrote `03-ideas-pivot1.md` and `04-screen-pivot1.md`. It then ran I03-P1 from zero: new locked criteria, forge, economics, prosecution, audit, and `verdict-v1.md` (**KILL**).
+
+## small-town-check-v0.5/ — `/venture:check` in a small town, v0.5, open network
+
+A ₹600/month spoken-English batch for class 6-10 in Satara (about 1.2 lakh people), with the founder questionnaire answered (`00-founder-knowledge.md`). It shows the v0.5 additions: `strategy-v1.md` (full framework check, CARRY), `economics-v1.md` with simulation inputs, `simulation-v1.md` (2.6% viable, bar NOT MET), and an audit with real fetches. The verdict is **KILL**, confidence 6. `91-nothing-passed.md` says what would have to change. Also included are the ledger and city memory (`ventures/cities/`).
