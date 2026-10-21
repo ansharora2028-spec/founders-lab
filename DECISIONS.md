@@ -224,6 +224,20 @@ A full `/lab:ideate` with the v0.2 plugin, in the same restricted-network contai
   - In this headless harness the orchestrator wrote files under a path whose directory name differed from the shell cwd. That is a test-harness artifact.
 - The standard-mode open-network run was stopped early at the user's request to save tokens. A PASS or VIABLE ON PAPER has still not been observed live.
 
+### v0.7 run: the same Satara `/lab:test` ($8.30, 39 minutes wall, 16 agent calls, 0 blindness violations; saved as `examples/small-town-check-v0.7/`)
+- **What worked:**
+  - **Merged prosecutor:** one criteria call, one kill call per round.
+  - **Parallel step:** the strategist and the prosecutor ran side by side.
+  - **Judge:** called once per round, using the pre-judge hash rows in § Locks.
+  - **Money gate:** ran in both rounds.
+  - **Blindness:** no violations.
+  - **Smaller reads:** comparable agents used 20–45% fewer tokens than in v0.5 (forge 43k vs 62k, economics 51k vs 90k, judge 66k vs 75–92k, auditor 101k vs 136k, criteria 44k vs 108k for two). Through round 1 (11 calls) the agents used about 0.73M tokens, against 1.12M for v0.5's 14 calls.
+- **Why the total didn't drop:**
+  1. **The gate passed.** The builders' numbers at face value were 90% viable, and 0% after the evidence haircut. The gate is meant to stop only ideas whose own numbers fail. This one failed on weak evidence, and that's the judge's call.
+  2. **The judge said REVISE.** v0.5 killed in round 1. Here the decisive capital breach rested on a struck rent-deposit claim, so the judge allowed a revision round. That added 5 calls and about 0.41M tokens, and round 2 then killed it on money (₹76,600 needed vs the ₹75,000 HARD limit, confidence 8).
+  3. **Haiku scouts searched longer.** They made 79 and 60 tool calls against Sonnet's 57 and 44, and took 7.6 and 5.0 minutes against 3.4 and 2.5. They were cheaper per token but slower, with about 0.22M tokens between them. One Haiku file also typed a hyphen for an en dash in a heading; the schema checker now treats them as equal.
+- **Biggest remaining costs:** research volume, with no limit on searches. The scouts (139 tool calls) and the auditor (45 + 53 fetches) account for about 40% of agent tokens. Caps on research and output length were proposed and not yet adopted.
+
 ### Observations from testing
 - **Kill won every time**, which is consistent with principle 1. It's also partly an artifact of the blocked network: when the auditor can't verify demand evidence, a PASS is impossible. A PASS path was not observed in testing. Running in an environment with open web access is the next thing to check.
 - In tests 6 and 7 the orchestrator noticed the fixture's inconsistency (verdict-v1 says REVISE; the ledger and nothing-passed report say KILL) and reported it rather than hiding it. It also declined to edit agent files or the append-only ledger.

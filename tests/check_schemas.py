@@ -32,7 +32,7 @@ for i, m in enumerate(heads):
     if not block:
         errors.append(f"schema {m.group(1)} has no markdown block")
         continue
-    schema[os.path.basename(m.group(1))] = [l[3:].strip() for l in block.group(2).splitlines() if l.startswith("## ")]
+    schema[os.path.basename(m.group(1))] = [l[3:].strip().replace("\u2013", "-").replace("\u2014", "-") for l in block.group(2).splitlines() if l.startswith("## ")]
 
 
 def schema_key(name):
@@ -59,8 +59,12 @@ LEGACY = {
 }
 
 
+def norm(h):
+    return h.replace("\u2013", "-").replace("\u2014", "-")  # agents sometimes type a hyphen for an en dash
+
+
 def h2(path):
-    return [l[3:].strip() for l in open(path, encoding="utf-8").read().splitlines() if l.startswith("## ")]
+    return [norm(l[3:].strip()) for l in open(path, encoding="utf-8").read().splitlines() if l.startswith("## ")]
 
 
 # 2. templates

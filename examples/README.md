@@ -43,3 +43,11 @@ The same REVISE fixture, plus an injected `ideas/I03/forge-v2.md` (marked `TEST 
 ## small-town-check-v0.5/ — `/venture:check` in a small town, v0.5, open network
 
 A ₹600/month spoken-English batch for class 6-10 in Satara (about 1.2 lakh people), with the founder questionnaire answered (`00-founder-knowledge.md`). It shows the v0.5 additions: `strategy-v1.md` (full framework check, CARRY), `economics-v1.md` with simulation inputs, `simulation-v1.md` (2.6% viable, bar NOT MET), and an audit with real fetches. The verdict is **KILL**, confidence 6. `91-nothing-passed.md` says what would have to change. Also included are the ledger and city memory (`ventures/cities/`).
+
+## small-town-check-v0.7/ — the same Satara idea on v0.7
+
+The same founder answers through the v0.7 pipeline.
+- **Money gate:** `simulation-v1.md` passes it, 90% viable at face value and 0% after the evidence haircut.
+- **Round 1:** the strategist and the prosecutor ran in parallel (`strategy-v1.md`, `prosecution-v1.md`, one file covering both sides). The judge's round-1 verdict was **REVISE**.
+- **Round 2:** `forge-v2.md` → `diff-v2.md` → `economics-v2.md` and `simulation-v2.md` (the gate ran again) → **KILL** at confidence 8. The conservative case needs ₹76,600 against the ₹75,000 HARD limit.
+- `run-log.md` § Locks shows the pre-judge hash checks.
