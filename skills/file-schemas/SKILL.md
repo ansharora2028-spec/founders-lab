@@ -1,6 +1,6 @@
 ---
 name: file-schemas
-description: Exact markdown schemas for every file in a venture run folder (contract, scouting, ideas, screen, kill criteria, forge, economics, diff, prosecutions, audit, verdict, blueprint, nothing-passed, run-log, ledger) plus the visibility matrix. Read the schema for your output file before writing it.
+description: Internal reference for the Founders Lab agents (not a command). Exact markdown schemas for every file in a Founders Lab run folder (contract, scouting, ideas, screen, kill criteria, forge, economics, diff, prosecutions, audit, verdict, blueprint, nothing-passed, run-log, ledger) plus the visibility matrix. Read the schema for your output file before writing it.
 user-invocable: false
 ---
 
@@ -78,7 +78,7 @@ Paths are relative to `ventures/runs/<run_id>/`. Short names:
 | evidence-auditor | round n | every file for that idea in round n except the verdict: 00, FK, 01, 02, kill-criteria, forge-v<n> (or diff-v2 + forge-v2), strategy, economics-v<n>, simulation-v<n>, both prosecution-v<n> | verdict-v<n>, earlier verdicts |
 | judge | round n | everything for that idea, plus run-log (for the hash) | — |
 
-In **direct kill mode** (`/venture:kill "<idea>"`) there is no scouting and no forge. `ideas/I01/idea.md` (the idea as the user stated it) stands in for both the raw idea and `forge-v1`:
+In **direct kill mode** (`/lab:verdict "<idea>"`) there is no scouting and no forge. `ideas/I01/idea.md` (the idea as the user stated it) stands in for both the raw idea and `forge-v1`:
 - prosecutors in criteria mode receive `00` and `idea.md`;
 - the economics-modeler receives `00` and `idea.md` and writes `economics-v1.md` (without it a PASS is impossible under rule 3);
 - prosecutors in kill mode receive `00`, `kill-criteria.md`, `idea.md`, `economics-v1.md`;
@@ -100,7 +100,7 @@ created: <iso>
 ## Starting point
 - path: a | b | c            # a = specific idea, b = space/industry, c = nothing yet
 - in their words: "<verbatim, or 'none'>"
-- how they plan to charge: "<verbatim, or 'not asked' / 'not sure'>"   (asked by /venture:check)
+- how they plan to charge: "<verbatim, or 'not asked' / 'not sure'>"   (asked by /lab:test)
 
 ## Location profile
 - lives in: <city, country>
@@ -859,7 +859,7 @@ No encouragement. No softening.
 
 ## ventures/LEDGER.md — writer: main (append only)
 
-The ledger has a single H1 `# venture ledger` and one H2 per run, appended at the end. **Never delete or edit past entries.**
+The ledger has a single H1 `# venture ledger` and one H2 per run, appended at the end. **Never delete or edit past entries.** (The heading keeps its pre-0.6 name so existing ledgers stay valid.)
 
 ```markdown
 ## <run_id>

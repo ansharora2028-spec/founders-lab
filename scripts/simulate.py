@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""venture unit-economics simulation.
+"""Founders Lab unit-economics simulation.
 
 Reads the JSON block under "## Simulation inputs" in an economics-v<n>.md file
 (or a plain .json file), runs a seeded Monte Carlo simulation of the first

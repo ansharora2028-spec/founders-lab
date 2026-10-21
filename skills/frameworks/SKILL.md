@@ -1,6 +1,6 @@
 ---
 name: frameworks
-description: The strategy, marketing and consumer-behaviour frameworks the venture market-strategist runs on every carried idea (competitor map, steal-ability, price ladder, Porter's Five Forces, Blue Ocean ERRC, Jobs-to-be-Done, need-gap, value proposition canvas, Kano, consumer behaviour, STP, bottom-up TAM/SAM/SOM, Ansoff, PESTLE, 4Ps, AIDA funnel, moat, simulated customer panel), with the question each must answer and how to score it.
+description: Internal reference for the Founders Lab agents (not a command). The strategy, marketing and consumer-behaviour frameworks the market-strategist runs on every carried idea (competitor map, steal-ability, price ladder, Porter's Five Forces, Blue Ocean ERRC, Jobs-to-be-Done, need-gap, value proposition canvas, Kano, consumer behaviour, STP, bottom-up TAM/SAM/SOM, Ansoff, PESTLE, 4Ps, AIDA funnel, moat, simulated customer panel), with the question each must answer and how to score it.
 user-invocable: false
 ---
 

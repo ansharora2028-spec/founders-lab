@@ -7,7 +7,7 @@ check() { # expected-exit-code description payload
   rc=$?
   if [ "$rc" -eq "$1" ]; then echo "ok   $2"; else echo "FAIL $2 (exit $rc, wanted $1)"; fail=1; fi
 }
-J='"agent_type": "venture:judge", "agent_id": "a1", "hook_event_name": "PreToolUse", "tool_name": "Bash"'
+J='"agent_type": "lab:judge", "agent_id": "a1", "hook_event_name": "PreToolUse", "tool_name": "Bash"'
 check 0 "judge: sha256sum quoted path with spaces" "{$J, \"tool_input\": {\"command\": \"sha256sum \\\"/a b/ventures/runs/r/ideas/I01/kill-criteria.md\\\"\", \"description\": \"hash\"}}"
 check 0 "judge: shasum -a 256 unquoted"           "{$J, \"tool_input\": {\"command\": \"shasum -a 256 /p/ideas/I03-P1/kill-criteria.md\"}}"
 check 2 "judge: other command"                      "{$J, \"tool_input\": {\"command\": \"ls /\"}}"

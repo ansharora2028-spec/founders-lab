@@ -1,16 +1,16 @@
 ---
-description: venture generate — run generator then screener, pick the top N ideas by screen score, have both prosecutors write kill criteria from the raw ideas in parallel, merge them into kill-criteria.md and lock it (chmod 444 + SHA-256 in run-log) before any forging.
+description: Internal pipeline stage (not a slash command), followed by /lab:ideate, /lab:test, /lab:verdict and /lab:resume. generate — run generator then screener, pick the top N ideas by screen score, have both prosecutors write kill criteria from the raw ideas in parallel, merge them into kill-criteria.md and lock it (chmod 444 + SHA-256 in run-log) before any forging.
 argument-hint: "[run_id] (default: the most recent run)"
 allowed-tools: Read, Write, Edit, Glob, Agent, Task, Bash(mkdir *), Bash(chmod *), Bash(sha256sum *), Bash(shasum *), Bash(date *)
 ---
 
-# /venture:generate
+# Stage: generate
 
 ## 0. Load the rules and find the run
-1. Read `${CLAUDE_PLUGIN_ROOT}/skills/venture-rules/SKILL.md`. Read `ventures/LEDGER.md` if it exists.
+1. Read `${CLAUDE_PLUGIN_ROOT}/skills/rules/SKILL.md`. Read `ventures/LEDGER.md` if it exists.
 2. Read the `kill-criteria.md` and `run-log.md` sections of `${CLAUDE_PLUGIN_ROOT}/skills/file-schemas/SKILL.md`, and its Visibility matrix.
 3. `RUN` = `ventures/runs/<$ARGUMENTS>` if a run id is given, else the most recent folder in `ventures/runs/`.
-4. Require `RUN/00-contract.md`, `RUN/01-local-market.md`, `RUN/02-signals.md`. If scouting is missing, tell the user to run `/venture:scout` and stop.
+4. Require `RUN/00-contract.md`, `RUN/01-local-market.md`, `RUN/02-signals.md`. If scouting is missing, tell the user to run `/lab:resume` and stop.
 5. Read the depth mode from the contract: quick → N=2, standard → N=3, deep → N=5, check → N=1, check+variants → N=2.
 
 All agent prompts below use this form and contain nothing else (no chat context, no summaries of other files):
@@ -31,19 +31,19 @@ Timestamp: <output of date -u +%Y-%m-%dT%H:%M:%SZ, run just before this call>
 ## 1. Generate
 Progress note: `Generating <count> ideas (depth: <mode>).`
 
-Agent `venture:generator` with inputs `00-contract.md`, `00-founder-knowledge.md`, `01-local-market.md`, `02-signals.md`, `ventures/LEDGER.md` (if it exists), the city memory file (if it exists), and, in a second wave, the previous run's `91-nothing-passed.md`; output `03-ideas.md`. Log the call in `run-log.md`.
+Agent `lab:generator` with inputs `00-contract.md`, `00-founder-knowledge.md`, `01-local-market.md`, `02-signals.md`, `ventures/LEDGER.md` (if it exists), the city memory file (if it exists), and, in a second wave, the previous run's `91-nothing-passed.md`; output `03-ideas.md`. Log the call in `run-log.md`.
 
 ## 2. Screen
 Progress note: `Screening <count> ideas against hard constraints and competitors (paid stage: web search).`
 
-Agent `venture:screener` with inputs `00-contract.md`, `03-ideas.md`, `ventures/LEDGER.md` (if it exists); output `04-screen.md`. **Do not** pass `01` or `02`. Log the call.
+Agent `lab:screener` with inputs `00-contract.md`, `03-ideas.md`, `ventures/LEDGER.md` (if it exists); output `04-screen.md`. **Do not** pass `01` or `02`. Log the call.
 
 ## 3. Pick the top N
-From `04-screen.md` § Ranking, take the top N non-rejected ideas. If fewer than N survive the screen, take all survivors. If **none** survive, skip to the nothing-passed report (`/venture:blueprint`) — that is a valid outcome.
+From `04-screen.md` § Ranking, take the top N non-rejected ideas. If fewer than N survive the screen, take all survivors. If **none** survive, skip to the nothing-passed report (`/lab:resume`) — that is a valid outcome.
 
 Path (a): the user's original idea always goes through Screen. It is carried forward only if it ranks in the top N, like any other idea; if it is not carried, tell the user its rank and score.
 
-**Check modes** (`check`, `check+variants`, from `/venture:check`): the user's original idea (I01) is always carried forward unless Screen REJECTS it on a HARD constraint, whatever its score. In `check+variants`, also carry the best-ranked non-rejected variant. A rejected I01 is a verdict, not a failure of the run: report which constraint it breaks.
+**Check modes** (`check`, `check+variants`, from `/lab:test`): the user's original idea (I01) is always carried forward unless Screen REJECTS it on a HARD constraint, whatever its score. In `check+variants`, also carry the best-ranked non-rejected variant. A rejected I01 is a verdict, not a failure of the run: report which constraint it breaks.
 
 Show the user every idea, in rank order, explained in plain language, using only what `03-ideas.md` and `04-screen.md` say (add no new claims):
 
@@ -62,8 +62,8 @@ Progress note: `Locking kill criteria for <N> ideas — 2 prosecutors per idea i
 For each carried idea `<id>`: `mkdir -p RUN/ideas/<id>`.
 
 Then launch, **in one message**, for every carried idea, both:
-- `venture:prosecutor-market`, `Mode: criteria`, inputs `00-contract.md`, `00-founder-knowledge.md`, `01-local-market.md`, `02-signals.md`, `03-ideas.md`, `Idea id: <id>`; output `ideas/<id>/criteria-market.md`;
-- `venture:prosecutor-execution`, same inputs, `Mode: criteria`; output `ideas/<id>/criteria-execution.md`.
+- `lab:prosecutor-market`, `Mode: criteria`, inputs `00-contract.md`, `00-founder-knowledge.md`, `01-local-market.md`, `02-signals.md`, `03-ideas.md`, `Idea id: <id>`; output `ideas/<id>/criteria-market.md`;
+- `lab:prosecutor-execution`, same inputs, `Mode: criteria`; output `ideas/<id>/criteria-execution.md`.
 
 Log every call with its exact paths.
 
@@ -80,4 +80,4 @@ For each carried idea:
 Add a Stages row `generate — <n> ideas, <k> carried, criteria locked`.
 
 ## 6. Report
-Show the carried ideas with their pitches and the number of locked criteria each. Do **not** show the criteria text to the user in a way that will be repeated to Forge; Forge never sees it. Next step: `/venture:forge`.
+Show the carried ideas with their pitches and the number of locked criteria each. Do **not** show the criteria text to the user in a way that will be repeated to Forge; Forge never sees it. Next step: `/lab:forge`.

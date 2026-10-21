@@ -1,15 +1,15 @@
 ---
-description: venture intake — capture starting point, location, target market, constraints (HARD/FLEXIBLE), unfair advantages and depth mode, confirm them with the user, and write 00-contract.md for a new run.
+description: Internal pipeline stage (not a slash command), followed by /lab:ideate, /lab:test, /lab:verdict and /lab:resume. intake — capture starting point, location, target market, constraints (HARD/FLEXIBLE), unfair advantages and depth mode, confirm them with the user, and write 00-contract.md for a new run.
 argument-hint: "[optional: anything you already want to tell intake, e.g. 'Pune, India; ₹1L hard; 10 hrs/week; B2C; no idea yet; quick']"
 allowed-tools: Read, Write, Edit, Glob, AskUserQuestion, Bash(mkdir *), Bash(date *)
 ---
 
-# /venture:intake
+# Stage: intake
 
-You are the main session of the venture pipeline. Only you talk to the user.
+You are the main session of the Founders Lab pipeline. Only you talk to the user.
 
 ## 0. Load the rules
-1. Read `${CLAUDE_PLUGIN_ROOT}/skills/venture-rules/SKILL.md` and follow it for the rest of this command.
+1. Read `${CLAUDE_PLUGIN_ROOT}/skills/rules/SKILL.md` and follow it for the rest of this command.
 2. Read the `00-contract.md` and `run-log.md` sections of `${CLAUDE_PLUGIN_ROOT}/skills/file-schemas/SKILL.md`.
 3. If `ventures/LEDGER.md` exists in the current project directory, read it. If a past run has the same location, mention it in one line ("Your ledger has N past runs for <city>; ideas that died there won't be regenerated without a material change.").
 
@@ -37,7 +37,7 @@ Use the AskUserQuestion tool where it is available; otherwise ask in plain chat 
    - K9 anything else they want to add
    If the user gives a value without saying HARD or FLEXIBLE, ask. If they don't know, default to HARD and tell them.
 5. **Unfair advantages** — industry access, a community, distribution, a family business, rare skills. Optional, but explain that it matters. "None" is a valid answer.
-6. **Depth mode** — `quick` (generate 3, carry 2 forward; cheapest), `standard` (generate 8, carry 3; default), `deep` (generate 12, carry 5; most expensive). Default to `standard` if they have no preference. (When called from `/venture:check`, the depth mode is `check` or `check+variants` and this question is skipped.)
+6. **Depth mode** — `quick` (generate 3, carry 2 forward; cheapest), `standard` (generate 8, carry 3; default), `deep` (generate 12, carry 5; most expensive). Default to `standard` if they have no preference. (When called from `/lab:test`, the depth mode is `check` or `check+variants` and this question is skipped.)
 
 7. **What you know about your town**: the founder knowledge questionnaire (§2b).
 
@@ -58,7 +58,7 @@ Ask in 2–3 short batches (AskUserQuestion where available). For every number, 
 7. What do local rent (a small room or shop) and a helper's monthly wage cost?
 8. What do people around you complain about most in services or products they already pay for?
 
-**About the idea (only when there is one, as in `/venture:check` or path (a)):**
+**About the idea (only when there is one, as in `/lab:test` or path (a)):**
 9. What do the people you'd sell to pay *today* for this job or the nearest alternative, and how much? Give real examples: what you, your family or friends paid.
 10. Name 2–3 competitors or alternatives near you: their price, and the main complaint you've heard about each.
 11. How many potential customers could you personally reach in the first month (contacts, groups, shops, schools)?
@@ -78,4 +78,4 @@ Read the whole contract back as a compact table. Ask: "Is this contract correct?
 6. If a city memory file `ventures/cities/<city-slug>.md` exists for the target market's city, note it in the run-log Stages row (scouts, the generator and the strategist will read it).
 
 ## 5. Report
-Tell the user the run id and folder, and the next step: `/venture:scout` (or that `/venture:run` will continue automatically).
+Tell the user the run id and folder, and the next step: `/lab:resume` (or that `/lab:ideate` will continue automatically).

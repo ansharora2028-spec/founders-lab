@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Audit venture blindness from Claude Code stream-json transcripts.
+"""Audit Founders Lab blindness from Claude Code stream-json transcripts.
 
 Usage:
-  claude -p '/venture:run ...' --output-format stream-json --verbose > run.log
+  claude -p '/lab:ideate ...' --output-format stream-json --verbose > run.log
   python3 tests/check_blindness.py run.log [more.log ...]
 
 Checks two things against the visibility matrix in skills/file-schemas/SKILL.md:

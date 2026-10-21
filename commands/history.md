@@ -1,22 +1,22 @@
 ---
-description: venture ledger — summarize past venture runs from ventures/LEDGER.md, or search them by location, idea, or cause of death. Also defines how every run appends its ledger entry.
+description: What have you tested before? Summarize or search your past Founders Lab runs (ventures/LEDGER.md) by town, idea, verdict or cause of death.
 argument-hint: "[search terms, e.g. 'Pune', 'tiffin', 'CAC', 'killed']"
 allowed-tools: Read, Write, Edit, Glob, Grep
 ---
 
-# /venture:ledger
+# /lab:history
 
 The ledger (`ventures/LEDGER.md`) is the compounding memory of every run in this project: which ideas died where and why, which sources produced real signals, which were useless. Scouts and the generator read it at the start of each run.
 
 ## Show or search
-1. Read `${CLAUDE_PLUGIN_ROOT}/skills/venture-rules/SKILL.md` and the Ledger section of `${CLAUDE_PLUGIN_ROOT}/skills/file-schemas/SKILL.md`.
-2. If `ventures/LEDGER.md` does not exist: say there are no past runs and suggest `/venture:run`. Stop.
+1. Read `${CLAUDE_PLUGIN_ROOT}/skills/rules/SKILL.md` and the Ledger section of `${CLAUDE_PLUGIN_ROOT}/skills/file-schemas/SKILL.md`.
+2. If `ventures/LEDGER.md` does not exist: say there are no past runs and suggest `/lab:ideate`. Stop.
 3. Arguments: `$ARGUMENTS`
    - **No arguments → summary:** number of runs; outcomes (PASS vs NOTHING PASSED); a table of runs (run id, location, target market, outcome); the most common causes of death (group decisive reasons into themes such as "no verified demand", "conservative CAC > price", "capital HARD limit", "licensing", "platform dependency"); the sources most often marked useful and useless; average local coverage per location.
    - **Arguments → search:** match terms case-insensitively against location, target market, idea pitches, verdicts, decisive reasons and lenses. Show each matching run and, within it, only the matching idea lines. For each match, give the run folder path so the user can open the verdict files (`ventures/runs/<run_id>/ideas/<id>/verdict-v<n>.md`).
 4. Never edit the ledger from this command when showing or searching.
 
-## Append (called at the end of every run by /venture:blueprint and direct /venture:kill)
+## Append (called at the end of every run by the blueprint stage and by `/lab:verdict`)
 1. If `ventures/LEDGER.md` does not exist, create it with `# venture ledger` and a blank line.
 2. Append **one** entry at the end of the file, in exactly this schema. **Never delete or modify past entries.** If an entry with the same run id already exists (a re-run of blueprint), append a new entry headed `## <run_id> (amended <YYYY-MM-DD>)` instead of editing the old one.
 

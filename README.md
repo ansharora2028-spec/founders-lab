@@ -1,10 +1,10 @@
-# venture
+# Founders Lab
 
 **Test a business idea on paper before you spend your savings finding out the hard way.**
 
 Most new businesses don't fail because the founder wasn't hard-working. They fail because nobody wanted to pay, or because the numbers never added up, and the founder only found out after putting in months of time and money.
 
-`venture` helps aspiring founders find that out *first*, for the cost of a few dollars of AI usage. Its research agents work hard to find an idea that can win: one that fits your budget, time and skills, in a market where people already pay (or it takes the idea you already have). Then independent critics try hard to kill each one. Each idea must pass a fixed checklist, written before anyone polishes the idea, and survive a fact-check of every claim. Only ideas that hold up get a green light.
+Founders Lab helps aspiring founders find that out *first*, for the cost of a few dollars of AI usage. Its research agents work hard to find an idea that can win: one that fits your budget, time and skills, in a market where people already pay (or it takes the idea you already have). Then independent critics try hard to kill each one. Each idea must pass a fixed checklist, written before anyone polishes the idea, and survive a fact-check of every claim. Only ideas that hold up get a green light.
 
 You end up with one of three answers:
 
@@ -12,7 +12,7 @@ You end up with one of three answers:
 - 🟡 **Viable on paper.** The money math works in most of thousands of simulated scenarios, the gap is backed by evidence (similar towns, missing big brands, things you counted yourself), and nothing fatal turned up. What's missing is proof that people in *your* town pay, because that proof isn't online. You get the 2–3 things to confirm, how to check each cheaply, and the numbers that should make you stop. This is the honest answer for many small-town ideas.
 - ❌ **Don't do it.** You get the reasons, the evidence, why the search missed, and an estimate of the money and months you just saved. It's not the answer you hoped for, but it's far cheaper than learning it after spending your savings, and you can ask for a second wave of ideas built on those lessons.
 
-> `venture` is research help, not financial advice. A "do it" means the desk research holds up. You still test it in the real world, cheaply, before you spend real money.
+> Founders Lab is research help, not financial advice. A "do it" means the desk research holds up. You still test it in the real world, cheaply, before you spend real money.
 
 ---
 
@@ -49,36 +49,40 @@ That's a real idea card from a test run, lightly trimmed. Every number is either
 
 ## Get started in 3 steps
 
-**1. Get Claude Code.** venture is a plugin for [Claude Code](https://claude.com/claude-code), Anthropic's AI assistant. It runs in your terminal, in the desktop app, or at claude.ai/code.
+**1. Get Claude Code.** Founders Lab is a plugin for [Claude Code](https://claude.com/claude-code), Anthropic's AI assistant. It runs in your terminal, in the desktop app, or at claude.ai/code.
 
-**2. Install venture.** Paste these two lines into Claude Code:
+**2. Install it.** Paste these two lines into Claude Code:
 
 ```
 /plugin marketplace add ansharora2028-spec/founders-lab
-/plugin install venture@venture
+/plugin install lab@founders-lab
 ```
 
-**3. Pick the command that matches where you are:**
+Every command starts with `/lab:`.
+
+**3. Pick the command that matches where you are.** There are only five:
 
 | Where you are | Type this | What happens |
 |---|---|---|
-| **I have no idea yet** | `/venture:run` | It asks about you, researches your market, suggests ideas that fit you, and tests the best ones. |
-| **I have an idea and want the full check** | `/venture:check "your idea"` | Your idea goes through the full process: market research, your local knowledge, sharpening, a full competitor and strategy check, money math plus a simulation of thousands of scenarios, a fact-checked prosecution, and one chance to fix weak spots. Then a clear **do it / viable on paper / don't do it**. |
-| **I have an idea and want a quick verdict** | `/venture:kill "your idea"` | A faster, cheaper verdict on the idea exactly as you wrote it, with no research or improvement step. |
+| **I have no idea yet** | `/lab:ideate` | It asks about you, researches your market, suggests ideas that fit you, and tests the best ones. |
+| **I have an idea and want the full check** | `/lab:test "your idea"` | Your idea goes through the full process: market research, your local knowledge, sharpening, a full competitor and strategy check, money math plus a simulation of thousands of scenarios, a fact-checked prosecution, and one chance to fix weak spots. Then a clear **do it / viable on paper / don't do it**. |
+| **I have an idea and want a quick verdict** | `/lab:verdict "your idea"` | A faster, cheaper verdict on the idea exactly as you wrote it, with no research or improvement step. |
+| **I want to see what I tested before** | `/lab:history` | Your past runs, searchable by town, idea, verdict or why it died. |
+| **A run stopped partway** | `/lab:resume` | Carries on from the first unfinished step. Nothing already done is paid for again. |
 
 Examples:
 
 ```
-/venture:check "home-cooked tiffin subscription for students near Pune University, ₹2,500/month"
-/venture:check "online Excel classes for small shop owners in Hindi" --variants
-/venture:kill "a new social network for everyone, ₹50k budget"
+/lab:test "home-cooked tiffin subscription for students near Pune University, ₹2,500/month"
+/lab:test "online Excel classes for small shop owners in Hindi" --variants
+/lab:verdict "a new social network for everyone, ₹50k budget"
 ```
 
 `--variants` also tests up to 3 versions of your idea, each changing one thing (a different customer, channel, price model or city). It carries the best variant alongside your original.
 
 ## What it will ask you
 
-Before anything runs, venture asks a few questions, one at a time. Your answers become your **contract**, and every idea has to respect it:
+Before anything runs, it asks a few questions, one at a time. Your answers become your **contract**, and every idea has to respect it:
 
 1. **Your idea** (or that you don't have one yet), in your own words, and how you'd charge for it, if you know.
 2. **Where you live**, and **who you want to sell to** (your city, your country, abroad, or online).
@@ -123,21 +127,21 @@ Everything is saved in a `ventures/` folder in your project. A running log of ev
 
 | What you run | Typical time | Typical AI usage cost* |
 |---|---|---|
-| `/venture:kill "idea"` | a few minutes | about $2–3 |
-| `/venture:check "idea"` | 10–20 minutes | about $4–6 |
-| `/venture:check "idea" --variants` | 15–30 minutes | about $7–10 |
-| `/venture:run` in `quick` mode (2 ideas tested) | 15–30 minutes | about $7–12 (more if an idea earns a revision round) |
-| `/venture:run` in `standard` mode (3 ideas tested) | 20–40 minutes | about $10–12 |
+| `/lab:verdict "idea"` | a few minutes | about $2–3 |
+| `/lab:test "idea"` | 10–20 minutes | about $4–6 |
+| `/lab:test "idea" --variants` | 15–30 minutes | about $7–10 |
+| `/lab:ideate` in `quick` mode (2 ideas tested) | 15–30 minutes | about $7–12 (more if an idea earns a revision round) |
+| `/lab:ideate` in `standard` mode (3 ideas tested) | 20–40 minutes | about $10–12 |
 
-\*On the default models. The `/venture:kill`, `/venture:check` and `quick` figures were measured in testing. The others are estimates, based on each fully tested idea costing roughly $3–4. A revision round or a pivot adds more.
+\*On the default models. The `/lab:verdict`, `/lab:test` and `quick` figures were measured in testing. The others are estimates, based on each fully tested idea costing roughly $3–4. A revision round or a pivot adds more.
 
 ## Good to know
 
-- **Small towns have less data online, but that isn't held against them.** venture compares your town with similar towns (for example tutors per 10,000 people), checks which big brands haven't arrived, profiles how people buy there, and uses what you've counted yourself. When the only thing missing is local proof that isn't online, the answer is "viable on paper", not "don't". It never passes national numbers off as local.
+- **Small towns have less data online, but that isn't held against them.** Founders Lab compares your town with similar towns (for example tutors per 10,000 people), checks which big brands haven't arrived, profiles how people buy there, and uses what you've counted yourself. When the only thing missing is local proof that isn't online, the answer is "viable on paper", not "don't". It never passes national numbers off as local.
 - **It tries hard to find a winner, and judges strictly.** The research and idea agents work to find an idea that passes. They follow where people already spend money, list many candidates, and pre-check each against the bar. The critics and the judge stay neutral. When nothing passes, the report says why the search missed and offers a second wave of ideas built on those lessons. An honest "no" is still far cheaper than a year of trying.
 - **It doesn't make things up.** Every fact has a link or is labeled as an estimate, and a fact-checker removes anything that doesn't hold up.
 - **It needs Python 3** for the simulation. It comes with most Macs and Linux machines; on Windows, install it from python.org. Without it, everything else still works, but "viable on paper" verdicts aren't possible.
-- **It needs web access.** The fact-checker has to open sources. If your network blocks sites, claims get struck and every idea dies, and venture warns you when that happens.
+- **It needs web access.** The fact-checker has to open sources. If your network blocks sites, claims get struck and every idea dies, and Founders Lab warns you when that happens.
 
 ---
 
@@ -169,28 +173,25 @@ The rest is for the curious and for contributors.
 
 | Command | What it does |
 |---|---|
-| `/venture:run` | The full pipeline, from no idea (or a space) to a verdict. |
-| `/venture:run --wave2 [run_id]` | When nothing passed: a second wave of new ideas from the same contract and research, using the lessons from what died. No new scouting cost. |
-| `/venture:check "<idea>" [--variants]` | The full pipeline on your own idea: scout, explain, screen, lock criteria, forge, economics, kill, one revision, verdict. |
-| `/venture:kill "<idea>"` | A fast verdict on an idea as stated: minimal intake, locked criteria, economics, prosecution, audit, judgement. No forge, no revision. |
-| `/venture:intake` | Builds your constraint contract (`00-contract.md`). |
-| `/venture:scout` | Local-market and signal research, in parallel. |
-| `/venture:generate` | Generates and explains ideas, screens them, and locks kill criteria for the top N. |
-| `/venture:forge` | Sharpens each carried idea and models its unit economics. |
-| `/venture:kill` (no idea) | Prosecution, audit and verdict for the current run, including the revision round. |
-| `/venture:blueprint` | Writes the blueprint (pass) or nothing-passed report, and updates the ledger. |
-| `/venture:ledger [search]` | Summarizes or searches past runs by location, idea or cause of death. |
+| `/lab:ideate` | The full pipeline, from no idea (or a space) to a verdict. |
+| `/lab:ideate --wave2 [run_id]` | When nothing passed: a second wave of new ideas from the same contract and research, using the lessons from what died. No new scouting cost. |
+| `/lab:test "<idea>" [--variants]` | The full pipeline on your own idea: scout, explain, screen, lock criteria, forge, economics, kill, one revision, verdict. |
+| `/lab:verdict "<idea>"` | A fast verdict on an idea as stated: minimal intake, locked criteria, economics, prosecution, audit, judgement. No forge, no revision. |
+| `/lab:history [search]` | Summarizes or searches past runs by location, idea or cause of death. |
+| `/lab:resume [run_id]` | Continues a stopped `/lab:ideate` or `/lab:test` run from the first unfinished stage. |
 
-You can pre-fill intake answers in any command. For example: `/venture:run Pune, India; target Pune; ₹1L capital HARD; 10 hrs/week HARD; B2C only; no idea yet; quick`.
+Inside, every command follows the same six stage files in `stages/` (intake, scout, generate, forge, kill, blueprint). They are not commands, so the menu stays short. The five rulebooks in `skills/` are internal too: the agents read them, and you never need to.
+
+You can pre-fill intake answers in any command. For example: `/lab:ideate Pune, India; target Pune; ₹1L capital HARD; 10 hrs/week HARD; B2C only; no idea yet; quick`.
 
 ### Depth modes
 
 | Mode | Ideas written up | Carried to forge and kill | Agent calls (no revisions) |
 |---|---|---|---|
-| `check` (from `/venture:check`) | 1: your idea | 1 | ~13 |
+| `check` (from `/lab:test`) | 1: your idea | 1 | ~13 |
 | `check+variants` (from `--variants`) | your idea + up to 3 variants | 2 | ~22 |
 | `quick` | 3 | 2 | ~22 |
-| `standard` (default for `/venture:run`) | 8 | 3 | ~31 |
+| `standard` (default for `/lab:ideate`) | 8 | 3 | ~31 |
 | `deep` | 12 | 5 | ~49 |
 
 Each carried idea gets 2 criteria writers, forge, the strategist, economics, 2 prosecutors, an auditor and a judge (9 calls), plus one simulation-script run, and about 6 more calls if it earns a revision round. An idea the strategist drops stops after 4 calls. Prosecutors, auditor and judge use your session model, the screener runs on Haiku, and everything else runs on Sonnet. Each choice is one `model:` line in `agents/*.md`.
@@ -246,7 +247,7 @@ In round 2, prosecutors receive `diff-v2.md` and `economics-v2.md`, never `forge
 ```
 ventures/
 ├── LEDGER.md                       # persistent across runs: the compounding memory
-├── cities/<city>.md                # what venture has verified about each town
+├── cities/<city>.md                # what Founders Lab has verified about each town
 └── runs/<YYYY-MM-DD>-<slug>/
     ├── 00-contract.md              # your contract + location profile
     ├── 01-local-market.md          # local research, with a 0–10 coverage score
@@ -275,7 +276,7 @@ Every file follows a fixed schema (`skills/file-schemas/SKILL.md`), and empty co
 - scouts skip sources that proved useless for your location;
 - the generator won't bring back an idea that already died under a similar contract unless something material changed.
 
-Search it with `/venture:ledger`.
+Search it with `/lab:history`.
 
 ### Testing and CI
 
@@ -292,17 +293,18 @@ Design decisions and full test results are in [DECISIONS.md](DECISIONS.md).
 
 ### Other ways to install
 
-From your shell: `claude plugin marketplace add ansharora2028-spec/founders-lab && claude plugin install venture@venture`. On Claude Code 2.1.275 or later, one line works: `/plugin install venture --marketplace ansharora2028-spec/founders-lab`. To try it from a local clone without installing: `claude --plugin-dir /path/to/founders-lab`.
+From your shell: `claude plugin marketplace add ansharora2028-spec/founders-lab && claude plugin install lab@founders-lab`. On Claude Code 2.1.275 or later, one line works: `/plugin install lab --marketplace ansharora2028-spec/founders-lab`. To try it from a local clone without installing: `claude --plugin-dir /path/to/founders-lab`.
 
 ### Repository layout
 
 ```
-.claude-plugin/  plugin.json, marketplace.json (the name "venture" lives only here)
+.claude-plugin/  plugin.json, marketplace.json (plugin name "lab", marketplace name "founders-lab")
 agents/          11 specialist subagents
-commands/        9 /venture:* commands (the orchestrator)
+commands/        the 5 /lab:* commands you type (ideate, test, verdict, history, resume)
+stages/          the 6 internal pipeline stages the commands follow (intake, scout, generate, forge, kill, blueprint)
 scripts/         simulate.py: the seeded Monte Carlo simulation (standard-library Python)
 hooks/           judge-bash-guard: the judge's shell can only hash kill-criteria.md
-skills/          venture-rules, scoring-rubric, idea-lenses, frameworks, file-schemas
+skills/          rules, scoring-rubric, idea-lenses, frameworks, file-schemas
 templates/       empty copies of every run file
 examples/        real test runs
 tests/           blindness, schema and hook checks; e2e script; recorded transcripts

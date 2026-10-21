@@ -1,6 +1,6 @@
 ---
 name: scoring-rubric
-description: The venture screen score (0-25) used only to rank ideas, and the Judge's PASS / VIABLE ON PAPER / REVISE / KILL decision rule that no score can override. Use when screening ideas or ruling on a verdict.
+description: Internal reference for the Founders Lab agents (not a command). The screen score (0-25) used only to rank ideas, and the Judge's PASS / VIABLE ON PAPER / REVISE / KILL decision rule that no score can override. Use when screening ideas or ruling on a verdict.
 user-invocable: false
 ---
 

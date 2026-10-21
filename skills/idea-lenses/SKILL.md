@@ -1,6 +1,6 @@
 ---
 name: idea-lenses
-description: The six idea-generation lenses for the venture generator (unbundle, transplant, boring B2B, unfair advantage, contrarian, cheap-now), with how to apply each to scouting signals and a constraint contract.
+description: Internal reference for the Founders Lab agents (not a command). The six idea-generation lenses for the generator (unbundle, transplant, boring B2B, unfair advantage, contrarian, cheap-now), with how to apply each to scouting signals and a constraint contract.
 user-invocable: false
 ---
 

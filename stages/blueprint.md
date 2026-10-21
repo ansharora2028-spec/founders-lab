@@ -1,13 +1,13 @@
 ---
-description: venture blueprint — if any idea passed or is viable on paper, write 90-blueprint.md (best idea, assumptions to confirm for viable-on-paper, 3 cheapest experiments, MVP scope, pricing, first 100 customers, 30-day plan, kill signals); if nothing passed, write 91-nothing-passed.md (deaths with evidence, estimated savings, patterns, constraints worth stretching, next directions). Then append the ledger and the city memory.
+description: Internal pipeline stage (not a slash command), followed by /lab:ideate, /lab:test, /lab:verdict and /lab:resume. blueprint — if any idea passed or is viable on paper, write 90-blueprint.md (best idea, assumptions to confirm for viable-on-paper, 3 cheapest experiments, MVP scope, pricing, first 100 customers, 30-day plan, kill signals); if nothing passed, write 91-nothing-passed.md (deaths with evidence, estimated savings, patterns, constraints worth stretching, next directions). Then append the ledger and the city memory.
 argument-hint: "[run_id] (default: the most recent run)"
 allowed-tools: Read, Write, Edit, Glob, Bash(date *)
 ---
 
-# /venture:blueprint
+# Stage: blueprint
 
 ## 0. Load the rules and find the run
-1. Read `${CLAUDE_PLUGIN_ROOT}/skills/venture-rules/SKILL.md`, and the `90-blueprint.md` and `91-nothing-passed.md` sections of `${CLAUDE_PLUGIN_ROOT}/skills/file-schemas/SKILL.md`.
+1. Read `${CLAUDE_PLUGIN_ROOT}/skills/rules/SKILL.md`, and the `90-blueprint.md` and `91-nothing-passed.md` sections of `${CLAUDE_PLUGIN_ROOT}/skills/file-schemas/SKILL.md`.
 2. `RUN` = `ventures/runs/<$ARGUMENTS>` or the most recent run folder.
 3. Collect every idea's final status, in this order of precedence:
    1. recorded in `run-log.md` § Pivots as `PIVOTED → <id>` → **PIVOTED** (ignore its leftover verdict file: a round-1 REVISE from a forge pivot, or a KILL that produced a judge pivot candidate);
@@ -15,7 +15,7 @@ allowed-tools: Read, Write, Edit, Glob, Bash(date *)
    3. recorded in § Stages as `DROPPED (strategist)` → **DROPPED (strategist)**;
    4. otherwise the latest `verdict-v<n>.md`: PASS, VIABLE ON PAPER, KILL or HALTED; REVISE in round 2 = **KILL**;
    5. rejected in `04-screen.md` / `04-screen-pivot<k>.md` → **REJECTED (screen)**; screened but not carried → **NOT CARRIED (rank)**.
-   If any carried idea has a round-1 REVISE verdict and is not pivoted, or has no verdict at all, the kill stage is unfinished: tell the user to run `/venture:kill <run_id>` and stop.
+   If any carried idea has a round-1 REVISE verdict and is not pivoted, or has no verdict at all, the kill stage is unfinished: tell the user to run `/lab:resume <run_id>` and stop.
 
 You (the main session) write this file. You may read every file in the run. You may not change any verdict. Every factual statement in the blueprint is copied from a surviving (non-struck) claim with its reference, or labeled `ASSUMPTION`.
 
@@ -51,7 +51,7 @@ Append the ledger entry (outcome `PASS (<id>)`, `VIABLE ON PAPER (<id>)` or `NOT
 Never copy a struck claim. Never edit older blocks.
 
 ### Ledger
-Follow `${CLAUDE_PLUGIN_ROOT}/commands/ledger.md` § Append.
+Follow `${CLAUDE_PLUGIN_ROOT}/commands/history.md` § Append.
 
 ## 3. Finish the run log
 Set `finished:` in `run-log.md`, add a Stages row `blueprint — <PASS (<id>) | NOTHING PASSED>`. Fill § Blindness self-check by reading § Agent calls: confirm no prosecutor call lists `forge-v2.md` or the other prosecutor's file, and no forge/economics call lists `kill-criteria.md` or `criteria-*.md`. Report any violation honestly.

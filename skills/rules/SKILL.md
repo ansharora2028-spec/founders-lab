@@ -1,6 +1,6 @@
 ---
-name: venture-rules
-description: The non-negotiable rules of the venture pipeline. Every venture command and every venture agent reads this first. Use whenever running, judging or reviewing any stage of a venture run.
+name: rules
+description: Internal reference for the Founders Lab agents (not a command). The non-negotiable rules of the pipeline. Every lab command, stage and agent reads this first. Use whenever running, judging or reviewing any stage of a Founders Lab run.
 user-invocable: false
 ---
 

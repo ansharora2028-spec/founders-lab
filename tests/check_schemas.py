@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Static consistency checks for the venture plugin.
+"""Static consistency checks for the Founders Lab plugin (lab).
 
-1. Every ${CLAUDE_PLUGIN_ROOT}/... path referenced in agents, commands, skills and hooks exists.
+1. Every ${CLAUDE_PLUGIN_ROOT}/... path referenced in agents, commands, stages, skills and hooks exists.
 2. Every template's H2 sections match its schema in skills/file-schemas/SKILL.md.
 3. Every run file under examples/ has front matter and the H2 sections its schema requires.
 4. Every agent file has name, description, tools and model frontmatter.
@@ -17,7 +17,7 @@ os.chdir(ROOT)
 errors = []
 
 # 1. plugin-root references
-for f in glob.glob("agents/*.md") + glob.glob("commands/*.md") + glob.glob("skills/*/SKILL.md") + glob.glob("hooks/*.json"):
+for f in glob.glob("agents/*.md") + glob.glob("commands/*.md") + glob.glob("stages/*.md") + glob.glob("skills/*/SKILL.md") + glob.glob("hooks/*.json"):
     for m in re.finditer(r"\$\{CLAUDE_PLUGIN_ROOT\}/([\w./-]+)", open(f, encoding="utf-8").read()):
         if not os.path.exists(m.group(1)):
             errors.append(f"{f}: missing reference {m.group(1)}")
