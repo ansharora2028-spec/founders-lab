@@ -147,6 +147,26 @@ Weaker evidence gets a cautious haircut in the unfavourable direction: 0% for ve
 
 **D41. Storage names unchanged.** `ventures/` and `# venture ledger` stay, so past runs, ledgers, city memory, examples and recorded transcripts remain valid. The blindness checker and the judge guard accept both the `lab:` and the old `venture:` agent prefix, so old transcripts still check.
 
+## v0.7 changes: faster and cheaper
+
+**D42. Money gate before strategy and prosecution.** In the v0.5 Satara run the simulation showed 2.6% viable. Even so, the strategist, both prosecutors, the auditor and two judge calls ran afterwards, about 60% of the spend.
+- **The gate:** the economics → simulation → gate order lets the cheapest check go first. The gate uses the simulation **with no evidence haircut**, so it can't stop an idea for weak evidence alone. Only the builders' own numbers can stop it.
+- **Why 20%:** far below the 70% viable-on-paper bar, so only clear failures stop, and ideas near the bar always reach the judge.
+- **No judge call:** a gate fail is arithmetic, not judgement, so there's no reason to pay for one. It is final, with no revision round and no pivot candidate, because the conservative-economics rule (rule 3) would kill it anyway.
+- **What would have to change:** the solver gives the founder the useful part of a kill. Which single number, moved how far, would meet the real bar?
+
+**D43. One prosecutor.** Two prosecutors meant two criteria calls and two kill calls per idea, and each read the same inputs. One agent now covers both sides in one file, with market and execution flaws in separate sections and every KM/KE criterion assessed. The independence that matters is kept: builders never see criteria; the prosecutor never sees forge-v2 or the strategy; the auditor and judge are separate agents.
+
+**D44. Strategist in parallel with the prosecutor.** The strategist only depends on forge-v1, and the prosecutor doesn't need it, so they run together after the gate. Economics no longer reads the strategy either, so it can run straight after forge. The strategist's DROP still stops an idea before the audit and the judge.
+
+**D45. Agents read only what they need.** Each agent read the full rules (10 KB) and schemas (32 KB) before starting. The Read tool loads whole files, so "read the X section" saved nothing. Now:
+- `AGENT-RULES.md` is a short form of the rules that agents need, and `SKILL.md` remains the full version for the main session.
+- `scripts/split_schemas.py` writes one part per schema, plus conventions and the visibility matrix, from the unchanged `SKILL.md`. CI fails if the parts drift.
+
+**D46. The judge runs once.** In the Satara run the sandbox blocked the judge's `sha256sum` outside the shell's folder. The first judge call wrote no verdict, and the orchestrator ran it again. Now the main session hashes the criteria just before the judge call and records it in § Locks. The judge falls back to that record only when its own hash command fails as a tool, never on a mismatch, and it must always write a verdict.
+
+**D47. Cheaper defaults.** `/lab:ideate` defaults to `quick` (2 carried ideas), since most founders try a few runs. The scouts run on Haiku, because their work is broad search and summary, and the auditor checks their claims anyway.
+
 ## Test results (spec §12)
 
 All tests ran on 2026-10-15 with Claude Code 2.1.300, headless (`claude -p`), in a cloud container whose network policy blocked WebFetch to most hosts (see D20). Every intake was given in the arguments (D14). Costs are the `total_cost_usd` the CLI reported for each session.

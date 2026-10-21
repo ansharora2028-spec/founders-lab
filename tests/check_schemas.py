@@ -2,7 +2,7 @@
 """Static consistency checks for the Founders Lab plugin (lab).
 
 1. Every ${CLAUDE_PLUGIN_ROOT}/... path referenced in agents, commands, stages, skills and hooks exists.
-2. Every template's H2 sections match its schema in skills/file-schemas/SKILL.md.
+2. Every template's H2 sections match its schema in skills/file-schemas/SKILL.md, and every schema has a template.
 3. Every run file under examples/ has front matter and the H2 sections its schema requires.
 4. Every agent file has name, description, tools and model frontmatter.
 Exits 1 on any failure.
@@ -38,10 +38,8 @@ for i, m in enumerate(heads):
 def schema_key(name):
     generic = re.sub(r"pivot\d+", "pivot<k>", re.sub(r"-v\d+\.md$", "-v<n>.md", name))
     aliases = {
-        "criteria-execution.md": "criteria-market.md",
         "03-ideas-pivot<k>.md": "03-ideas.md",
         "04-screen-pivot<k>.md": "04-screen.md",
-        "prosecution-execution-v<n>.md": "prosecution-market-v<n>.md",
         "diff-v<n>.md": "diff-v2.md",
         "fixable-flaws-v<n>.md": "fixable-flaws-v1.md",
         "city-slug.md": "<city-slug>.md",
@@ -50,6 +48,15 @@ def schema_key(name):
         if k in schema:
             return k
     return None
+
+
+# Files from before v0.7 (two prosecutors), kept unedited in examples/. Their old schemas.
+LEGACY = {
+    "criteria-market.md": ["Criteria"],
+    "criteria-execution.md": ["Criteria"],
+    "prosecution-market-v<n>.md": ["Inputs read", "Criteria assessment", "Flaws", "Evidence", "Round-2 notes (v2 only)"],
+    "prosecution-execution-v<n>.md": ["Inputs read", "Criteria assessment", "Flaws", "Evidence", "Round-2 notes (v2 only)"],
+}
 
 
 def h2(path):
@@ -70,6 +77,10 @@ for p in glob.glob("templates/**/*.md", recursive=True):
     elif h2(p) != want:
         errors.append(f"{p}: sections {h2(p)} != schema {want}")
 
+for k in schema:
+    if k not in ("LEDGER.md", "<city-slug>.md", "idea.md") and not any(schema_key(os.path.basename(t)) == k for t in glob.glob("templates/**/*.md", recursive=True)):
+        errors.append(f"schema {k} has no template")
+
 # 3. example run files
 for p in glob.glob("examples/**/*.md", recursive=True):
     name = os.path.basename(p)
@@ -88,13 +99,14 @@ for p in glob.glob("examples/**/*.md", recursive=True):
                 errors.append(f"{p}: run section {r.splitlines()[0]!r} has {got} != {want}")
         continue
     k = schema_key(name)
-    if not k:
+    legacy = LEGACY.get(re.sub(r"-v\d+\.md$", "-v<n>.md", name))
+    if not k and not legacy:
         errors.append(f"{p}: no schema")
         continue
     content = open(p, encoding="utf-8").read()
     if not content.startswith("---\n"):
         errors.append(f"{p}: no front matter")
-    missing = [s for s in schema[k] if s not in h2(p)]
+    missing = [s for s in (legacy or schema[k]) if s not in h2(p)]
     # The examples are real v0.1 test output, kept unedited. Two sections were added to the
     # schemas after those runs (DECISIONS.md D24, D25, D30, D33 and D35), so they are allowed to be absent there.
     added_later = {"Pivot candidate (KILL only)", "Fixes (round 2 only)",
@@ -103,7 +115,7 @@ for p in glob.glob("examples/**/*.md", recursive=True):
                    "Longlist and pass pre-check", "Why the search missed",
                    "Peer-town benchmark", "Big-brand presence", "City profile", "Simulation inputs",
                    "Simulation", "Viable-on-paper check", "Assumptions to confirm (VIABLE ON PAPER only)",
-                   "Assumptions to confirm first (VIABLE ON PAPER only)"}
+                   "Assumptions to confirm first (VIABLE ON PAPER only)", "Money gate"}
     missing = [s for s in missing if s not in added_later]
     if missing:
         errors.append(f"{p}: missing sections {missing}")

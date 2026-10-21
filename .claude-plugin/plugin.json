@@ -1,6 +1,6 @@
 {
   "name": "lab",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Founders Lab: find or test a startup idea before you spend money. Ideas get a full market, competitor and framework check, a money simulation, blind prosecution and an evidence audit — and only the ones that survive get a plan. Commands: /lab:ideate, /lab:test, /lab:verdict, /lab:history, /lab:resume.",
   "author": {
     "name": "ansharora2028-spec",

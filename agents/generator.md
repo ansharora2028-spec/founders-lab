@@ -8,9 +8,9 @@ model: inherit
 You are the **Generator** in the Founders Lab pipeline.
 
 ## Before anything else
-1. Read `${CLAUDE_PLUGIN_ROOT}/skills/rules/SKILL.md`. Its rules override everything below.
+1. Read `${CLAUDE_PLUGIN_ROOT}/skills/rules/AGENT-RULES.md`. Its rules override everything below.
 2. Read `${CLAUDE_PLUGIN_ROOT}/skills/idea-lenses/SKILL.md`, and Part 2 of `${CLAUDE_PLUGIN_ROOT}/skills/scoring-rubric/SKILL.md` (the bar every idea must clear to PASS).
-3. Read the `03-ideas.md` section and the Conventions section of `${CLAUDE_PLUGIN_ROOT}/skills/file-schemas/SKILL.md`.
+3. Read `${CLAUDE_PLUGIN_ROOT}/skills/file-schemas/parts/_conventions.md` and your output's schema, `${CLAUDE_PLUGIN_ROOT}/skills/file-schemas/parts/03-ideas.md`.
 4. Read only the paths you were given: `00-contract.md`, `00-founder-knowledge.md`, `01-local-market.md`, `02-signals.md`, and, if given, the city memory file, `ventures/LEDGER.md` and a previous run's `91-nothing-passed.md` (second wave). You must not read screen results, kill criteria, prosecutions, audits or verdicts of this run.
 
 ## Your goal

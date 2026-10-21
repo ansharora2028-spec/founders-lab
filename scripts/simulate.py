@@ -40,6 +40,13 @@ Input schema (all money in the contract's currency, per month unless stated):
 assumption. Weaker evidence gets a cautious haircut: values move in the
 unfavourable direction by 0% / 10% / 10% / 25% / 25%. "simulated" (persona)
 evidence is not allowed as an input.
+
+The report also has a "## Money gate" section. The gate re-runs the simulation
+with NO evidence haircut (the builders' own numbers taken at face value). If even
+that best-case reading leaves fewer than 20% of runs viable, the money doesn't
+work and the idea stops before strategy and prosecution. For the top inputs it
+also solves what value each would need, alone, for the real bar (70% viable, with
+haircuts) to be met.
 """
 import json
 import math
@@ -66,6 +73,10 @@ HAIRCUT = {"verified": 0.0, "peer-town": 0.10, "founder-counted": 0.10, "founder
 WEEKS_PER_MONTH = 52 / 12
 VIABLE_SHARE = 0.70      # VIABLE ON PAPER: at least 70% of runs break even in time ...
 CAPITAL_SHARE = 0.90     # ... and at least 90% of runs stay within the capital limit
+GATE_SHARE = 0.20        # money gate: below this, even with no evidence haircut, the idea stops early
+SOLVE_RUNS = 1000        # runs per step when solving "what would have to change"
+SOLVE_TOP = 3            # how many top-sensitivity inputs to solve for
+SOLVE_MAX = 20.0         # largest change searched: x20 (or /20 for costs)
 
 
 class InputError(ValueError):
@@ -82,7 +93,7 @@ def load(path):
     return json.loads(m.group(1))
 
 
-def validate(cfg):
+def validate(cfg, haircut=True):
     for key in ("months", "break_even_by_month", "capital_limit", "hours_limit_per_week", "inputs"):
         if key not in cfg:
             raise InputError(f"missing top-level key: {key}")
@@ -111,7 +122,7 @@ def validate(cfg):
             raise InputError(f"{name}: simulated persona evidence cannot be a model input")
         if ev not in HAIRCUT:
             raise InputError(f"{name}: unknown evidence tier '{ev}'")
-        h = HAIRCUT[ev]
+        h = HAIRCUT[ev] if haircut else 0.0
         factor = (1 - h) if good == "high" else (1 + h)
         vals = [v * factor for v in (lo, li, hi)]
         if name in RATES:
@@ -158,16 +169,50 @@ def pct(values, q):
     return s[f] if f == c else s[f] + (s[c] - s[f]) * (k - f)
 
 
+def sample(params, runs, months, hours, seed):
+    rng = random.Random(seed)
+    out = []
+    for _ in range(runs):
+        v = {n: (p["likely"] if p["low"] == p["high"] else rng.triangular(p["low"], p["high"], p["likely"]))
+             for n, p in params.items()}
+        out.append(simulate_one(v, months, hours))
+    return out
+
+
+def viable_share(results, be_by, cap_limit):
+    ok = [r["break_even"] is not None and r["break_even"] <= be_by and r["drawdown"] <= cap_limit for r in results]
+    return sum(ok) / len(ok)
+
+
+def scaled(params, name, f):
+    """params with one input moved by factor f (>= 1) in its good direction."""
+    p = dict(params[name])
+    vals = [p["low"], p["likely"], p["high"]]
+    vals = [v * f for v in vals] if p["good"] == "high" else [v / f for v in vals]
+    if name in RATES:
+        vals = [min(1.0, v) for v in vals]
+    p["low"], p["likely"], p["high"] = vals
+    return {**params, name: p}
+
+
+def solve(params, name, months, hours, seed, be_by, cap_limit):
+    """Smallest factor (1..SOLVE_MAX) that alone brings the viable share to VIABLE_SHARE, or None."""
+    test = lambda f: viable_share(sample(scaled(params, name, f), SOLVE_RUNS, months, hours, seed), be_by, cap_limit)
+    if test(SOLVE_MAX) < VIABLE_SHARE:
+        return None
+    lo, hi = 1.0, SOLVE_MAX
+    for _ in range(14):
+        mid = (lo + hi) / 2
+        lo, hi = (lo, mid) if test(mid) >= VIABLE_SHARE else (mid, hi)
+    return hi
+
+
 def run(cfg):
     params, runs = validate(cfg)
     months, be_by = int(cfg["months"]), int(cfg["break_even_by_month"])
     cap_limit, hours = float(cfg["capital_limit"]), float(cfg["hours_limit_per_week"])
-    rng = random.Random(int(cfg.get("seed", 42)))
-    results = []
-    for _ in range(runs):
-        v = {n: (p["likely"] if p["low"] == p["high"] else rng.triangular(p["low"], p["high"], p["likely"]))
-             for n, p in params.items()}
-        results.append(simulate_one(v, months, hours))
+    seed = int(cfg.get("seed", 42))
+    results = sample(params, runs, months, hours, seed)
     in_time = [r["break_even"] is not None and r["break_even"] <= be_by for r in results]
     in_cap = [r["drawdown"] <= cap_limit for r in results]
     viable = [a and b for a, b in zip(in_time, in_cap)]
@@ -182,6 +227,14 @@ def run(cfg):
         tornado.append((abs(hi_v - lo_v), n, lo_v, hi_v))
     tornado.sort(reverse=True)
 
+    raw, _ = validate(cfg, haircut=False)
+    gate_share = viable_share(sample(raw, runs, months, hours, seed), be_by, cap_limit)
+    gate_pass = gate_share >= GATE_SHARE
+    needs = []
+    if not (share(viable) >= VIABLE_SHARE and share(in_cap) >= CAPITAL_SHARE):
+        for _, n, _, _ in tornado[:SOLVE_TOP]:
+            needs.append((n, solve(params, n, months, hours, seed, be_by, cap_limit)))
+
     return {
         "params": params, "runs": runs, "months": months, "break_even_by_month": be_by,
         "capital_limit": cap_limit, "hours_limit": hours, "seed": int(cfg.get("seed", 42)),
@@ -193,6 +246,7 @@ def run(cfg):
         "final_cash": [pct([r["final_cash"] for r in results], q) for q in (0.1, 0.5, 0.9)],
         "base_profit": base, "tornado": tornado,
         "meets_viable_bar": share(viable) >= VIABLE_SHARE and share(in_cap) >= CAPITAL_SHARE,
+        "gate_share": gate_share, "gate_pass": gate_pass, "needs": needs,
     }
 
 
@@ -231,6 +285,30 @@ def report(res, cur):
     ]
     for i, (swing, n, lo, hi) in enumerate(res["tornado"], 1):
         lines.append(f"| {i} | {n} | {money(lo, cur)} | {money(hi, cur)} | {money(swing, cur)} |")
+    lines += ["", "## Money gate",
+              f"- best-case viable share (no evidence haircut, the builders' numbers at face value): "
+              f"{p(res['gate_share'])}; gate threshold {GATE_SHARE:.0%}",
+              f"- **money gate: {'PASS' if res['gate_pass'] else 'FAIL'}**"
+              + ("" if res["gate_pass"] else " — the money doesn't work even on the most generous reading; "
+                 "the idea stops here, before strategy and prosecution"),
+              "", "### What would have to change"]
+    if res["meets_viable_bar"]:
+        lines.append("- nothing: the viable-on-paper bar is already met")
+    else:
+        lines += [f"Each row moves ONE input in its good direction, everything else unchanged, until "
+                  f"{VIABLE_SHARE:.0%} of runs are viable (with evidence haircuts). Likely values shown.", "",
+                  "| input | now (likely) | would need (likely) | change |", "|---|---|---|---|"]
+        for n, f in res["needs"]:
+            q = res["params"][n]
+            fmt = (lambda x: f"{x:.3f}") if n in RATES else (lambda x: f"{x:,.2f}")
+            if f is None:
+                lines.append(f"| {n} | {fmt(q['likely'])} | not reachable by this input alone | beyond x{SOLVE_MAX:g} |")
+            else:
+                target = q["likely"] * f if q["good"] == "high" else q["likely"] / f
+                if n in RATES:
+                    target = min(1.0, target)
+                word = f"x{f:.2f}" if q["good"] == "high" else f"/{f:.2f}"
+                lines.append(f"| {n} | {fmt(q['likely'])} | {fmt(target)} | {word} |")
     lines += ["", "## Inputs after evidence haircut",
               "| input | low | likely | high | evidence | haircut |", "|---|---|---|---|---|---|"]
     for n, q in res["params"].items():

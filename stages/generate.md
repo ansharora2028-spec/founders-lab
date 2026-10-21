@@ -1,5 +1,5 @@
 ---
-description: Internal pipeline stage (not a slash command), followed by /lab:ideate, /lab:test, /lab:verdict and /lab:resume. generate — run generator then screener, pick the top N ideas by screen score, have both prosecutors write kill criteria from the raw ideas in parallel, merge them into kill-criteria.md and lock it (chmod 444 + SHA-256 in run-log) before any forging.
+description: Internal pipeline stage (not a slash command), followed by /lab:ideate, /lab:test, /lab:verdict and /lab:resume. generate — run generator then screener, pick the top N ideas by screen score, have the prosecutor write kill criteria from each raw idea (one call per idea, in parallel), copy them into kill-criteria.md and lock it (chmod 444 + SHA-256 in run-log) before any forging.
 argument-hint: "[run_id] (default: the most recent run)"
 allowed-tools: Read, Write, Edit, Glob, Agent, Task, Bash(mkdir *), Bash(chmod *), Bash(sha256sum *), Bash(shasum *), Bash(date *)
 ---
@@ -8,7 +8,7 @@ allowed-tools: Read, Write, Edit, Glob, Agent, Task, Bash(mkdir *), Bash(chmod *
 
 ## 0. Load the rules and find the run
 1. Read `${CLAUDE_PLUGIN_ROOT}/skills/rules/SKILL.md`. Read `ventures/LEDGER.md` if it exists.
-2. Read the `kill-criteria.md` and `run-log.md` sections of `${CLAUDE_PLUGIN_ROOT}/skills/file-schemas/SKILL.md`, and its Visibility matrix.
+2. Read `kill-criteria.md`, `run-log.md` and `_visibility.md` in `${CLAUDE_PLUGIN_ROOT}/skills/file-schemas/parts/`.
 3. `RUN` = `ventures/runs/<$ARGUMENTS>` if a run id is given, else the most recent folder in `ventures/runs/`.
 4. Require `RUN/00-contract.md`, `RUN/01-local-market.md`, `RUN/02-signals.md`. If scouting is missing, tell the user to run `/lab:resume` and stop.
 5. Read the depth mode from the contract: quick → N=2, standard → N=3, deep → N=5, check → N=1, check+variants → N=2.
@@ -57,19 +57,17 @@ I03 — <pitch>  (screen 16/25, carried forward | not carried | rejected: <reaso
 Then one line saying which ideas are carried forward and why (rank).
 
 ## 4. Write kill criteria from the raw ideas — before any forge
-Progress note: `Locking kill criteria for <N> ideas — 2 prosecutors per idea in parallel (paid stage).`
+Progress note: `Locking kill criteria for <N> ideas — one prosecutor call per idea, all in parallel (paid stage).`
 
 For each carried idea `<id>`: `mkdir -p RUN/ideas/<id>`.
 
-Then launch, **in one message**, for every carried idea, both:
-- `lab:prosecutor-market`, `Mode: criteria`, inputs `00-contract.md`, `00-founder-knowledge.md`, `01-local-market.md`, `02-signals.md`, `03-ideas.md`, `Idea id: <id>`; output `ideas/<id>/criteria-market.md`;
-- `lab:prosecutor-execution`, same inputs, `Mode: criteria`; output `ideas/<id>/criteria-execution.md`.
+Then launch, **in one message**, one call per carried idea: `lab:prosecutor`, `Mode: criteria`, inputs `00-contract.md`, `00-founder-knowledge.md`, `01-local-market.md`, `02-signals.md`, `03-ideas.md`, `Idea id: <id>`; output `ideas/<id>/criteria.md`. It writes both the market (KM) and the execution (KE) criteria.
 
 Log every call with its exact paths.
 
 ## 5. Merge and lock
 For each carried idea:
-1. Write `RUN/ideas/<id>/kill-criteria.md` in the schema: the raw idea block copied verbatim from `03-ideas.md`, then the KM blocks verbatim from `criteria-market.md`, then the KE blocks verbatim from `criteria-execution.md`, then the Lock section. Do not edit, merge, soften or drop any criterion. If a draft has fewer than 3 or more than 6 criteria, re-run that prosecutor once with the note `Your previous draft had <n> criteria; write 3–6.`
+1. Write `RUN/ideas/<id>/kill-criteria.md` in the schema: the raw idea block copied verbatim from `03-ideas.md`, then the KM blocks verbatim from `criteria.md` § Market criteria, then the KE blocks verbatim from § Execution criteria, then the Lock section. Do not edit, merge, soften or drop any criterion. If either section has fewer than 3 or more than 6 criteria, re-run the prosecutor once with the note `Your previous draft had <n> <market|execution> criteria; write 3–6 of each.`
 2. Lock it:
    ```bash
    chmod 444 "RUN/ideas/<id>/kill-criteria.md"

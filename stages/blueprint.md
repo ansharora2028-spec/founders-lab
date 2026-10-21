@@ -7,12 +7,12 @@ allowed-tools: Read, Write, Edit, Glob, Bash(date *)
 # Stage: blueprint
 
 ## 0. Load the rules and find the run
-1. Read `${CLAUDE_PLUGIN_ROOT}/skills/rules/SKILL.md`, and the `90-blueprint.md` and `91-nothing-passed.md` sections of `${CLAUDE_PLUGIN_ROOT}/skills/file-schemas/SKILL.md`.
+1. Read `${CLAUDE_PLUGIN_ROOT}/skills/rules/SKILL.md`, and `90-blueprint.md`, `91-nothing-passed.md`, `LEDGER.md` and `city.md` in `${CLAUDE_PLUGIN_ROOT}/skills/file-schemas/parts/`.
 2. `RUN` = `ventures/runs/<$ARGUMENTS>` or the most recent run folder.
 3. Collect every idea's final status, in this order of precedence:
    1. recorded in `run-log.md` § Pivots as `PIVOTED → <id>` → **PIVOTED** (ignore its leftover verdict file: a round-1 REVISE from a forge pivot, or a KILL that produced a judge pivot candidate);
    2. recorded in § Pivots as `KILLED (pivot limit)` → **KILL**;
-   3. recorded in § Stages as `DROPPED (strategist)` → **DROPPED (strategist)**;
+   3. recorded in § Stages as `DROPPED (strategist)` → **DROPPED (strategist)**; recorded as `KILL (money gate)` (it has a `gate-v<n>.md`) → **KILL (money gate)**;
    4. otherwise the latest `verdict-v<n>.md`: PASS, VIABLE ON PAPER, KILL or HALTED; REVISE in round 2 = **KILL**;
    5. rejected in `04-screen.md` / `04-screen-pivot<k>.md` → **REJECTED (screen)**; screened but not carried → **NOT CARRIED (rank)**.
    If any carried idea has a round-1 REVISE verdict and is not pivoted, or has no verdict at all, the kill stage is unfinished: tell the user to run `/lab:resume <run_id>` and stop.
@@ -34,7 +34,7 @@ You (the main session) write this file. You may read every file in the run. You 
 ## 1b. If nothing passed (no PASS and no VIABLE ON PAPER) → `91-nothing-passed.md`
 Nothing passing is a miss for the builders (rule 1). It isn't a disaster, because it saved the founder money and months. Write it plainly, without consolation language and without drama.
 - **The ideas, explained:** for every idea (carried or not), in plain language: how it would have worked, the need gap it targeted, and how it would have made money, taken from `03-ideas.md` (and `forge-v<n>.md` where the idea was forged), then what happened to it in one line. A reader should understand each idea before reading why it died.
-- **Deaths:** every idea (screen rejections, not carried, killed, pivoted, halted), its decisive evidence, and the verdict file reference.
+- **Deaths:** every idea (screen rejections, not carried, money gate, dropped, killed, pivoted, halted), its decisive evidence, and the verdict file reference (`gate-v<n>.md` for a money-gate kill). For a money-gate kill, include its What would have to change table.
 - **Estimated savings — labeled ESTIMATE:** capital and months the user would plausibly have spent before discovering each fatal problem in the market. Base it on the contract (capital, hours) and the conservative economics (capital to first revenue, months to first revenue). List every assumption. Give ranges, not point values.
 - **Why the search missed:** nothing passing is a miss for the builders (rule 1), so diagnose it honestly. For each dead idea, give its cause of death, where in the pipeline it should have been caught (for example "generator: no demand anchor"), and the type: generation, constraint, evidence access or bad luck. Then write 2–4 concrete **generation lessons** for the next run. If most deaths were evidence-access (sources couldn't be opened), say so plainly: the search may not have missed at all.
 - **Patterns across the deaths:** e.g. the same constraint breaking, the same missing demand evidence, the same platform risk.
@@ -54,7 +54,7 @@ Never copy a struck claim. Never edit older blocks.
 Follow `${CLAUDE_PLUGIN_ROOT}/commands/history.md` § Append.
 
 ## 3. Finish the run log
-Set `finished:` in `run-log.md`, add a Stages row `blueprint — <PASS (<id>) | NOTHING PASSED>`. Fill § Blindness self-check by reading § Agent calls: confirm no prosecutor call lists `forge-v2.md` or the other prosecutor's file, and no forge/economics call lists `kill-criteria.md` or `criteria-*.md`. Report any violation honestly.
+Set `finished:` in `run-log.md`, add a Stages row `blueprint — <PASS (<id>) | NOTHING PASSED>`. Fill § Blindness self-check by reading § Agent calls: confirm no prosecutor call lists `forge-v2.md` or `strategy-v1.md`, and no forge, strategist or economics call lists `kill-criteria.md` or `criteria.md`. Report any violation honestly.
 
 ## 4. Report
 Tell the user the outcome in two or three sentences and the path of the file. For PASS, list the 3 experiments. For NOTHING PASSED, give the savings estimate range and the top pattern.

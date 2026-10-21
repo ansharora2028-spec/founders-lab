@@ -108,5 +108,37 @@ class SimulateTest(unittest.TestCase):
             os.unlink(f.name)
 
 
+    def test_gate_passes_good_business(self):
+        res = simulate.run(GOOD)
+        self.assertTrue(res["gate_pass"])
+        self.assertEqual(res["needs"], [])
+
+    def test_gate_fails_doomed_business(self):
+        res = simulate.run(with_inputs(cac=spec(1500, 2000, 2500), monthly_churn=spec(0.8, 0.9, 1.0)))
+        self.assertLess(res["gate_share"], simulate.GATE_SHARE)
+        self.assertFalse(res["gate_pass"])
+        self.assertIn("money gate: FAIL", simulate.report(res, "INR"))
+
+    def test_gate_ignores_haircut(self):
+        # weak evidence lowers the real share but not the best-case gate share
+        weak = {k: dict(v, evidence="assumption") for k, v in GOOD["inputs"].items()}
+        res = simulate.run(dict(copy.deepcopy(GOOD), inputs=weak))
+        self.assertGreaterEqual(res["gate_share"], res["share_viable"])
+
+    def test_what_would_have_to_change(self):
+        # too little reach for the fixed costs: solving reach alone should find a larger value that meets the bar
+        res = simulate.run(with_inputs(reach_per_month=spec(80, 100, 120), fixed_cost_per_month=spec(9000, 10000, 11000)))
+        self.assertFalse(res["meets_viable_bar"])
+        needs = dict(res["needs"])
+        self.assertIn("reach_per_month", needs)
+        self.assertIsNotNone(needs["reach_per_month"])
+        self.assertGreater(needs["reach_per_month"], 1.0)
+        self.assertIn("### What would have to change", simulate.report(res, "INR"))
+        # applying the solved change does meet the bar
+        f = needs["reach_per_month"]
+        fixed = with_inputs(reach_per_month=spec(80 * f, 100 * f, 120 * f), fixed_cost_per_month=spec(9000, 10000, 11000))
+        self.assertGreaterEqual(simulate.run(fixed)["share_viable"], simulate.VIABLE_SHARE - 0.03)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)

@@ -19,8 +19,8 @@ Arguments: `$ARGUMENTS`
    | `00-contract.md` is missing or not confirmed | `${CLAUDE_PLUGIN_ROOT}/stages/intake.md` |
    | `01-local-market.md` or `02-signals.md` is missing | `${CLAUDE_PLUGIN_ROOT}/stages/scout.md` |
    | `04-screen.md` is missing, or a carried idea has no locked `kill-criteria.md` | `${CLAUDE_PLUGIN_ROOT}/stages/generate.md` |
-   | a carried idea has no `simulation-v1.md` (and isn't DROPPED) | `${CLAUDE_PLUGIN_ROOT}/stages/forge.md` |
-   | a carried idea has no final verdict, or a round-1 REVISE that isn't pivoted | `${CLAUDE_PLUGIN_ROOT}/stages/kill.md` §A |
+   | a carried idea has no `simulation-v1.md` | `${CLAUDE_PLUGIN_ROOT}/stages/forge.md` |
+   | a carried idea passed the money gate but has no final verdict, or a round-1 REVISE that isn't pivoted (skip money-gate kills and DROPPED ideas) | `${CLAUDE_PLUGIN_ROOT}/stages/kill.md` §A |
    | neither `90-blueprint.md` nor `91-nothing-passed.md` exists | `${CLAUDE_PLUGIN_ROOT}/stages/blueprint.md` |
 
 6. If everything is finished, say so, show the verdict line from the report, and give its path.

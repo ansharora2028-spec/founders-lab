@@ -106,18 +106,22 @@ It reads your answers back to you, and nothing starts until you confirm. Only yo
 1. **Research.** Two researchers dig into your city and target market (what sells, what failed, prices, competitors, rules and licences) and recent trends. Most of all, they look for *where people already spend money* and what paying customers complain about.
 2. **Ideas.** It writes up your idea, or finds new ones by following the money. It starts where people already pay and complain, lists about three times as many candidates as it needs, does quick money math on each, and keeps only the strongest. Each comes with the three explanations above.
 3. **Quick screen.** It drops anything that breaks your hard limits, checks for competitors, and ranks the rest.
-4. **Lock the test.** Before anyone improves the idea, two critics write the exact conditions under which it should die. That checklist is then locked, so it can't be quietly softened later.
+4. **Lock the test.** Before anyone improves the idea, a critic writes the exact conditions under which it should die, on the market side and on the execution side. That checklist is then locked, so it can't be quietly softened later.
 5. **Sharpen.** The idea is made specific: the exact customer, the smallest first version, and how you'd find your first 100 customers.
-6. **Strategy check, done independently.** A separate strategist, who didn't come up with the idea, runs the full set of business frameworks before any judge sees it:
-   - **competitors:** who they are, big brands included, whether you can win their customers, and your price against theirs;
-   - **market forces:** Porter's Five Forces and Blue Ocean;
-   - **the customer:** the need gap, Jobs-to-be-Done, the value proposition, Kano (what the first version must have) and consumer behaviour (trust, habits, who buys first);
-   - **strategy:** target segment and positioning, market size built from the ground up, Ansoff risk, PESTLE (law, economy, society, technology), the 4Ps, and how many people you reach versus how many buy;
-   - **a simulated customer panel**, to surface objections.
+6. **Money first.** Costs, price and cost per customer in three scenarios. Then a simulation runs thousands of what-if combinations. It tells you how often the business breaks even in time without running out of money, and which two or three numbers matter most.
 
-   If the strategy doesn't hold up, the idea is dropped here, cheaply.
-7. **Money math and simulation.** Costs, price and cost per customer in three scenarios. Then a simulation runs thousands of what-if combinations. It tells you how often the business breaks even in time without running out of money, and which two or three numbers matter most.
-8. **Try to kill it.** The two critics test the idea against the locked checklist, and a fact-checker opens every cited source and throws out claims that don't hold. A judge then applies a fixed rule. It can only pass an idea with real evidence that people pay and money math that works in the cautious case.
+   **If the money doesn't work even on the most generous reading** (fewer than 1 in 5 simulated cases break even, taking every estimate at face value), the check stops right here and tells you which single number would have to change, and by how much. It's quick and cheap, and you don't pay for a full investigation of an idea the numbers already rule out.
+7. **Strategy check and the critic, side by side.** Two independent reviewers run at the same time:
+   - **A strategist** who didn't come up with the idea runs the full set of business frameworks:
+     - **competitors:** who they are, big brands included, whether you can win their customers, and your price against theirs;
+     - **market forces:** Porter's Five Forces and Blue Ocean;
+     - **the customer:** the need gap, Jobs-to-be-Done, the value proposition, Kano (what the first version must have) and consumer behaviour (trust, habits, who buys first);
+     - **strategy:** target segment and positioning, market size built from the ground up, Ansoff risk, PESTLE (law, economy, society, technology), the 4Ps, and how many people you reach versus how many buy;
+     - **a simulated customer panel**, to surface objections.
+
+     If the strategy doesn't hold up, the idea is dropped.
+   - **The critic** tests the idea against the locked checklist without seeing the strategist's work.
+8. **Fact-check and judge.** A fact-checker opens every cited source and throws out claims that don't hold. A judge then applies a fixed rule. It can only pass an idea with real evidence that people pay and money math that works in the cautious case.
 9. **One second chance.** If the problems are fixable, the idea gets one revision, backed by evidence. If it fails again, it's done.
 10. **Your answer.** You get a **do-it plan**, a **viable-on-paper plan** (the same, starting with the 2–3 things to confirm), or (the 3 cheapest experiments to run this week, what to build first and what to skip, pricing, a 30-day plan, and the warning signs that should make you stop) a **don't-do-it report** (what killed each idea, why the search missed, the money and months saved, and an offer to try a second wave of ideas built on those lessons).
 
@@ -151,16 +155,17 @@ The rest is for the curious and for contributors.
 
 ### The rules every agent follows
 
-- **Builders aim to pass. Judges stay neutral.** The scouts, generator, forge and economics modeler work to find an idea that honestly passes. A pass is their success, and nothing passing is a miss they must diagnose. The prosecutors, auditor and judge don't care which way the verdict goes. A *false* pass is the worst outcome, so the evidence bar never moves.
+- **Builders aim to pass. Judges stay neutral.** The scouts, generator, forge, economics modeler and strategist work to find an idea that honestly passes. A pass is their success, and nothing passing is a miss they must diagnose. The prosecutor, auditor and judge don't care which way the verdict goes. A *false* pass is the worst outcome, so the evidence bar never moves.
 - **Follow the money.** Scouts map where people in the target market already pay and what paying customers complain about. The generator longlists about 3× the ideas it needs, pre-checks each against the pass bar, and keeps the strongest. The screen rewards *market proof* (people already pay, and there's a specific gap), not empty markets.
-- **Criteria are locked before polishing.** Prosecutors write each idea's kill criteria from the raw idea. The file is made read-only and hashed. Forge (the agent that sharpens ideas) never sees it, and the judge refuses to rule if it changed.
+- **Criteria are locked before polishing.** The prosecutor writes each idea's kill criteria from the raw idea. The file is made read-only and hashed. Forge (the agent that sharpens ideas) never sees it, and the judge refuses to rule if it changed.
 - **A pass needs positive evidence.** Running out of objections is not a pass. A pass needs verified demand (competitors with revenue, measurable search demand, or people already paying for something worse) *and* unit economics that work in the *conservative* case.
-- **Fixes need evidence, not rhetoric.** In the single revision round, prosecutors see a structured diff with an evidence URL per change, never Forge's prose.
+- **Money first.** The money gate runs before the expensive half of the pipeline. If even the builders' own numbers, with no caution applied, leave fewer than 20% of simulated runs viable, the idea stops with a table of what would have to change. The gate only stops ideas the money rule would kill anyway, and it never passes one.
+- **Fixes need evidence, not rhetoric.** In the single revision round, the prosecutor sees a structured diff with an evidence URL per change, never Forge's prose.
 - **A pivot is a new idea.** Change the customer, the problem or the revenue model, and the idea goes back to screening from zero. Two pivots per run, max. The judge may propose a pivot candidate on a KILL only when it rests on surviving evidence.
 - **Locks are enforced, not just requested.** A plugin hook limits the judge's shell to hashing the locked criteria file.
 - **The contract is law.** HARD limits are never crossed. A FLEXIBLE limit stretches only when its stated condition is met, and the stretch is flagged.
 - **No invented facts, and every claim says how much it's worth.** Each claim carries a label, from strongest to weakest: a source the fact-checker verifies; a peer-town benchmark; something the founder counted; a founder's guess; an assumption. A simulated persona is never evidence. Only verified sources can support a PASS. Peer-town and founder-counted evidence can support "viable on paper". Weaker inputs get a cautious haircut in the simulation.
-- **Independent strategy check.** The market-strategist runs every framework (`skills/frameworks/SKILL.md`) separately from forge. Each framework ends in SUPPORTS / NEUTRAL / AGAINST, and two critical AGAINSTs mean the idea is dropped before the judges see it.
+- **Independent strategy check.** The market-strategist runs every framework (`skills/frameworks/SKILL.md`) separately from forge. Each framework ends in SUPPORTS / NEUTRAL / AGAINST, and two critical AGAINSTs mean the idea is dropped before the audit and the judge. It runs only for ideas that pass the money gate, at the same time as the prosecutor.
 - **The simulation can't be faked by a builder.** The economics agent only supplies input ranges. The orchestrator runs `scripts/simulate.py` (seeded, so anyone can re-run it) and pastes its output unedited.
 - **Viable on paper, defined.** All five must hold:
   1. ≥70% of simulated runs break even in time, and ≥90% stay within the hard capital limit;
@@ -188,13 +193,17 @@ You can pre-fill intake answers in any command. For example: `/lab:ideate Pune, 
 
 | Mode | Ideas written up | Carried to forge and kill | Agent calls (no revisions) |
 |---|---|---|---|
-| `check` (from `/lab:test`) | 1: your idea | 1 | ~13 |
-| `check+variants` (from `--variants`) | your idea + up to 3 variants | 2 | ~22 |
-| `quick` | 3 | 2 | ~22 |
-| `standard` (default for `/lab:ideate`) | 8 | 3 | ~31 |
-| `deep` | 12 | 5 | ~49 |
+| `check` (from `/lab:test`) | 1: your idea | 1 | ~11 (~7 if the money gate stops it) |
+| `check+variants` (from `--variants`) | your idea + up to 3 variants | 2 | ~18 |
+| `quick` (default for `/lab:ideate`) | 3 | 2 | ~18 |
+| `standard` | 8 | 3 | ~25 |
+| `deep` | 12 | 5 | ~39 |
 
-Each carried idea gets 2 criteria writers, forge, the strategist, economics, 2 prosecutors, an auditor and a judge (9 calls), plus one simulation-script run, and about 6 more calls if it earns a revision round. An idea the strategist drops stops after 4 calls. Prosecutors, auditor and judge use your session model, the screener runs on Haiku, and everything else runs on Sonnet. Each choice is one `model:` line in `agents/*.md`.
+Every run starts with 4 calls (two scouts, the generator and the screener). Each carried idea then gets up to 7 calls: the criteria, forge, economics, the strategist and the prosecutor in parallel, the auditor and the judge. It also gets one simulation-script run. An idea that fails the money gate stops after 3 calls, and one the strategist drops after 5. A revision round adds about 5.
+
+Models: the prosecutor, auditor, judge, generator and strategist use your session model. The scouts and the screener run on Haiku, and forge and economics on Sonnet. Each choice is one `model:` line in `agents/*.md`.
+
+Agents read a short rules summary (`skills/rules/AGENT-RULES.md`) and only their own output's schema (`skills/file-schemas/parts/`, generated from `skills/file-schemas/SKILL.md` by `scripts/split_schemas.py`), not the full rulebooks.
 
 ### The pipeline
 
@@ -209,24 +218,22 @@ flowchart TD
     C --> D[screener<br/>04-screen.md]
     D -->|top N by depth mode| E
     D -->|all rejected| N
-    subgraph E["Lock kill criteria (parallel, from the RAW idea)"]
-        E1[prosecutor-market<br/>criteria mode]
-        E2[prosecutor-execution<br/>criteria mode]
-    end
+    E["prosecutor, criteria mode<br/>market + execution criteria<br/>from the RAW idea"]
     E --> L[(kill-criteria.md<br/>chmod 444 + SHA-256)]
     L --> F[forge<br/>forge-v1.md<br/><i>never sees criteria</i>]
-    F --> ST[market-strategist<br/>frameworks, CARRY or DROP]
-    ST -->|DROP| DR[dropped cheaply]
-    ST --> G[economics-modeler<br/>three scenarios + simulation inputs]
-    G --> SIM[simulate.py run by main<br/>viable share + sensitivity]
-    SIM --> K
+    F --> G[economics-modeler<br/>three scenarios + simulation inputs]
+    G --> SIM[simulate.py run by main<br/>viable share, sensitivity, money gate]
+    SIM -->|"money gate FAIL<br/>(under 20% viable at face value)"| GT["gate-v1.md<br/>KILL: the money doesn't work<br/>+ what would have to change"]
+    GT --> N
+    SIM -->|money gate PASS| K
     subgraph K["Kill round"]
-        K1[prosecutor-market]
-        K2[prosecutor-execution]
-        K1 --> K3[evidence-auditor<br/>strikes bad claims]
-        K2 --> K3
+        K0[market-strategist<br/>frameworks, CARRY or DROP]
+        K1[prosecutor<br/>kill mode]
+        K0 --> K3[evidence-auditor<br/>strikes bad claims]
+        K1 --> K3
         K3 --> K4[judge<br/>verifies hash, applies rule]
     end
+    K0 -->|DROP| DR[dropped]
     K4 -->|PASS| P["90-blueprint.md<br/>DO IT"]
     K4 -->|VIABLE ON PAPER| P
     K4 -->|KILL| N["91-nothing-passed.md<br/>DON'T"]
@@ -240,7 +247,7 @@ flowchart TD
     N --> LG
 ```
 
-In round 2, prosecutors receive `diff-v2.md` and `economics-v2.md`, never `forge-v2.md`. A REVISE in round 2 is a KILL.
+The strategist and the prosecutor run at the same time, and the prosecutor never sees the strategy. In round 2 the prosecutor receives `diff-v2.md`, `economics-v2.md` and the new simulation, never `forge-v2.md`, and the money gate runs again first. A REVISE in round 2 is a KILL.
 
 ### The run folder
 
@@ -281,8 +288,9 @@ Search it with `/lab:history`.
 ### Testing and CI
 
 - `sh tests/e2e.sh quick` runs a full headless test for a fictional Pune user, then checks blindness on the transcript. It does real web research, at about $3–4 per carried idea.
-- `python3 tests/test_simulate.py` covers the simulation script (good, bad, capital-limited and hours-capped businesses, determinism, input validation).
-- `python3 tests/check_blindness.py run.log` checks any `claude -p --output-format stream-json --verbose` transcript. It fails if a prosecutor saw `forge-v2.md` or the other prosecutor's file, or if forge or the economics modeler touched the kill criteria.
+- `python3 tests/test_simulate.py` covers the simulation script: good, bad, capital-limited and hours-capped businesses, determinism, input validation, the money gate and the what-would-have-to-change solver.
+- `python3 scripts/split_schemas.py --check` confirms the per-agent schema parts match `skills/file-schemas/SKILL.md`.
+- `python3 tests/check_blindness.py run.log` checks any `claude -p --output-format stream-json --verbose` transcript. It fails if the prosecutor saw `forge-v2.md` or the strategy, if forge, the strategist or the economics modeler touched the kill criteria, or if economics saw the strategy.
 - CI (`.github/workflows/ci.yml`) runs on every push:
   - strict manifest validation;
   - schema and reference checks (`tests/check_schemas.py`);
@@ -299,10 +307,10 @@ From your shell: `claude plugin marketplace add ansharora2028-spec/founders-lab 
 
 ```
 .claude-plugin/  plugin.json, marketplace.json (plugin name "lab", marketplace name "founders-lab")
-agents/          11 specialist subagents
+agents/          10 specialist subagents
 commands/        the 5 /lab:* commands you type (ideate, test, verdict, history, resume)
 stages/          the 6 internal pipeline stages the commands follow (intake, scout, generate, forge, kill, blueprint)
-scripts/         simulate.py: the seeded Monte Carlo simulation (standard-library Python)
+scripts/         simulate.py (seeded Monte Carlo simulation and money gate) and split_schemas.py (per-agent schema parts)
 hooks/           judge-bash-guard: the judge's shell can only hash kill-criteria.md
 skills/          rules, scoring-rubric, idea-lenses, frameworks, file-schemas
 templates/       empty copies of every run file

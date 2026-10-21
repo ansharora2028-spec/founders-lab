@@ -11,4 +11,8 @@ created: <ISO 8601 UTC>
 
 ## Sensitivity (what matters most)
 
+## Money gate
+
+### What would have to change
+
 ## Inputs after evidence haircut

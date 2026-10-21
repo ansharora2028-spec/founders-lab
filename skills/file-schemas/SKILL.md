@@ -4,9 +4,9 @@ description: Internal reference for the Founders Lab agents (not a command). Exa
 user-invocable: false
 ---
 
-# venture file schemas
+# Founders Lab file schemas
 
-Every venture file is markdown with YAML front matter, fixed H2 sections in the order shown, and claims written in the claim format. Do not add, rename or reorder H2 sections. If a section has nothing to say, write `- none` under it. Empty templates for every file live in `templates/` at the plugin root.
+Every run file is markdown with YAML front matter, fixed H2 sections in the order shown, and claims written in the claim format. Do not add, rename or reorder H2 sections. If a section has nothing to say, write `- none` under it. Empty templates for every file live in `templates/` at the plugin root.
 
 ## Conventions
 
@@ -16,7 +16,7 @@ Every venture file is markdown with YAML front matter, fixed H2 sections in the 
 ---
 run_id: 2026-01-31-pune-b2c          # <YYYY-MM-DD>-<slug>
 idea_id: I03                          # only for per-idea files; omit otherwise
-agent: prosecutor-market              # agent name, or "main" for files the main session writes
+agent: prosecutor                     # agent name, or "main" for files the main session writes
 version: 1                            # round number for per-idea files (1 or 2); 1 otherwise
 created: 2026-01-31T10:42:00Z         # ISO 8601 UTC: main session = output of `date -u +%Y-%m-%dT%H:%M:%SZ`; agents = the Timestamp line of their prompt
 ---
@@ -60,7 +60,8 @@ Paths are relative to `ventures/runs/<run_id>/`. Short names:
 - `FK` is `00-founder-knowledge.md`;
 - `raw idea` is the idea's entry in `03-ideas.md` (or `03-ideas-pivot<k>.md`);
 - `strategy` is `ideas/<id>/strategy-v1.md`;
-- `simulation-v<n>` is `ideas/<id>/simulation-v<n>.md`, written by main from `scripts/simulate.py`.
+- `simulation-v<n>` is `ideas/<id>/simulation-v<n>.md`, written by main from `scripts/simulate.py` (it includes the money gate).
+- `gate-v<n>` is `ideas/<id>/gate-v<n>.md`, written by main only when the money gate fails.
 
 | Agent | Mode | Paths it receives | Never receives |
 |---|---|---|---|
@@ -68,20 +69,20 @@ Paths are relative to `ventures/runs/<run_id>/`. Short names:
 | signal-scout | — | 00, FK, LEDGER | everything else |
 | generator | — | 00, FK, 01, 02, LEDGER, CITY (+ the previous run's 91-nothing-passed in a second wave) | 04, any kill-criteria, prosecutions, audits, verdicts of this run |
 | screener | — | 00, 03 (or 03-ideas-pivot<k>), LEDGER | 01, 02, FK |
-| prosecutor-market / -execution | criteria | 00, FK, 01, 02, raw idea file + idea id | forge, strategy, economics, the other prosecutor's draft |
-| forge | round 1 | 00, FK, 01, 02, 03 (+ idea id), CITY | kill-criteria, criteria drafts, strategy, prosecutions, audits, verdicts |
+| prosecutor | criteria | 00, FK, 01, 02, raw idea file + idea id | forge, strategy, economics, simulation |
+| forge | round 1 | 00, FK, 01, 02, 03 (+ idea id), CITY | kill-criteria, criteria draft, strategy, prosecutions, audits, verdicts |
 | forge | round 2 | as round 1 + forge-v1 + fixable-flaws-v1 (the Judge's fixable-flaw table, extracted by main) | kill-criteria, prosecutions, audits, the full verdict |
-| market-strategist | — | 00, FK, 01, 02, 03 (+ idea id), forge-v1, CITY | kill-criteria, criteria drafts, economics, prosecutions, audits, verdicts |
-| economics-modeler | — | 00, FK, 01, forge-v<n>, strategy (+ economics-v1 in round 2) | kill-criteria, prosecutions, audits, verdicts |
-| prosecutor-market / -execution | kill v1 | 00, FK, 01, 02, kill-criteria, forge-v1, strategy, economics-v1, simulation-v1 | the other prosecutor's file, audit, verdict |
-| prosecutor-market / -execution | kill v2 | 00, FK, 01, 02, kill-criteria, diff-v2, economics-v2, simulation-v2, own prosecution-v1 | **forge-v2**, the other prosecutor's files, audits, verdicts |
-| evidence-auditor | round n | every file for that idea in round n except the verdict: 00, FK, 01, 02, kill-criteria, forge-v<n> (or diff-v2 + forge-v2), strategy, economics-v<n>, simulation-v<n>, both prosecution-v<n> | verdict-v<n>, earlier verdicts |
+| economics-modeler | — | 00, FK, 01, forge-v<n> (+ economics-v1 in round 2) | kill-criteria, strategy, prosecutions, audits, verdicts |
+| market-strategist | — | 00, FK, 01, 02, 03 (+ idea id), forge-v1, CITY | kill-criteria, criteria draft, economics, simulation, prosecutions, audits, verdicts |
+| prosecutor | kill v1 | 00, FK, 01, 02, kill-criteria, forge-v1, economics-v1, simulation-v1 | strategy (it runs in parallel with the strategist), audit, verdict |
+| prosecutor | kill v2 | 00, FK, 01, 02, kill-criteria, diff-v2, economics-v2, simulation-v2, own prosecution-v1 | **forge-v2**, strategy, audits, verdicts |
+| evidence-auditor | round n | every file for that idea in round n except the verdict: 00, FK, 01, 02, kill-criteria, forge-v<n> (or diff-v2 + forge-v2), strategy, economics-v<n>, simulation-v<n>, prosecution-v<n> | verdict-v<n>, earlier verdicts |
 | judge | round n | everything for that idea, plus run-log (for the hash) | — |
 
 In **direct kill mode** (`/lab:verdict "<idea>"`) there is no scouting and no forge. `ideas/I01/idea.md` (the idea as the user stated it) stands in for both the raw idea and `forge-v1`:
-- prosecutors in criteria mode receive `00` and `idea.md`;
-- the economics-modeler receives `00` and `idea.md` and writes `economics-v1.md` (without it a PASS is impossible under rule 3);
-- prosecutors in kill mode receive `00`, `kill-criteria.md`, `idea.md`, `economics-v1.md`;
+- the prosecutor in criteria mode receives `00` and `idea.md`;
+- the economics-modeler receives `00` and `idea.md` and writes `economics-v1.md` (without it a PASS is impossible under rule 3), then main runs the simulation and the money gate;
+- the prosecutor in kill mode receives `00`, `kill-criteria.md`, `idea.md`, `economics-v1.md`, `simulation-v1.md`;
 - the auditor and judge receive everything for the idea as usual.
 There is no revision round in direct mode: REVISE is reported to the user as "would need: <fixable flaws>" and recorded as KILL in the ledger.
 
@@ -357,24 +358,31 @@ The three explanation lines (how it works, need gap, how it makes money) are wha
 
 The main session parses, it does not improve. Anything the user did not state is written `not stated`.
 
-## ideas/<id>/criteria-market.md and criteria-execution.md — writers: prosecutors (criteria mode)
+## ideas/<id>/criteria.md — writer: prosecutor (criteria mode)
 
-Drafts. Same shape as one half of `kill-criteria.md`:
+The draft of both halves of `kill-criteria.md`, written in one call:
 
 ```markdown
 ---
-(front matter, idea_id, agent: prosecutor-market | prosecutor-execution, version: 1)
+(front matter, idea_id, agent: prosecutor, version: 1)
 ---
 
-## Criteria
+## Market criteria
 ### KM1
 - dies unless: <specific, testable statement>
 - threshold: <number, count, or observable fact>
 - evidence that satisfies it: <what kind of source would prove it>
 - why it matters: <one line>
+
+## Execution criteria
+### KE1
+- dies unless: <...>
+- threshold: <...>
+- evidence that satisfies it: <...>
+- why it matters: <...>
 ```
 
-3–6 criteria per prosecutor.
+3–6 criteria in each section.
 
 ## ideas/<id>/kill-criteria.md — writer: main (merge), then LOCKED
 
@@ -388,10 +396,10 @@ locked: true
 (verbatim copy of the idea block from 03-ideas.md)
 
 ## Market criteria
-(verbatim KM blocks from criteria-market.md)
+(verbatim KM blocks from criteria.md)
 
 ## Execution criteria
-(verbatim KE blocks from criteria-execution.md)
+(verbatim KE blocks from criteria.md)
 
 ## Lock
 - locked at: <iso>
@@ -513,10 +521,34 @@ Every `###` framework section ends with a `- verdict:` line. Claims use the evid
 
 ## Simulation
 ## Sensitivity (what matters most)
+## Money gate
+### What would have to change
 ## Inputs after evidence haircut
 ```
 
-The three sections are the script's output, unedited. Main adds only the front matter. If `python3` is not available, the file has one section, `## Simulation`, saying `not run: python3 unavailable`, and VIABLE ON PAPER is then impossible for that idea.
+The sections are the script's output, unedited. Main adds only the front matter. If `python3` is not available, the file has one section, `## Simulation`, saying `not run: python3 unavailable`, and VIABLE ON PAPER is then impossible for that idea.
+
+## ideas/<id>/gate-v<n>.md — writer: main (only when the money gate fails)
+
+```markdown
+---
+(front matter, idea_id, agent: main, version: n)
+---
+
+## Verdict
+- verdict: KILL — the money doesn't work (money gate)
+- round: <n>
+
+## Why
+- <the "best-case viable share" and "money gate: FAIL" lines, copied verbatim from simulation-v<n>.md>
+- <the viable share line, copied verbatim>
+- <the conservative-case constraint check from economics-v<n>.md § Constraint check, copied verbatim>
+
+## What would have to change
+(the table from simulation-v<n>.md § What would have to change, copied verbatim)
+```
+
+Main copies, never paraphrases. The gate is arithmetic on the builders' own numbers, so no judge call is needed. The idea is final: no strategy, prosecution, audit, judge or revision round, and no pivot candidate.
 
 ## ideas/<id>/economics-v<n>.md — writer: economics-modeler
 
@@ -610,11 +642,11 @@ The three sections are the script's output, unedited. Main adds only the front m
 
 Values are copied verbatim from forge-v1 / forge-v2, never paraphrased into stronger language. A row with `NONE` as evidence is a non-fix (rule 4).
 
-## ideas/<id>/prosecution-market-v<n>.md and prosecution-execution-v<n>.md — writers: prosecutors (kill mode)
+## ideas/<id>/prosecution-v<n>.md — writer: prosecutor (kill mode)
 
 ```markdown
 ---
-(front matter, idea_id, agent: prosecutor-market | prosecutor-execution, version: n)
+(front matter, idea_id, agent: prosecutor, version: n)
 ---
 
 ## Inputs read
@@ -624,13 +656,18 @@ Values are copied verbatim from forge-v1 / forge-v2, never paraphrased into stro
 | criterion | status | evidence (claim refs) | note |
 |---|---|---|---|
 | KM1 | MET / NOT MET / INSUFFICIENT EVIDENCE | C03, forge-v1.md#C05 | ... |
+| KE1 | MET / NOT MET / INSUFFICIENT EVIDENCE | ... | ... |
 
-## Flaws
+## Market flaws
 ### FM1 — FATAL | FIXABLE
 - flaw: <statement>
 - evidence: [Cnn] ... [source: ...]
 - what would fix it (FIXABLE only): <exact evidence that would fix it, and whether it is obtainable by desk research>
 - fix would change customer/problem/revenue model: no | yes
+
+## Execution flaws
+### FE1 — FATAL | FIXABLE
+- (same fields)
 
 ## Evidence
 - [C01] ... [source: ...]
@@ -641,7 +678,7 @@ Values are copied verbatim from forge-v1 / forge-v2, never paraphrased into stro
 | D1 | yes / no | ... |
 ```
 
-Prosecutors may only assess criteria that are in `kill-criteria.md`; they can add flaws but not criteria.
+Every `KM*` and `KE*` criterion in `kill-criteria.md` gets a row. The prosecutor may only assess criteria that are in `kill-criteria.md`; it can add flaws but not criteria.
 
 ## ideas/<id>/audit-v<n>.md — writer: evidence-auditor
 
@@ -841,7 +878,7 @@ No encouragement. No softening.
 ## Agent calls
 | time | agent | mode | idea | round | paths passed | output |
 |---|---|---|---|---|---|---|
-| ... | prosecutor-market | kill | I01 | 2 | 00-contract.md; 01-local-market.md; 02-signals.md; ideas/I01/kill-criteria.md; ideas/I01/diff-v2.md; ideas/I01/economics-v2.md; ideas/I01/prosecution-market-v1.md | ideas/I01/prosecution-market-v2.md |
+| ... | prosecutor | kill | I01 | 2 | 00-contract.md; 01-local-market.md; 02-signals.md; ideas/I01/kill-criteria.md; ideas/I01/diff-v2.md; ideas/I01/economics-v2.md; ideas/I01/simulation-v2.md; ideas/I01/prosecution-v1.md | ideas/I01/prosecution-v2.md |
 
 ## Locks
 | idea | file | sha256 | locked at |
@@ -852,8 +889,8 @@ No encouragement. No softening.
 |---|---|---|---|
 
 ## Blindness self-check
-- forge-v2.md passed to a prosecutor: never | <violations>
-- a prosecutor passed the other prosecutor's file: never | <violations>
+- forge-v2.md passed to the prosecutor: never | <violations>
+- strategy passed to the prosecutor: never | <violations>
 - kill-criteria passed to forge or economics-modeler: never | <violations>
 ```
 
@@ -875,7 +912,7 @@ The ledger has a single H1 `# venture ledger` and one H2 per run, appended at th
 - generation lessons: <from 91-nothing-passed.md § Why the search missed, or 'n/a (passed)'>
 ```
 
-Verdict values in the ledger: `PASS`, `VIABLE ON PAPER`, `KILL`, `DROPPED (strategist)`, `REJECTED (screen)`, `NOT CARRIED (rank)`, `PIVOTED → <new id>`, `HALTED (tamper)`.
+Verdict values in the ledger: `PASS`, `VIABLE ON PAPER`, `KILL`, `KILL (money gate)`, `DROPPED (strategist)`, `REJECTED (screen)`, `NOT CARRIED (rank)`, `PIVOTED → <new id>`, `HALTED (tamper)`.
 
 ## ventures/cities/<city-slug>.md — writer: main (append only)
 

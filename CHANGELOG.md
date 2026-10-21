@@ -2,6 +2,32 @@
 
 All notable changes to this plugin are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.7.0] — 2026-10-21
+
+Faster and cheaper. The live v0.5 `/lab:test` run cost about $7.50 and took 43 minutes; most of that was spent on an idea the simulation had already ruled out.
+
+### Changed
+- **Money first.** The new order is forge → economics → simulation → **money gate** → strategist ∥ prosecutor → audit → judge.
+  - The gate re-runs the simulation with no evidence haircut.
+  - Under 20% viable, the idea stops as `KILL (money gate)`. Main writes `gate-v<n>.md` with a **What would have to change** table, which the simulator solves for per input.
+  - The gate also runs in round 2 and in `/lab:verdict`.
+- **One prosecutor.** `prosecutor-market` and `prosecutor-execution` are merged into `prosecutor`:
+  - one criteria call writes `criteria.md` (KM and KE);
+  - one kill call writes `prosecution-v<n>.md` (market and execution flaws kept separate).
+  - That's 2 fewer calls per idea, and 2 more per revision round.
+- **Strategist and prosecutor run in parallel.** The prosecutor no longer reads the strategy, and economics no longer reads it either. The auditor and the judge still do.
+- **Smaller reading load for agents.** Agents read `skills/rules/AGENT-RULES.md`, a short form of the rules, plus `skills/file-schemas/parts/_conventions.md` and their own output's schema. They no longer read the full 10 KB rules and 32 KB schema file. `scripts/split_schemas.py` generates the parts from `SKILL.md`, and CI checks they are current. The main session reads only the parts it needs.
+- **The judge runs once.**
+  - Main runs a pre-judge hash check and records it in run-log § Locks.
+  - If the judge's own hash command is blocked, it uses that record instead of ending without a verdict.
+  - The judge must always write a verdict file.
+- **Cheaper defaults.** `/lab:ideate` defaults to `quick`, and both scouts run on Haiku.
+
+### Added
+- `simulate.py` reports `## Money gate` and `### What would have to change`, with 4 new unit tests.
+- New templates: `criteria.md`, `prosecution-v1.md`, `gate-v1.md`.
+- The blindness checker covers the merged prosecutor and economics-not-reading-strategy, with new must-fail leaks. Pre-0.7 transcripts are checked under their own rules.
+
 ## [0.6.0] — 2026-10-21
 
 ### Changed
