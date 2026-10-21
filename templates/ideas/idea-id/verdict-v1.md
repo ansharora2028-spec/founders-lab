@@ -12,7 +12,7 @@ created: <ISO 8601 UTC>
 - result: <MATCH | MISMATCH — HALTED>
 
 ## Verdict
-- verdict: <PASS | REVISE | KILL | HALTED>
+- verdict: <PASS | VIABLE ON PAPER | REVISE | KILL | HALTED>
 - round: <1 | 2>
 - confidence: <1-10>
 
@@ -28,6 +28,17 @@ created: <ISO 8601 UTC>
 
 ## Conservative economics
 - fits contract: <yes | no> — <refs>
+
+## Simulation
+- viable share: · within capital: · bar:
+
+## Viable-on-paper check
+| condition | met? | evidence |
+|---|---|---|
+
+## Assumptions to confirm (VIABLE ON PAPER only)
+| # | assumption | how to confirm cheaply | stop if |
+|---|---|---|---|
 
 ## Fixable flaws (REVISE only)
 | flaw id | what evidence would fix it | desk-researchable |

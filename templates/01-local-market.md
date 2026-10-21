@@ -41,6 +41,24 @@ created: <ISO 8601 UTC>
 ## Complaints about paid options
 - [C01] <claim> [source: <url> | ASSUMPTION: <why>]
 
+## Peer-town benchmark
+| town | population (year, source) | category suppliers | per 10,000 |
+|---|---|---|---|
+
+## Big-brand presence
+| brand | category | serves this town? | evidence |
+|---|---|---|---|
+
+## City profile
+- how people buy:
+- payment habits:
+- trust in local vs national brands:
+- language:
+- seasonality:
+- income cycles:
+- delivery reach:
+- migration:
+
 ## Signals
 | id | signal | claim refs | strength | relevance to contract |
 |---|---|---|---|---|

@@ -2,6 +2,70 @@
 
 All notable changes to this plugin are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.7.0] — 2026-10-21
+
+Faster and cheaper. The live v0.5 `/lab:test` run cost about $7.50 and took 43 minutes; most of that was spent on an idea the simulation had already ruled out.
+
+### Changed
+- **Money first.** The new order is forge → economics → simulation → **money gate** → strategist ∥ prosecutor → audit → judge.
+  - The gate re-runs the simulation with no evidence haircut.
+  - Under 20% viable, the idea stops as `KILL (money gate)`. Main writes `gate-v<n>.md` with a **What would have to change** table, which the simulator solves for per input.
+  - The gate also runs in round 2 and in `/lab:verdict`.
+- **One prosecutor.** `prosecutor-market` and `prosecutor-execution` are merged into `prosecutor`:
+  - one criteria call writes `criteria.md` (KM and KE);
+  - one kill call writes `prosecution-v<n>.md` (market and execution flaws kept separate).
+  - That's 2 fewer calls per idea, and 2 more per revision round.
+- **Strategist and prosecutor run in parallel.** The prosecutor no longer reads the strategy, and economics no longer reads it either. The auditor and the judge still do.
+- **Smaller reading load for agents.** Agents read `skills/rules/AGENT-RULES.md`, a short form of the rules, plus `skills/file-schemas/parts/_conventions.md` and their own output's schema. They no longer read the full 10 KB rules and 32 KB schema file. `scripts/split_schemas.py` generates the parts from `SKILL.md`, and CI checks they are current. The main session reads only the parts it needs.
+- **The judge runs once.**
+  - Main runs a pre-judge hash check and records it in run-log § Locks.
+  - If the judge's own hash command is blocked, it uses that record instead of ending without a verdict.
+  - The judge must always write a verdict file.
+- **Cheaper defaults.** `/lab:ideate` defaults to `quick`, and both scouts run on Haiku.
+
+### Added
+- `simulate.py` reports `## Money gate` and `### What would have to change`, with 4 new unit tests.
+- New templates: `criteria.md`, `prosecution-v1.md`, `gate-v1.md`.
+- The blindness checker covers the merged prosecutor and economics-not-reading-strategy, with new must-fail leaks. Pre-0.7 transcripts are checked under their own rules.
+
+## [0.6.0] — 2026-10-21
+
+### Changed
+- **Renamed to Founders Lab.** The plugin is now `lab` in the `founders-lab` marketplace: `/plugin install lab@founders-lab`. Every command starts with `/lab:` and the agents are `lab:<agent>`.
+- **Five commands, named for what the founder wants:**
+  - `/lab:ideate` (was `/venture:run`);
+  - `/lab:test "<idea>"` (was `/venture:check`);
+  - `/lab:verdict "<idea>"` (was `/venture:kill "<idea>"`);
+  - `/lab:history` (was `/venture:ledger`);
+  - `/lab:resume` (new).
+- **Pipeline stages are internal.** intake, scout, generate, forge, kill and blueprint moved from `commands/` to `stages/` and no longer appear in the menu. `/lab:resume [run_id]` continues a stopped run from the first unfinished stage.
+- **Command descriptions are plain questions** ("No idea yet?", "Have an idea?", "Want a fast yes or no?"). The five rulebook skills are marked internal. `venture-rules` is now `rules`.
+- `/lab:ideate` and `/lab:test` now pre-allow `python3`, so the simulation doesn't prompt for permission.
+
+### Unchanged on purpose
+- The `ventures/` run folder and the `# venture ledger` heading, so existing runs, ledgers and city memory keep working.
+
+### Upgrading from 0.5
+- `/plugin uninstall venture@venture`, `/plugin marketplace remove venture`, then install as above.
+
+## [0.5.0] — 2026-10-15
+
+### Added
+- **VIABLE ON PAPER** verdict, between PASS and KILL: ≥70% of simulated runs viable, ≥90% within capital, no fatal flaw, the gap backed by peer-town / brand-absence / founder-counted evidence, only offline-only gaps left, and a strategist CARRY. It lists the 2–3 assumptions to confirm, with cheap checks and stop numbers.
+- **market-strategist** (11th agent): an independent full framework check (competitors and steal-ability, price ladder, Five Forces, Blue Ocean, JTBD, need-gap, value proposition, Kano, consumer behaviour, STP, bottom-up TAM/SAM/SOM, Ansoff, PESTLE, 4Ps, funnel, moat, simulated customer panel), with CARRY or DROP before any judge. New `frameworks` skill.
+- **Simulation:** `scripts/simulate.py`, a seeded Monte Carlo with evidence haircuts and sensitivity ranking, run by the orchestrator. `simulation-v<n>.md` per idea; `tests/test_simulate.py` in CI.
+- **Founder knowledge questionnaire** (`00-founder-knowledge.md`): observation-based, with ranges and how-known tags.
+- **Small-town toolkit** for the local scout: peer-town benchmark, big-brand presence map, city profile, government and proxy data.
+- **City memory:** `ventures/cities/<city>.md`, append-only.
+- **Evidence tiers** in rule 8: verified, peer-town, founder-counted, founder-estimate, assumption, and simulated (never evidence).
+- The generator's longlist adds the biggest competitor, our price versus theirs, why customers would switch, and the Ansoff quadrant.
+
+### Changed
+- Pipeline: forge → **strategist** → economics → **simulation** → kill.
+- Rule 9: thin online data is not evidence against an idea.
+- REVISE requires at least one desk-fixable failure.
+- Blueprint handles VIABLE ON PAPER, appends city memory, and no longer calls nothing-passed a "successful run".
+
 ## [0.4.0] — 2026-10-15
 
 ### Changed
@@ -13,7 +77,7 @@ All notable changes to this plugin are documented here. The format follows [Keep
 
 ### Added
 - The nothing-passed report has a **Why the search missed** section, and its generation lessons go into the ledger.
-- `/venture:run --wave2 [run_id]`: a second wave of ideas from the same contract and scouting. It is offered automatically when nothing passes.
+- `/lab:ideate --wave2 [run_id]`: a second wave of ideas from the same contract and scouting. It is offered automatically when nothing passes.
 
 ## [0.3.0] — 2026-10-15
 
@@ -21,8 +85,8 @@ All notable changes to this plugin are documented here. The format follows [Keep
 - `tests/e2e.sh` network check printed `000000` for a blocked host. A first fix then aborted under `set -e`. It now prints `000` and continues.
 
 ### Added
-- `/venture:check "<idea>" [--variants]`: runs the user's own idea through the full pipeline (scouting focused on the idea, explanation, screen, locked criteria, forge, three-scenario economics, prosecution, audit, one revision round) and gives a clear DO IT / DON'T DO IT verdict. With `--variants`, it also tests up to 3 one-change variants. New depth modes `check` and `check+variants`.
-- `tests/e2e.sh check "<idea>"` to test `/venture:check` end to end.
+- `/lab:test "<idea>" [--variants]`: runs the user's own idea through the full pipeline (scouting focused on the idea, explanation, screen, locked criteria, forge, three-scenario economics, prosecution, audit, one revision round) and gives a clear DO IT / DON'T DO IT verdict. With `--variants`, it also tests up to 3 one-change variants. New depth modes `check` and `check+variants`.
+- `tests/e2e.sh check "<idea>"` to test `/lab:test` end to end.
 - README rewritten for aspiring founders: purpose, getting started in 3 steps, which command to use, what you'll be asked, what you get, time and cost. Technical detail is under "Under the hood".
 - Every idea carries three plain-language explanations: **how it works**, **the need gap**, and **how it makes money**. They appear in `03-ideas.md` and as cards shown to the user at generation and in the final run summary. Forge writes fuller versions, the blueprint explains the winning idea the same way, and the nothing-passed report explains every idea before saying why it died.
 
@@ -50,8 +114,8 @@ All notable changes to this plugin are documented here. The format follows [Keep
 ### Added
 - Plugin and single-plugin marketplace manifests (`venture@venture`).
 - 10 subagents: local-market-scout, signal-scout, generator, screener, forge, economics-modeler, prosecutor-market, prosecutor-execution, evidence-auditor, judge.
-- 8 commands: `/venture:run`, `intake`, `scout`, `generate`, `forge`, `kill` (pipeline and direct mode), `blueprint`, `ledger`.
-- 4 skills: venture-rules (the nine principles), scoring-rubric (screen score + judge decision rule), idea-lenses (six lenses), file-schemas (every run file + visibility matrix).
+- 8 commands: `/lab:ideate`, `intake`, `scout`, `generate`, `forge`, `kill` (pipeline and direct mode), `blueprint`, `ledger`.
+- 4 skills: rules (the nine principles), scoring-rubric (screen score + judge decision rule), idea-lenses (six lenses), file-schemas (every run file + visibility matrix).
 - Kill-criteria lock: `chmod 444` + SHA-256 recorded in `run-log.md`, verified by the judge before every ruling.
 - Append-only ledger at `ventures/LEDGER.md`.
 - Templates for every run file and one complete fictional sample run.

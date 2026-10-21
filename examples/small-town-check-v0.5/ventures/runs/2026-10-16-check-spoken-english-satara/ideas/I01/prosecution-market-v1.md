@@ -1,0 +1,82 @@
+---
+run_id: 2026-10-16-check-spoken-english-satara
+idea_id: I01
+agent: prosecutor-market
+version: 1
+created: 2026-10-16T09:12:26Z
+---
+
+## Inputs read
+- 00-contract.md
+- 00-founder-knowledge.md
+- 01-local-market.md
+- 02-signals.md
+- ideas/I01/kill-criteria.md (LOCKED)
+- ideas/I01/forge-v1.md
+- ideas/I01/strategy-v1.md
+- ideas/I01/economics-v1.md
+- ideas/I01/simulation-v1.md
+(all under <scratch>/ventures/runs/2026-10-16-check-spoken-english-satara/)
+
+## Criteria assessment
+| criterion | status | evidence (claim refs) | note |
+|---|---|---|---|
+| KM1 | INSUFFICIENT EVIDENCE | 01-local-market.md#C01-C05, #C19-C22, #C39; 02-signals.md#S12; prosecution-market-v1.md#C06, #C07 | No operator of in-person kids' spoken English in Satara or a band-sized peer town (50,000 to 3,00,000) has a fee plus >=10 dated reviews, >=20 stated enrolment, or dated admission posts. The only kids' anchors are founder hearsay (FK Q10) and one IndiaMART seller listing (Success, ₹2,000, minimum 1 to 4 months, age group not stated) with no customers shown; the criterion expressly excludes such listings. Justdial returned 403 to the scout and my search returned no Satara review pages. Nothing contradicts the idea, but nothing satisfies the threshold. The gap is partly a tool failure (Justdial/Maps blocked) and partly offline (admission notices, batch sizes). Not an "offline-only" gap in full, because Justdial and Maps are desk-reachable by a human browser. |
+| KM2 | INSUFFICIENT EVIDENCE | 01-local-market.md#C44, #C46; forge-v1.md#C16 (persona), strategy-v1.md C2; prosecution-market-v1.md#C05 | No enrolment count for classes 6-10 in Satara city exists in any file. The only size figure is an ASSUMPTION of 9,000-12,000 children aged 11-15, from population share. My search also did not find school-wise UDISE+ figures. The 6,000 threshold is plausible against that assumption, but an assumption cannot make a criterion MET. Obtainable by desk research (UDISE+ school-wise tables) and by a founder count of the 6 nearby schools (FOUNDER-COUNTED at most). Nothing contradicts it. |
+| KM3 | INSUFFICIENT EVIDENCE | 01-local-market.md#C27-C31; 02-signals.md#S01, #S02; prosecution-market-v1.md#C01-C04 | Limb (a) not shown. The draft covers "academic coaching, tuition, instruction or guidance" to more than 25 students, and carves out sports, dance, theatre, painting and yoga. It names no language or skill class either way. The under-13 bar is in the draft with no stated exceptions. The draft is still unenacted, with consultation closed and no later status found. Limb (b) needs class 8-10 enrolment >=3,600 (unknown, see KM2) AND batches of 25 or fewer outside registration. The SCC Online summary treats each branch as a separate centre, which points to a per-centre count, not per-batch. If so, the second clause fails for any plan above 25 students in one room. Official text was not opened by anyone. Desk research can settle scope and counting rule; enrolment follows KM2. Not an offline gap. Leaning toward failure on the counting rule, not yet contradicted by the primary text. |
+| KM4 | INSUFFICIENT EVIDENCE | 01-local-market.md#C11; 02-signals.md#S12; prosecution-market-v1.md#C08 | No in-person kids' spoken-English operator with >=24 months of dated evidence was found in Satara or band-sized peer towns, and no documented closure was found either. The graveyard is unknown, not clean. The national edtech wreckage (01#C08-C10) is online and post-Covid and does not answer this in-person, small-town criterion. Wayback and Justdial/Maps review history were not tried. Desk-researchable in part. |
+| KM5 | INSUFFICIENT EVIDENCE | 02-signals.md#S08; prosecution-market-v1.md#C09, #C10 | The required evidence is Maharashtra urban tables by level from the NSS 80th round. None of the files, and none of my searches, retrieved them. National figures only: about 27% of students take coaching (urban 30.7%), and urban annual coaching spend is ₹3,988 per student. Whether that figure is per student overall or per coaching student is not stated in the sources I saw. If it is per student overall, the per-coaching-student figure would be much higher; if it is per coaching student, it is under the ₹6,000 bar. The strategist's inference (S08: spend averages are under ₹7,200, so ₹600 is above average) cannot be drawn without that distinction. The participation limb (>=25%) is met nationally and untested for Maharashtra. Desk-researchable from the MoSPI report. |
+
+No criterion is MET and none is NOT MET. All five are INSUFFICIENT EVIDENCE. Four of the five (KM2, KM3, KM4, KM5) can be settled by desk research that no agent completed. Only KM1 has a partly offline component. No criterion is contradicted by verified evidence.
+
+## Flaws
+### FM1 — FIXABLE
+- flaw: Willingness to pay for a kids' in-person spoken-English class at ₹600 in Satara rests entirely on founder hearsay and one seller listing. The generator's gap (tuition teaches grammar; the nearby class has batches of 30) has no review, order or enrolment data behind it. The 01 file's own peer table shows supply in line with peer towns, so there is no under-service signal either. National demand (PlanetSpark about ₹81 crore FY25, SpeakX 200,000 paying subscribers) is real but online and priced at 4 to 40 times ₹600. It is not local demand.
+- evidence: [C05] 01-local-market.md#C39 states that no Satara seller review was retrievable and complaints are founder-reported only. [C06] My search for Satara kids' spoken-English reviews returned no Justdial or Maps pages. [C07] Success listing: ₹2,000/month, no age group, no reviews [source: https://m.indiamart.com/success-satara]. Peer-town and national claims are labelled in 01 and 02.
+- what would fix it: At least 2 named in-person kids' operators with fee and customer signs (KM1 threshold), or a paid pre-enrolment of about 8-10 parents at ₹600 before any room is rented. The Justdial/Maps part is desk-obtainable by a person with a browser. The pre-enrolment is offline-only and is the offline-only gap the judge should weigh.
+- fix would change customer/problem/revenue model: no
+
+### FM2 — FIXABLE
+- flaw: The draft Maharashtra coaching Act can cap the business at 25 students in one centre and bar under-13s, which removes most class 6 and part of class 7. At 25 × ₹600 = ₹15,000 gross against ₹4,000-6,000 rent, the market ceiling is a side income. The scope for spoken English is unresolved in every source. The draft is not law, and a 2017 draft and an earlier proposal were never enacted, so the risk may also lapse. Forge's narrowing to class 8-10 stays inside the same customer type. The 75-student "three batches" ceiling in the strategy and economics files assumes a per-batch count that no source supports; the one summary that addresses it reads per centre.
+- evidence: [C01] Draft covers "academic coaching, tuition, instruction or guidance" to more than 25 students; sports, dance, theatre, painting and yoga excluded; language not mentioned [source: https://www.scconline.com/blog/post/2026/08/25/draft-maharashtra-private-coaching-centers-act-2026/, 2026-08-25]. [C02] The same page: under-13 enrolment barred, no exceptions stated; each branch appears to be its own centre. [C03] The draft was released for public feedback and is not law; a 2017 draft never reached the legislature [source: https://news.careers360.com/maharashtra-pvt-coaching-centres-regulation-bill-kota-institutes-99pc-state-classes-small-association-neet-2026-infra-standards/amp, 2026-08-26]. [C04] No cabinet approval or language-class exemption found as of 2026-10-16; a minister has said the bill will be tabled in the winter session [source: https://www.deccanchronicle.com/nation/maharashtra-to-introduce-law-regulating-private-coaching-classes-1969073].
+- what would fix it: The official draft text (School Education and Sports Department, Maharashtra) showing the definition of "coaching" and whether language-skill classes are excluded, and whether the 25 count is per centre or per batch. Desk research can obtain it.
+- fix would change customer/problem/revenue model: no
+
+### FM3 — FIXABLE
+- flaw: Market size in Satara is unmeasured. No class 6-10 enrolment figure exists. The strategist's TAM uses "20% of households would pay" and the SAM uses "25-35% of class 8-10", with no benchmark for either. The SOM is therefore not a measured number. Because the cap of 25 and the 15-25 student SOM make the absolute market need small (about 500-800 addressable children by the strategist's own assumption), the plan does not depend on a large market. The failure mode is conversion, not market size.
+- evidence: [C05] 01-local-market.md#C46 labels the 9,000-12,000 figure an ASSUMPTION and notes UDISE+ was not accessed. [C11] The ZP Satara figure covers only Zilla Parishad schools, classes 1-8, district-wide [source: https://www.zpsatara.gov.in/?p=6821].
+- what would fix it: UDISE+ school-wise enrolment for Satara urban schools (all managements), or a founder count of the 6 schools within 3 km. Desk research for the first; offline for the second.
+- fix would change customer/problem/revenue model: no
+
+### FM4 — FIXABLE
+- flaw: The offer is an add-on bought from the same household wallet and the same evenings that already hold ₹800-1,500 per subject tuition and exam load. It is not a switch from an incumbent. Strategy A2 says "little to steal", and the strategy's own panel objects with "no free evenings". Free substitutes and AI speaking apps (SpeakX plans Marathi) set a ceiling on the price for generic practice. The only differentiators, a known teacher and a small batch, are copyable by any tuition teacher at no cost (strategy C7). The strategist's "price below every comparator" is an advantage only if parents treat the options as equivalent, which no source shows.
+- evidence: [C12] SpeakX raised USD 16M, reports ARR USD 7.5M, 200,000 paying subscribers, plans Marathi (national, 2025-10-15) [source: https://india.entrepreneur.com/news-and-trends/speakxai-raises-usd-16-mn-to-strengthen-ai-powered-english/498354]. Strategy-v1.md A2, A4, C7 for the add-on and copy risks (strategist output, builder-side).
+- what would fix it: Parent responses from Satara showing they would pay ₹600 on top of existing tuition for speaking (trial or pre-enrolment, offline), and a named local operator with retained students (KM1/KM4 evidence). Partly offline.
+- fix would change customer/problem/revenue model: no
+
+### FM5 — FIXABLE
+- flaw: The "Need gap" and "Porter rivalry" readings use an IndiaMART listing count as a proxy for supply. IndiaMART is a B2B seller directory and the listings show no age group, so the peer-town benchmark says nothing about kids' supply or about demand. Forge treats absence of a class 6-10 listing as a weak gap, and the strategist rates rivalry MEDIUM on the same counts. Both are labelled weak by their authors. The consequence is that neither a gap nor saturation is evidenced.
+- evidence: 01-local-market.md#C37 (IndiaMART is a B2B directory; ASSUMPTION) and the peer table's own caveat; 02-signals.md#S12.
+- what would fix it: A first-hand sweep of Satara kids' spoken-English classes (name, fee, batch size, start date) from Justdial/Maps and from notices near the 6 schools. Part desk, part offline.
+- fix would change customer/problem/revenue model: no
+
+FATAL flaws: none. Nothing in the market evidence contradicts the idea or forces a change of customer, problem or revenue model. Execution-side points (conservative-case losses in economics-v1.md, simulation viable share 2.6%) belong to the execution prosecutor and are not assessed here, except that the simulation's conversion and reach drivers are the same unmeasured local demand inputs flagged in FM1 and FM4.
+
+## Evidence
+- [C01] The draft Maharashtra Private Coaching Centers (Registration and Regulation) Act, 2026 applies to centres giving "academic coaching, tuition, instruction or guidance" to more than 25 students for consideration. Sports, dance, theatre, painting and yoga are excluded. Language and skill courses are not mentioned. [source: https://www.scconline.com/blog/post/2026/08/25/draft-maharashtra-private-coaching-centers-act-2026/, 2026-08-25] (state; draft)
+- [C02] The same article states that centres may not enrol students below 13 with no exceptions stated, and treats each branch as a separate centre needing registration. Whether the 25 count is per centre or per batch is not stated; the branch treatment suggests per centre. [source: https://www.scconline.com/blog/post/2026/08/25/draft-maharashtra-private-coaching-centers-act-2026/, 2026-08-25] (state; draft; inference on per-centre count)
+- [C03] The draft "has recently been released for public feedback"; it is not law. The state gave 10 days for consultation, a 2017 draft never reached the legislature and an earlier proposal was shelved. [source: https://news.careers360.com/maharashtra-pvt-coaching-centres-regulation-bill-kota-institutes-99pc-state-classes-small-association-neet-2026-infra-standards/amp, 2026-08-26] (state; draft)
+- [C04] A search on 2026-10-16 found no cabinet approval and no language-class exemption; one report quotes the minister saying the bill will be tabled in the winter session of the state legislature, and the 2025 Bombay High Court monsoon-session timeline was missed. [source: https://www.deccanchronicle.com/nation/maharashtra-to-introduce-law-regulating-private-coaching-classes-1969073] (state; undated in results)
+- [C05] A search for Satara city classes 6-10 enrolment returned only Zilla Parishad classes 1-8 district figures (1,14,789 students, 2023-24) and a single private school with 1,713 students (UDISE+ 2024-25), and no city-level count. [source: https://www.zpsatara.gov.in/?p=6821] (district)
+- [C06] A search for Satara kids' spoken-English reviews returned the IndiaMART Satara coaching page and the Success listing and no Justdial or Maps pages. The Success listing shows ₹2,000/month with a minimum of 1 to 4 months and no reviews or age group. [source: https://m.indiamart.com/success-satara]
+- [C07] In another city, a Nashik listing (BritUS Spoken English, theatre and drama) is shown with a rating of 4.8 from 116 reviews on a directory. Nashik is outside the KM1 peer band (population above 3,00,000) and this is a drama-led adult-and-teen format, so it does not count for KM1; it shows that review-bearing pages exist for such classes in larger Maharashtra cities. (other city: Nashik) [source: https://discover.lyfskills.com/listing/142072]
+- [C08] A Nellore (Andhra Pradesh) spoken-English franchise is listed for sale, admitting 4 to 10 students a month at ₹10,000-15,000 per student, with the owner citing relocation as the reason. This is not a closure for weak enrolment and not a kids' class; it shows that adult spoken-English centres in mid-size towns can run on a small intake at a far higher fee than ₹600. (other city: Nellore) [source: https://www.smergers.com/business/coaching-center-for-sale-in-nellore-india/iph77/]
+- [C09] NSS 80th round (CMS Education 2025), national: about 27% of students take private coaching, urban 30.7%, rural 25.5%; urban average coaching spend ₹3,988 per student per year (rural ₹1,793); urban higher-secondary ₹9,950. The base (per student or per coaching student) is not stated in the summaries I saw. No Maharashtra figure was returned. (national) [source: https://news.careers360.com/27-of-students-rely-on-private-coaching-urban-participation-higher-cms-education-survey-2025/amp]
+- [C10] State spread is wide: Tripura 78.6% and West Bengal 74.6% take coaching, against a national 27%. Maharashtra's figure was not found. Tripura per-student tutor spend ₹12,566, national ₹2,409 on that measure. (other states) [source: https://news.careers360.com/cms-education-survey-2025-haryana-school-fees-coaching-class-tuition-most-expensive-bihar-affordable-mospi-nsso-survey]
+- [C11] ZP Satara district figures cover only Zilla Parishad primary schools, classes 1-8. [source: https://www.zpsatara.gov.in/?p=6821] (district)
+- [C12] SpeakX (AI spoken English) raised USD 16M pre-Series B, reports ARR USD 7.5M and 200,000 paying subscribers, and plans to add Marathi. [source: https://india.entrepreneur.com/news-and-trends/speakxai-raises-usd-16-mn-to-strengthen-ai-powered-english/498354, 2025-10-15] (national)
+
+## Round-2 notes (v2 only)
+| diff row | accepted as fix | reason |
+|---|---|---|
+| none (round 1) | n/a | n/a |

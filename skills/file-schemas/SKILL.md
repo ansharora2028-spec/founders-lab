@@ -1,12 +1,12 @@
 ---
 name: file-schemas
-description: Exact markdown schemas for every file in a venture run folder (contract, scouting, ideas, screen, kill criteria, forge, economics, diff, prosecutions, audit, verdict, blueprint, nothing-passed, run-log, ledger) plus the visibility matrix. Read the schema for your output file before writing it.
+description: Internal reference for the Founders Lab agents (not a command). Exact markdown schemas for every file in a Founders Lab run folder (contract, scouting, ideas, screen, kill criteria, forge, economics, diff, prosecutions, audit, verdict, blueprint, nothing-passed, run-log, ledger) plus the visibility matrix. Read the schema for your output file before writing it.
 user-invocable: false
 ---
 
-# venture file schemas
+# Founders Lab file schemas
 
-Every venture file is markdown with YAML front matter, fixed H2 sections in the order shown, and claims written in the claim format. Do not add, rename or reorder H2 sections. If a section has nothing to say, write `- none` under it. Empty templates for every file live in `templates/` at the plugin root.
+Every run file is markdown with YAML front matter, fixed H2 sections in the order shown, and claims written in the claim format. Do not add, rename or reorder H2 sections. If a section has nothing to say, write `- none` under it. Empty templates for every file live in `templates/` at the plugin root.
 
 ## Conventions
 
@@ -16,7 +16,7 @@ Every venture file is markdown with YAML front matter, fixed H2 sections in the 
 ---
 run_id: 2026-01-31-pune-b2c          # <YYYY-MM-DD>-<slug>
 idea_id: I03                          # only for per-idea files; omit otherwise
-agent: prosecutor-market              # agent name, or "main" for files the main session writes
+agent: prosecutor                     # agent name, or "main" for files the main session writes
 version: 1                            # round number for per-idea files (1 or 2); 1 otherwise
 created: 2026-01-31T10:42:00Z         # ISO 8601 UTC: main session = output of `date -u +%Y-%m-%dT%H:%M:%SZ`; agents = the Timestamp line of their prompt
 ---
@@ -54,27 +54,35 @@ Every factual claim is one bullet:
 
 ## Visibility matrix (enforced by the main session)
 
-Paths are relative to `ventures/runs/<run_id>/`. `LEDGER` is `ventures/LEDGER.md`. `raw idea` is the idea's entry in `03-ideas.md` (or `03-ideas-pivot<k>.md`).
+Paths are relative to `ventures/runs/<run_id>/`. Short names:
+- `LEDGER` is `ventures/LEDGER.md`;
+- `CITY` is the city memory file `ventures/cities/<city-slug>.md`, if it exists;
+- `FK` is `00-founder-knowledge.md`;
+- `raw idea` is the idea's entry in `03-ideas.md` (or `03-ideas-pivot<k>.md`);
+- `strategy` is `ideas/<id>/strategy-v1.md`;
+- `simulation-v<n>` is `ideas/<id>/simulation-v<n>.md`, written by main from `scripts/simulate.py` (it includes the money gate).
+- `gate-v<n>` is `ideas/<id>/gate-v<n>.md`, written by main only when the money gate fails.
 
 | Agent | Mode | Paths it receives | Never receives |
 |---|---|---|---|
-| local-market-scout | — | 00, LEDGER | everything else |
-| signal-scout | — | 00, LEDGER | everything else |
-| generator | — | 00, 01, 02, LEDGER (+ the previous run's 91-nothing-passed in a second wave) | 04, any kill-criteria, prosecutions, audits, verdicts of this run |
-| screener | — | 00, 03 (or 03-ideas-pivot<k>), LEDGER | 01, 02 |
-| prosecutor-market / -execution | criteria | 00, 01, 02, raw idea file + idea id | forge, economics, the other prosecutor's draft |
-| forge | round 1 | 00, 01, 02, 03 (+ idea id) | kill-criteria, criteria drafts, prosecutions, audits, verdicts |
+| local-market-scout | — | 00, FK, LEDGER, CITY | everything else |
+| signal-scout | — | 00, FK, LEDGER | everything else |
+| generator | — | 00, FK, 01, 02, LEDGER, CITY (+ the previous run's 91-nothing-passed in a second wave) | 04, any kill-criteria, prosecutions, audits, verdicts of this run |
+| screener | — | 00, 03 (or 03-ideas-pivot<k>), LEDGER | 01, 02, FK |
+| prosecutor | criteria | 00, FK, 01, 02, raw idea file + idea id | forge, strategy, economics, simulation |
+| forge | round 1 | 00, FK, 01, 02, 03 (+ idea id), CITY | kill-criteria, criteria draft, strategy, prosecutions, audits, verdicts |
 | forge | round 2 | as round 1 + forge-v1 + fixable-flaws-v1 (the Judge's fixable-flaw table, extracted by main) | kill-criteria, prosecutions, audits, the full verdict |
-| economics-modeler | — | 00, 01, forge-v<n> (+ economics-v1 in round 2) | kill-criteria, prosecutions, audits, verdicts |
-| prosecutor-market / -execution | kill v1 | 00, 01, 02, kill-criteria, forge-v1, economics-v1 | the other prosecutor's file, audit, verdict |
-| prosecutor-market / -execution | kill v2 | 00, 01, 02, kill-criteria, diff-v2, economics-v2, own prosecution-v1 | **forge-v2**, the other prosecutor's files, audits, verdicts |
-| evidence-auditor | round n | every file for that idea in round n except the verdict: 00, 01, 02, kill-criteria, forge-v<n> (or diff-v2 + forge-v2), economics-v<n>, both prosecution-v<n> | verdict-v<n>, earlier verdicts |
+| economics-modeler | — | 00, FK, 01, forge-v<n> (+ economics-v1 in round 2) | kill-criteria, strategy, prosecutions, audits, verdicts |
+| market-strategist | — | 00, FK, 01, 02, 03 (+ idea id), forge-v1, CITY | kill-criteria, criteria draft, economics, simulation, prosecutions, audits, verdicts |
+| prosecutor | kill v1 | 00, FK, 01, 02, kill-criteria, forge-v1, economics-v1, simulation-v1 | strategy (it runs in parallel with the strategist), audit, verdict |
+| prosecutor | kill v2 | 00, FK, 01, 02, kill-criteria, diff-v2, economics-v2, simulation-v2, own prosecution-v1 | **forge-v2**, strategy, audits, verdicts |
+| evidence-auditor | round n | every file for that idea in round n except the verdict: 00, FK, 01, 02, kill-criteria, forge-v<n> (or diff-v2 + forge-v2), strategy, economics-v<n>, simulation-v<n>, prosecution-v<n> | verdict-v<n>, earlier verdicts |
 | judge | round n | everything for that idea, plus run-log (for the hash) | — |
 
-In **direct kill mode** (`/venture:kill "<idea>"`) there is no scouting and no forge. `ideas/I01/idea.md` (the idea as the user stated it) stands in for both the raw idea and `forge-v1`:
-- prosecutors in criteria mode receive `00` and `idea.md`;
-- the economics-modeler receives `00` and `idea.md` and writes `economics-v1.md` (without it a PASS is impossible under rule 3);
-- prosecutors in kill mode receive `00`, `kill-criteria.md`, `idea.md`, `economics-v1.md`;
+In **direct kill mode** (`/lab:verdict "<idea>"`) there is no scouting and no forge. `ideas/I01/idea.md` (the idea as the user stated it) stands in for both the raw idea and `forge-v1`:
+- the prosecutor in criteria mode receives `00` and `idea.md`;
+- the economics-modeler receives `00` and `idea.md` and writes `economics-v1.md` (without it a PASS is impossible under rule 3), then main runs the simulation and the money gate;
+- the prosecutor in kill mode receives `00`, `kill-criteria.md`, `idea.md`, `economics-v1.md`, `simulation-v1.md`;
 - the auditor and judge receive everything for the idea as usual.
 There is no revision round in direct mode: REVISE is reported to the user as "would need: <fixable flaws>" and recorded as KILL in the ledger.
 
@@ -93,7 +101,7 @@ created: <iso>
 ## Starting point
 - path: a | b | c            # a = specific idea, b = space/industry, c = nothing yet
 - in their words: "<verbatim, or 'none'>"
-- how they plan to charge: "<verbatim, or 'not asked' / 'not sure'>"   (asked by /venture:check)
+- how they plan to charge: "<verbatim, or 'not asked' / 'not sure'>"   (asked by /lab:test)
 
 ## Location profile
 - lives in: <city, country>
@@ -127,6 +135,36 @@ created: <iso>
 - confirmed at: <iso>
 - how: <AskUserQuestion | plain chat | arguments (non-interactive)>
 ```
+
+## 00-founder-knowledge.md — writer: main (intake)
+
+```markdown
+---
+(front matter, agent: main)
+---
+
+## About the town
+| # | question | low | likely | high | answer (verbatim) | how known |
+|---|---|---|---|---|---|---|
+| Q1 | people in the town / households or students within 3 km | | | | | counted / heard / guess / skipped |
+| Q2 | likely customers: age, income, occupation | — | — | — | | |
+| Q3 | what people travel elsewhere or order online for | — | — | — | | |
+| Q4 | big brands or apps absent or weak here | — | — | — | | |
+| Q5 | how people find services; founder's groups and sizes | | | | | |
+| Q6 | payment habits and money cycles | — | — | — | | |
+| Q7 | local rent; helper's monthly wage | | | | | |
+| Q8 | common complaints about paid services | — | — | — | | |
+
+## About the idea
+| # | question | low | likely | high | answer (verbatim) | how known |
+|---|---|---|---|---|---|---|
+| Q9 | what customers pay today for this job, with real examples | | | | | |
+| Q10 | 2–3 competitors: price and main complaint | | | | | |
+| Q11 | customers the founder can reach in month 1 | | | | | |
+| Q12 | anything else that makes it work or fail | — | — | — | | |
+```
+
+Answers are verbatim. Agents cite them as `[FOUNDER-COUNTED: FK Q5]` (how known = counted) or `[FOUNDER-ESTIMATE: FK Q9]` (heard or guess). Write `skipped` or `not asked (non-interactive)` where there is no answer. Never invent one.
 
 ## 01-local-market.md — writer: local-market-scout
 
@@ -164,6 +202,29 @@ created: <iso>
 
 ## Complaints about paid options
 - [Cnn] <paying customers of <seller> complain that ...> [source: ...]
+
+## Peer-town benchmark
+| town | population (year, source) | <category 1> suppliers | per 10,000 | <category 2> suppliers | per 10,000 |
+|---|---|---|---|---|---|
+| <target town> | ... | ... | ... | ... | ... |
+| <peer 1> | ... | ... | ... | ... | ... |
+| peer median | | | ... | | ... |
+- verdict per category: under-served | in line | over-served [PEER-TOWN: ...]
+
+## Big-brand presence
+| brand | category | serves this town? | evidence |
+|---|---|---|---|
+
+## City profile
+- how people buy: ...
+- payment habits: ...
+- trust in local vs national brands: ...
+- language: ...
+- seasonality: ...
+- income cycles: ...
+- delivery reach: ...
+- migration: ...
+(each line with claim ids and evidence labels)
 
 ## Signals
 | id | signal | claim refs | strength | relevance to contract |
@@ -223,9 +284,9 @@ created: <iso>
 - lessons applied: <from ledger generation lessons or a previous 91 report, or 'none'>
 
 ## Longlist and pass pre-check
-| # | candidate (one line) | demand anchor | gap | cautious money math | ceiling at hours limit | most likely killer | keep / drop |
-|---|---|---|---|---|---|---|---|
-| 1 | ... | D03 | ... | ₹499 × 40 = ₹19,960/mo vs ₹... | 60 members at 10 h/week ≈ ₹13,000/mo | free WhatsApp groups | keep → I01 |
+| # | candidate (one line) | demand anchor | gap | biggest competitor: their price vs ours; why they'd switch | Ansoff | cautious money math | ceiling at hours limit | most likely killer | keep / drop |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | ... | D03 | ... | Institute X ₹4,000 vs ₹499; flexible timing | market development | ₹499 × 40 = ₹19,960/mo vs ₹... | 60 members at 10 h/week ≈ ₹13,000/mo | free WhatsApp groups | keep → I01 |
 
 ## Ideas
 
@@ -297,24 +358,31 @@ The three explanation lines (how it works, need gap, how it makes money) are wha
 
 The main session parses, it does not improve. Anything the user did not state is written `not stated`.
 
-## ideas/<id>/criteria-market.md and criteria-execution.md — writers: prosecutors (criteria mode)
+## ideas/<id>/criteria.md — writer: prosecutor (criteria mode)
 
-Drafts. Same shape as one half of `kill-criteria.md`:
+The draft of both halves of `kill-criteria.md`, written in one call:
 
 ```markdown
 ---
-(front matter, idea_id, agent: prosecutor-market | prosecutor-execution, version: 1)
+(front matter, idea_id, agent: prosecutor, version: 1)
 ---
 
-## Criteria
+## Market criteria
 ### KM1
 - dies unless: <specific, testable statement>
 - threshold: <number, count, or observable fact>
 - evidence that satisfies it: <what kind of source would prove it>
 - why it matters: <one line>
+
+## Execution criteria
+### KE1
+- dies unless: <...>
+- threshold: <...>
+- evidence that satisfies it: <...>
+- why it matters: <...>
 ```
 
-3–6 criteria per prosecutor.
+3–6 criteria in each section.
 
 ## ideas/<id>/kill-criteria.md — writer: main (merge), then LOCKED
 
@@ -328,10 +396,10 @@ locked: true
 (verbatim copy of the idea block from 03-ideas.md)
 
 ## Market criteria
-(verbatim KM blocks from criteria-market.md)
+(verbatim KM blocks from criteria.md)
 
 ## Execution criteria
-(verbatim KE blocks from criteria-execution.md)
+(verbatim KE blocks from criteria.md)
 
 ## Lock
 - locked at: <iso>
@@ -389,9 +457,102 @@ After writing: `chmod 444`, compute SHA-256, record in `run-log.md` § Locks.
 | FM2 | ... | <url or NONE> |
 ```
 
-## ideas/<id>/economics-v<n>.md — writer: economics-modeler
+## ideas/<id>/strategy-v1.md — writer: market-strategist
 
 ```markdown
+---
+(front matter, idea_id, agent: market-strategist, version: 1)
+---
+
+## A. Competition
+### A1. Competitor map
+| competitor | type (direct / indirect / substitute / big player) | in this town? | price | liked for | complained about | evidence |
+|---|---|---|---|---|---|---|
+- verdict: SUPPORTS | NEUTRAL | AGAINST — <reason>
+### A2. Steal-ability
+### A3. Price ladder
+### A4. Porter's Five Forces
+| force | rating | evidence |
+|---|---|---|
+### A5. Blue Ocean (ERRC)
+
+## B. The customer
+### B1. Jobs-to-be-Done
+### B2. Need-gap analysis
+### B3. Value proposition canvas
+### B4. Kano model
+### B5. Consumer behaviour
+
+## C. Market and strategy
+### C1. STP
+### C2. TAM / SAM / SOM (bottom-up)
+### C3. Ansoff matrix
+### C4. PESTLE
+### C5. Marketing mix (4Ps)
+### C6. Funnel (AIDA)
+| step | number (low / likely / high) | evidence |
+|---|---|---|
+### C7. Moat
+
+## D. Simulated customer panel (objections only, never evidence)
+| persona [SIMULATED] | first reaction | main objection | what would make them try |
+|---|---|---|---|
+
+## E. Summary
+### Framework scorecard
+| framework | verdict | critical? |
+|---|---|---|
+### Strengths and risks
+### For the economics
+| input | low | likely | high | evidence label | from |
+|---|---|---|---|---|---|
+### Recommendation
+- recommendation: CARRY | DROP — <reason, with framework refs>
+```
+
+Every `###` framework section ends with a `- verdict:` line. Claims use the evidence labels of rule 8.
+
+## ideas/<id>/simulation-v<n>.md — writer: main (output of `scripts/simulate.py`, verbatim)
+
+```markdown
+---
+(front matter, idea_id, agent: main, version: n)
+---
+
+## Simulation
+## Sensitivity (what matters most)
+## Money gate
+### What would have to change
+## Inputs after evidence haircut
+```
+
+The sections are the script's output, unedited. Main adds only the front matter. If `python3` is not available, the file has one section, `## Simulation`, saying `not run: python3 unavailable`, and VIABLE ON PAPER is then impossible for that idea.
+
+## ideas/<id>/gate-v<n>.md — writer: main (only when the money gate fails)
+
+```markdown
+---
+(front matter, idea_id, agent: main, version: n)
+---
+
+## Verdict
+- verdict: KILL — the money doesn't work (money gate)
+- round: <n>
+
+## Why
+- <the "best-case viable share" and "money gate: FAIL" lines, copied verbatim from simulation-v<n>.md>
+- <the viable share line, copied verbatim>
+- <the conservative-case constraint check from economics-v<n>.md § Constraint check, copied verbatim>
+
+## What would have to change
+(the table from simulation-v<n>.md § What would have to change, copied verbatim)
+```
+
+Main copies, never paraphrases. The gate is arithmetic on the builders' own numbers, so no judge call is needed. The idea is final: no strategy, prosecution, audit, judge or revision round, and no pivot candidate.
+
+## ideas/<id>/economics-v<n>.md — writer: economics-modeler
+
+````markdown
 ---
 (front matter, idea_id, agent: economics-modeler, version: n)
 ---
@@ -418,6 +579,22 @@ After writing: `chmod 444`, compute SHA-256, record in `run-log.md` § Locks.
 ## Calculations
 (show the arithmetic for the conservative column)
 
+## Simulation inputs
+```json
+{
+  "currency": "INR", "months": 12, "break_even_by_month": 3,
+  "capital_limit": 100000, "hours_limit_per_week": 10,
+  "inputs": {
+    "price": {"low": 249, "likely": 299, "high": 349, "evidence": "verified"},
+    "units_per_customer_per_month": {"low": 1, "likely": 1, "high": 1, "evidence": "assumption"},
+    "variable_cost_per_unit": {...}, "fixed_cost_per_month": {...}, "setup_cost": {...},
+    "reach_per_month": {...}, "conversion_rate": {...}, "cac": {...}, "monthly_churn": {...},
+    "founder_hours_fixed_per_week": {...}, "founder_hours_per_unit": {...}
+  }
+}
+```
+(the exact keys `scripts/simulate.py` requires; `evidence` is one of verified, peer-town, founder-counted, founder-estimate, assumption; `break_even_by_month` comes from K6, `capital_limit` from K1, `hours_limit_per_week` from K2)
+
 ## Constraint check (conservative case only)
 | K# | constraint | conservative value | result |
 |---|---|---|---|
@@ -428,7 +605,7 @@ After writing: `chmod 444`, compute SHA-256, record in `run-log.md` § Locks.
 - HARD constraints broken in conservative case: <list or 'none'>
 - FLEXIBLE stretches required: <list with unlock condition status, or 'none'>
 - what would have to change for the conservative case to work: <the one or two numbers, with by how much, or 'nothing — it works'>
-```
+````
 
 ## ideas/<id>/fixable-flaws-v1.md — writer: main
 
@@ -465,11 +642,11 @@ After writing: `chmod 444`, compute SHA-256, record in `run-log.md` § Locks.
 
 Values are copied verbatim from forge-v1 / forge-v2, never paraphrased into stronger language. A row with `NONE` as evidence is a non-fix (rule 4).
 
-## ideas/<id>/prosecution-market-v<n>.md and prosecution-execution-v<n>.md — writers: prosecutors (kill mode)
+## ideas/<id>/prosecution-v<n>.md — writer: prosecutor (kill mode)
 
 ```markdown
 ---
-(front matter, idea_id, agent: prosecutor-market | prosecutor-execution, version: n)
+(front matter, idea_id, agent: prosecutor, version: n)
 ---
 
 ## Inputs read
@@ -479,13 +656,18 @@ Values are copied verbatim from forge-v1 / forge-v2, never paraphrased into stro
 | criterion | status | evidence (claim refs) | note |
 |---|---|---|---|
 | KM1 | MET / NOT MET / INSUFFICIENT EVIDENCE | C03, forge-v1.md#C05 | ... |
+| KE1 | MET / NOT MET / INSUFFICIENT EVIDENCE | ... | ... |
 
-## Flaws
+## Market flaws
 ### FM1 — FATAL | FIXABLE
 - flaw: <statement>
 - evidence: [Cnn] ... [source: ...]
 - what would fix it (FIXABLE only): <exact evidence that would fix it, and whether it is obtainable by desk research>
 - fix would change customer/problem/revenue model: no | yes
+
+## Execution flaws
+### FE1 — FATAL | FIXABLE
+- (same fields)
 
 ## Evidence
 - [C01] ... [source: ...]
@@ -496,7 +678,7 @@ Values are copied verbatim from forge-v1 / forge-v2, never paraphrased into stro
 | D1 | yes / no | ... |
 ```
 
-Prosecutors may only assess criteria that are in `kill-criteria.md`; they can add flaws but not criteria.
+Every `KM*` and `KE*` criterion in `kill-criteria.md` gets a row. The prosecutor may only assess criteria that are in `kill-criteria.md`; it can add flaws but not criteria.
 
 ## ideas/<id>/audit-v<n>.md — writer: evidence-auditor
 
@@ -540,7 +722,7 @@ Prosecutors may only assess criteria that are in `kill-criteria.md`; they can ad
 - result: MATCH | MISMATCH — HALTED
 
 ## Verdict
-- verdict: PASS | REVISE | KILL | HALTED
+- verdict: PASS | VIABLE ON PAPER | REVISE | KILL | HALTED
 - round: 1 | 2
 - confidence: <1-10>
 
@@ -557,6 +739,22 @@ Prosecutors may only assess criteria that are in `kill-criteria.md`; they can ad
 
 ## Conservative economics
 - fits contract: yes | no — <refs>
+
+## Simulation
+- viable share: <x%> · within capital: <y%> · bar: MET | NOT MET | not run — simulation-v<n>.md
+
+## Viable-on-paper check
+| condition | met? | evidence |
+|---|---|---|
+| 1. simulation bar met (≥70% viable, ≥90% within capital) | | simulation-v<n>.md |
+| 2. no FATAL flaw survived | | |
+| 3. gap backed by peer-town, brand absence or founder-counted evidence | | |
+| 4. every failing criterion is INSUFFICIENT EVIDENCE for lack of findable local data, none contradicted | | |
+| 5. fits every HARD constraint; strategist recommends CARRY with no unmitigated critical AGAINST | | strategy-v1.md |
+
+## Assumptions to confirm (VIABLE ON PAPER only)
+| # | assumption (from the sensitivity ranking) | how to confirm cheaply | stop if |
+|---|---|---|---|
 
 ## Fixable flaws (REVISE only)
 | flaw id | what evidence would fix it | desk-researchable |
@@ -586,6 +784,7 @@ No encouragement. No softening.
 
 ## Winning idea
 - idea: <id> — <pitch>
+- verdict: PASS | VIABLE ON PAPER
 - verdict file: ideas/<id>/verdict-v<n>.md
 - why it beat the others: <reasons with refs>
 
@@ -593,6 +792,10 @@ No encouragement. No softening.
 ## The need gap
 ## How it makes money
 (each in plain language, from forge-v<n>.md and the conservative column of economics-v<n>.md, with refs)
+
+## Assumptions to confirm first (VIABLE ON PAPER only)
+| # | assumption | how to confirm cheaply | stop if |
+|---|---|---|---|
 
 ## This week's 3 cheapest experiments
 | # | experiment | cost | time | success threshold | kill threshold |
@@ -675,7 +878,7 @@ No encouragement. No softening.
 ## Agent calls
 | time | agent | mode | idea | round | paths passed | output |
 |---|---|---|---|---|---|---|
-| ... | prosecutor-market | kill | I01 | 2 | 00-contract.md; 01-local-market.md; 02-signals.md; ideas/I01/kill-criteria.md; ideas/I01/diff-v2.md; ideas/I01/economics-v2.md; ideas/I01/prosecution-market-v1.md | ideas/I01/prosecution-market-v2.md |
+| ... | prosecutor | kill | I01 | 2 | 00-contract.md; 01-local-market.md; 02-signals.md; ideas/I01/kill-criteria.md; ideas/I01/diff-v2.md; ideas/I01/economics-v2.md; ideas/I01/simulation-v2.md; ideas/I01/prosecution-v1.md | ideas/I01/prosecution-v2.md |
 
 ## Locks
 | idea | file | sha256 | locked at |
@@ -686,20 +889,20 @@ No encouragement. No softening.
 |---|---|---|---|
 
 ## Blindness self-check
-- forge-v2.md passed to a prosecutor: never | <violations>
-- a prosecutor passed the other prosecutor's file: never | <violations>
+- forge-v2.md passed to the prosecutor: never | <violations>
+- strategy passed to the prosecutor: never | <violations>
 - kill-criteria passed to forge or economics-modeler: never | <violations>
 ```
 
 ## ventures/LEDGER.md — writer: main (append only)
 
-The ledger has a single H1 `# venture ledger` and one H2 per run, appended at the end. **Never delete or edit past entries.**
+The ledger has a single H1 `# venture ledger` and one H2 per run, appended at the end. **Never delete or edit past entries.** (The heading keeps its pre-0.6 name so existing ledgers stay valid.)
 
 ```markdown
 ## <run_id>
 - location: <city, country> | target market: <...>
 - contract summary: <one line>
-- outcome: PASS (<idea>) | NOTHING PASSED
+- outcome: PASS (<idea>) | VIABLE ON PAPER (<idea>) | NOTHING PASSED
 - ideas:
   - <idea_id> | <pitch> | <verdict> | <decisive reason> | <lens>
 - useful sources: <domains or communities that produced real signals>
@@ -709,4 +912,28 @@ The ledger has a single H1 `# venture ledger` and one H2 per run, appended at th
 - generation lessons: <from 91-nothing-passed.md § Why the search missed, or 'n/a (passed)'>
 ```
 
-Verdict values in the ledger: `PASS`, `KILL`, `REJECTED (screen)`, `NOT CARRIED (rank)`, `PIVOTED → <new id>`, `HALTED (tamper)`.
+Verdict values in the ledger: `PASS`, `VIABLE ON PAPER`, `KILL`, `KILL (money gate)`, `DROPPED (strategist)`, `REJECTED (screen)`, `NOT CARRIED (rank)`, `PIVOTED → <new id>`, `HALTED (tamper)`.
+
+## ventures/cities/<city-slug>.md — writer: main (append only)
+
+City memory: what venture has learned about one town across runs. Main appends one dated block per run at blueprint time. Scouts, the generator, forge and the strategist read it. **Never delete or edit past blocks.**
+
+```markdown
+# <City>, <Country>
+
+## <run_id> (<YYYY-MM-DD>)
+### Verified facts
+- <claim> [source: <url>] (VERIFIED in ideas/<id>/audit-v<n>.md)
+### Peer-town benchmark
+- <category>: <n> per 10,000 vs peer median <m> → under-served | in line | over-served
+### Big-brand presence
+- <brand>: present | absent (<evidence>)
+### City profile
+- <one line per parameter, with its label>
+### Founder-reported (unverified)
+- <answer> [FOUNDER-COUNTED | FOUNDER-ESTIMATE]
+### Useless sources for this town
+- <domain>
+```
+
+Only VERIFIED claims go under Verified facts. Struck claims never go in.
